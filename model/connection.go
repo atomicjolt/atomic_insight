@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/go-pg/pg/v10"
-	"gitlab.com/atomicjolt/flp/config"
+	"gitlab.com/atomicjolt/canvas_analytics/config"
 )
 
 // GetConnection returns a database connection object

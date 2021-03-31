@@ -16,7 +16,7 @@ source .env
 set +a
 
 # Create config file for the app / site.
-cat > "/usr/local/etc/nginx/servers/flp.conf" <<-EOF
+cat > "/usr/local/etc/nginx/servers/canvas_analytics.conf" <<-EOF
 server {
 
     listen *:443;
@@ -47,7 +47,7 @@ server {
 server {
 
     listen *:443;
-    server_name go-flp.atomicjolt.xyz;
+    server_name canvas_analytics.atomicjolt.xyz;
 
     ssl on;
     ssl_session_cache         builtin:1000  shared:SSL:10m;
