@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/atomicjolt/atomic_insight/model"
 	migrations "github.com/robinjoseph08/go-pg-migrations/v3"
-	"gitlab.com/atomicjolt/canvas_analytics/model"
 )
 
 const directory = "migrations"

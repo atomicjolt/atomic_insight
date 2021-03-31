@@ -2,12 +2,12 @@
   "development": {
     "db_user": "your_username",
     "db_host": "localhost:5432",
-    "database": "flp_dev",
+    "database": "atomic_insight_dev",
     "server_port": "8080"
   },
   "test": {
     "db_user": "your_username",
     "db_host": "localhost:5432",
-    "database": "flp_test"
+    "database": "atomic_insight_test"
   }
 }

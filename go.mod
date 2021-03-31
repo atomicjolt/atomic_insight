@@ -1,4 +1,4 @@
-module gitlab.com/atomicjolt/canvas_analytics
+module github.com/atomicjolt/atomic_insight
 
 go 1.15
 
