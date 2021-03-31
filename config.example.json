@@ -1,0 +1,13 @@
+{
+  "development": {
+    "db_user": "your_username",
+    "db_host": "localhost:5432",
+    "database": "flp_dev",
+    "server_port": "8080"
+  },
+  "test": {
+    "db_user": "your_username",
+    "db_host": "localhost:5432",
+    "database": "flp_test"
+  }
+}
