@@ -1,0 +1,27 @@
+---
+env:
+  browser: true
+  es6: true
+  jest: true
+extends: atomicjolt
+parser: babel-eslint
+plugins:
+  - react
+  - jsx-a11y
+  - import
+globals:
+  describe: false
+  beforeAll: false
+  beforeEach: false
+  afterEach: false
+  it: false
+  expect: false
+  xit: false
+  spyOn: false
+  jasmine: false
+  module: false
+  jest: false
+  Rollbar: false
+  __DEV__: false
+  MathJax: false
+  require: false
