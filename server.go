@@ -2,6 +2,7 @@ package main
 
 import (
 	rice "github.com/GeertJohan/go.rice"
+	"github.com/atomicjolt/atomic_insight/config"
 	"net/http"
 )
 
@@ -13,5 +14,7 @@ func main() {
 	}
 
 	http.Handle("/", http.FileServer(appBox.HTTPBox()))
-	http.ListenAndServe(":3000", nil)
+
+	port := config.GetConfig().ServerPort
+	http.ListenAndServe(":"+port, nil)
 }
