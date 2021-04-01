@@ -10,7 +10,7 @@ export interface PageProps {
   onCreateAccount: () => void;
 }
 
-export const Page: React.FC<PageProps> = ({ user, onLogin, onLogout, onCreateAccount }) => (
+export const Page: React.FC<PageProps> = ({ user, onLogin, onLogout, onCreateAccount }: PageProps) => (
   <article>
     <Header user={user} onLogin={onLogin} onLogout={onLogout} onCreateAccount={onCreateAccount} />
 

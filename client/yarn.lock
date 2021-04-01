@@ -6182,6 +6182,13 @@ eslint-plugin-react@^7.21.5, eslint-plugin-react@^7.23.1:
     resolve "^2.0.0-next.3"
     string.prototype.matchall "^4.0.4"
 
+eslint-plugin-storybook@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-storybook/-/eslint-plugin-storybook-0.1.1.tgz#a2bbbde1268f107c3d908558fbf4e53511764a16"
+  integrity sha512-uNot2yOvx7/lpY+DRxWDKH/kgSmc1fxgF+vjuhpKBoLveewwPg54ab4EoPUhAUOBtC5qkln4EK0UftSFBOuPrw==
+  dependencies:
+    requireindex "~1.1.0"
+
 eslint-plugin-testing-library@^3.9.2:
   version "3.10.2"
   resolved "https://registry.yarnpkg.com/eslint-plugin-testing-library/-/eslint-plugin-testing-library-3.10.2.tgz#609ec2b0369da7cf2e6d9edff5da153cc31d87bd"
