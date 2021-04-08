@@ -25,3 +25,16 @@ globals:
   __DEV__: false
   MathJax: false
   require: false
+rules: {
+  'import/no-extraneous-dependencies': [
+      'error',
+    {
+      devDependencies: [
+          '**/*.stories.tsx',
+      ],
+    },
+  ],
+  "import/extensions": [2, {
+    "stories": "always"
+  } ]
+}
