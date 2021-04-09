@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react';
+import { Story } from '@storybook/react';
 
 import { Button, ButtonProps } from './Button';
 
@@ -9,7 +9,7 @@ export default {
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as Meta;
+};
 
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
