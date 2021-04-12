@@ -65,7 +65,7 @@ func determineEnv() string {
 		return "test"
 	}
 
-	env := os.Getenv("FLP_ENV")
+	env := os.Getenv("ATOMIC_INSIGHT_ENV")
 
 	if env == "" {
 		return "development"
