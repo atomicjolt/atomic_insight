@@ -1,4 +1,4 @@
-package model
+package repo
 
 import "github.com/go-pg/pg/v10/orm"
 
