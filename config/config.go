@@ -44,9 +44,9 @@ func GetConfig() *Config {
 // depending on how deployment works, this may load the config based on a cli
 // argument or something else
 func loadJSON() []byte {
-	projectRoot := os.Getenv("FLP_PATH")
+	projectRoot := os.Getenv("ATOMIC_INSIGHT_PATH")
 	if projectRoot == "" {
-		log.Fatal("FLP_PATH env var not set")
+		log.Fatal("ATOMIC_INSIGHT_PATH env var not set")
 	}
 
 	configFile, err := os.Open(filepath.Join(projectRoot, "config.json"))
