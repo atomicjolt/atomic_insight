@@ -1,20 +1,29 @@
 package main
 
 import (
-	rice "github.com/GeertJohan/go.rice"
-	"github.com/atomicjolt/atomic_insight/config"
+	"fmt"
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+
+	"github.com/atomicjolt/atomic_insight/config"
+	"github.com/atomicjolt/atomic_insight/controllers"
+	"github.com/atomicjolt/atomic_insight/model"
+	"github.com/atomicjolt/atomic_insight/repo"
+	"github.com/gorilla/handlers"
 )
 
 func main() {
-	appBox, err := rice.FindBox("./client/build")
+	localConfig := config.GetConfig()
+	port := localConfig.ServerPort
+	assetsPath := filepath.Join("client", localConfig.AssetsDir)
 
-	if err != nil {
-		panic("Could not find build folder")
-	}
+	db := model.GetConnection()
+	insightRepo := repo.NewRepo(db)
 
-	http.Handle("/", http.FileServer(appBox.HTTPBox()))
+	router := controllers.NewRouter(insightRepo, assetsPath)
 
-	port := config.GetConfig().ServerPort
-	http.ListenAndServe(":"+port, nil)
+	fmt.Printf("Listening on port %v\n", port)
+	log.Fatal(http.ListenAndServe(":"+port, handlers.LoggingHandler(os.Stdout, router)))
 }
