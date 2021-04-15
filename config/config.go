@@ -16,6 +16,7 @@ type Config struct {
 	DbUser     string `json:"db_user"`
 	DbHost     string `json:"db_host"`
 	Database   string `json:"database"`
+	AssetsDir  string `json:"assets_dir"`
 }
 
 var once sync.Once
