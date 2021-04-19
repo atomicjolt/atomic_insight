@@ -1,0 +1,95 @@
+.react-grid-item {
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #cbcbcb;
+}
+
+.grid-container {
+  background: #F3F4F6;
+  border-radius: 10px;
+  width: 100%;
+  overflow: hidden;
+  .react-grid-layout{
+    margin-bottom: 5px;
+    margin-top: -10px;
+  }
+
+  button {
+    padding: 10px;
+
+    svg {
+      margin-right: 10px;
+    }
+    width: 100%;
+    height: 60px;
+    border: none;
+    background: none;
+    text-align: left;
+    font-size: 20px;
+    margin-left: 10px;
+    display: inline-block;
+    font-weight: bold;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  &.close {
+    max-height: 60px;
+    animation: close .3s ease;
+    .fa-caret-down {
+      transform: rotateZ(-90deg);
+      animation: rotate-right .2s ease;
+    }
+  }
+
+  &.open {
+    max-height: 100%;
+    animation: open .2s ease;
+    .fa-caret-down {
+      transform: rotateZ(0deg);
+      animation: rotate-down .2s ease;
+    }
+  }
+}
+
+@keyframes close {
+  from {
+    max-height: 2000px;
+  }
+  to {
+    max-height: 60px;
+  }
+}
+
+@keyframes open {
+  from {
+    max-height: 60px;
+  }
+  to {
+    max-height: 2000px;
+  }
+}
+
+@keyframes rotate-right {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(-90deg);
+  }
+}
+
+@keyframes rotate-down {
+  from {
+    transform: rotateZ(-90deg);
+  }
+  to {
+    transform: rotateZ(0deg);
+  }
+}
