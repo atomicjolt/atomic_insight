@@ -7,7 +7,7 @@ import './GridContainer.scss';
 
 const GridLayout = WidthProvider(Responsive);
 
-export const GridContainer: React.FC<React.PropsWithChildren<any>> = ({ children }: React.PropsWithChildren<any>) => {
+export const GridContainer = ({ children }: React.PropsWithChildren<any>) => {
   const [rowHeight, setRowHeight] = useState(10);
   const [opened, setOpened] = useState('');
   const tileRatio = 4 / 5; // Ratio of height / width
