@@ -7,7 +7,11 @@ import './GridContainer.scss';
 
 const GridLayout = WidthProvider(Responsive);
 
-export const GridContainer: React.FC<React.PropsWithChildren<any>> = ({ children }: React.PropsWithChildren<any>) => {
+export interface ButtonProps extends React.PropsWithChildren<any> {
+  title: string;
+}
+
+export const GridContainer = ({ children, title }: ButtonProps) => {
   const [rowHeight, setRowHeight] = useState(10);
   const [opened, setOpened] = useState('');
   const tileRatio = 4 / 5; // Ratio of height / width
@@ -15,7 +19,7 @@ export const GridContainer: React.FC<React.PropsWithChildren<any>> = ({ children
   return (
     <div className={`grid-container ${opened}`}>
       <button onClick={() => setOpened(opened === 'close' ? 'open' : 'close')}>
-        <FontAwesomeIcon icon={faCaretDown} />Pinned
+        <FontAwesomeIcon icon={faCaretDown} />{title}
       </button>
       <GridLayout
         className="layout"
