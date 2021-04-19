@@ -16,6 +16,7 @@ type Config struct {
 	DbUser     string `json:"db_user"`
 	DbHost     string `json:"db_host"`
 	Database   string `json:"database"`
+	AssetsDir  string `json:"assets_dir"`
 }
 
 var once sync.Once
@@ -44,9 +45,9 @@ func GetConfig() *Config {
 // depending on how deployment works, this may load the config based on a cli
 // argument or something else
 func loadJSON() []byte {
-	projectRoot := os.Getenv("FLP_PATH")
+	projectRoot := os.Getenv("ATOMIC_INSIGHT_PATH")
 	if projectRoot == "" {
-		log.Fatal("FLP_PATH env var not set")
+		log.Fatal("ATOMIC_INSIGHT_PATH env var not set")
 	}
 
 	configFile, err := os.Open(filepath.Join(projectRoot, "config.json"))
@@ -65,7 +66,7 @@ func determineEnv() string {
 		return "test"
 	}
 
-	env := os.Getenv("FLP_ENV")
+	env := os.Getenv("ATOMIC_INSIGHT_ENV")
 
 	if env == "" {
 		return "development"
