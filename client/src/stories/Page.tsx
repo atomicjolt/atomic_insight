@@ -10,7 +10,14 @@ export interface PageProps {
   onCreateAccount: () => void;
 }
 
-export const Page: React.FC<PageProps> = ({ user, onLogin, onLogout, onCreateAccount }: PageProps) => (
+export const Page = (
+  {
+    user,
+    onLogin,
+    onLogout,
+    onCreateAccount
+  }: PageProps
+) =>
   <article>
     <Header user={user} onLogin={onLogin} onLogout={onLogout} onCreateAccount={onCreateAccount} />
 
@@ -63,5 +70,4 @@ export const Page: React.FC<PageProps> = ({ user, onLogin, onLogout, onCreateAcc
         Viewports addon in the toolbar
       </div>
     </section>
-  </article>
-);
+  </article>;

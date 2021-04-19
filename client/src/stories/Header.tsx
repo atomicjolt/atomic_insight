@@ -10,7 +10,14 @@ export interface HeaderProps {
   onCreateAccount: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onCreateAccount }: HeaderProps) => (
+export const Header = (
+  {
+    user,
+    onLogin,
+    onLogout,
+    onCreateAccount
+  }: HeaderProps
+) =>
   <header>
     <div className="wrapper">
       <div>
@@ -43,5 +50,4 @@ export const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onCreat
         )}
       </div>
     </div>
-  </header>
-);
+  </header>;
