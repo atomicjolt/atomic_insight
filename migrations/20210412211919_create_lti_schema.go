@@ -33,6 +33,20 @@ type User struct {
 	Timestamps
 }
 
+type LtiLaunch struct {
+	ID                       int64
+	DeploymentID             string             `pg:",notnull"`
+	Config                   *ApplicationConfig `pg:"type:jsonb,notnull"`
+	ContextID                string             `pg:",notnull"`
+	ResourceLinkID           string             `pg:",notnull"`
+	Token                    string             `pg:",notnull"`
+	ToolConsumerInstanceGuid string             `pg:",notnull"`
+
+	ApplicationInstanceID int64
+
+	Timestamps
+}
+
 type ApplicationInstance struct {
 	ID                    int64
 	ClientApplicationName string             `pg:",notnull"`
@@ -40,6 +54,7 @@ type ApplicationInstance struct {
 	Description           string             `pg:",notnull"`
 	Key                   string             `pg:",notnull"`
 	LtiDeployments        []*LtiDeployment   `pg:"rel:has-many"`
+	LtiLaunches           []*LtiLaunch       `pg:"rel:has-many"`
 	Users                 []*User            `pg:"rel:has-many"`
 
 	Timestamps
@@ -78,6 +93,7 @@ type Application struct {
 var models []interface{} = []interface{}{
 	(*LtiDeployment)(nil),
 	(*User)(nil),
+	(*LtiLaunch)(nil),
 	(*ApplicationInstance)(nil),
 	(*Jwk)(nil),
 	(*LtiInstall)(nil),
