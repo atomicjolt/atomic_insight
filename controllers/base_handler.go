@@ -7,11 +7,12 @@ import (
 )
 
 type ControllerContext struct {
-	Repo *repo.Repo
+	Repo       *repo.Repo
+	AssetsPath string
 }
 
 type ControllerFactory interface {
-	NewClientFilesHandler(assetsPath string) http.Handler
+	NewClientFilesHandler() http.Handler
 }
 
 /**
