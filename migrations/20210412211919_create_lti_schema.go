@@ -19,6 +19,9 @@ type LtiDeployment struct {
 	ID           int64
 	DeploymentID string `pg:",notnull"`
 
+	LtiInstallID          int64
+	ApplicationInstanceID int64
+
 	Timestamps
 }
 
@@ -29,6 +32,8 @@ type User struct {
 	LmsUserId   string `pg:",notnull"`
 	LtiUserId   string `pg:",notnull"`
 	LtiProvider string `pg:",notnull"`
+
+	ApplicationInstanceID int64
 
 	Timestamps
 }
@@ -57,6 +62,8 @@ type ApplicationInstance struct {
 	LtiLaunches           []*LtiLaunch       `pg:"rel:has-many"`
 	Users                 []*User            `pg:"rel:has-many"`
 
+	ApplicationID int64
+
 	Timestamps
 }
 
@@ -65,12 +72,16 @@ type Jwk struct {
 	kid string `pg:",notnull"`
 	pem string `pg:",notnull"`
 
+	ApplicationID int64
+
 	Timestamps
 }
 
 type LtiInstall struct {
 	ID             int64
 	LtiDeployments []*LtiDeployment `pg:"rel:has-many"`
+
+	ApplicationID int64
 
 	Timestamps
 }

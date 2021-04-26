@@ -8,5 +8,7 @@ type User struct {
 	LtiUserId   string `pg:",notnull"`
 	LtiProvider string `pg:",notnull"`
 
+	ApplicationInstanceID int64
+
 	Timestamps
 }

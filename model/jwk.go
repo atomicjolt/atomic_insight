@@ -5,5 +5,7 @@ type Jwk struct {
 	kid string `pg:",notnull"`
 	pem string `pg:",notnull"`
 
+	ApplicationID int64
+
 	Timestamps
 }

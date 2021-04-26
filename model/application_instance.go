@@ -10,5 +10,7 @@ type ApplicationInstance struct {
 	LtiLaunches           []*LtiLaunch       `pg:"rel:has-many"`
 	Users                 []*User            `pg:"rel:has-many"`
 
+	ApplicationID int64
+
 	Timestamps
 }
