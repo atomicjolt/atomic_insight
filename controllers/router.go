@@ -7,9 +7,12 @@ import (
 
 func NewRouter(repo *repo.Repo, assetsPath string) *mux.Router {
 	router := mux.NewRouter()
-	controllerContext := newControllerContext(repo)
+	controllerContext := &ControllerContext{
+		Repo:       repo,
+		AssetsPath: assetsPath,
+	}
 
-	router.Handle("/", controllerContext.NewClientFilesHandler(assetsPath))
+	router.Handle("/{path:.*}", controllerContext.NewClientFilesHandler())
 
 	return router
 }
