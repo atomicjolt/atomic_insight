@@ -8,7 +8,7 @@ type User struct {
 	LtiUserId   string `pg:",notnull"`
 	LtiProvider string `pg:",notnull"`
 
-	ApplicationInstanceID int64
+	ApplicationInstanceID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
