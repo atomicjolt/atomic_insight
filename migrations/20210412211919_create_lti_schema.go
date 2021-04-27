@@ -19,8 +19,8 @@ type LtiDeployment struct {
 	ID           int64
 	DeploymentID string `pg:",notnull"`
 
-	LtiInstallID          int64
-	ApplicationInstanceID int64
+	LtiInstallID          int64 `pg:"on_delete:CASCADE"`
+	ApplicationInstanceID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
@@ -33,7 +33,7 @@ type User struct {
 	LtiUserId   string `pg:",notnull"`
 	LtiProvider string `pg:",notnull"`
 
-	ApplicationInstanceID int64
+	ApplicationInstanceID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
@@ -47,7 +47,7 @@ type LtiLaunch struct {
 	Token                    string             `pg:",notnull"`
 	ToolConsumerInstanceGuid string             `pg:",notnull"`
 
-	ApplicationInstanceID int64
+	ApplicationInstanceID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
@@ -62,7 +62,7 @@ type ApplicationInstance struct {
 	LtiLaunches           []*LtiLaunch       `pg:"rel:has-many"`
 	Users                 []*User            `pg:"rel:has-many"`
 
-	ApplicationID int64
+	ApplicationID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
@@ -72,7 +72,7 @@ type Jwk struct {
 	kid string `pg:",notnull"`
 	pem string `pg:",notnull"`
 
-	ApplicationID int64
+	ApplicationID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
@@ -81,7 +81,7 @@ type LtiInstall struct {
 	ID             int64
 	LtiDeployments []*LtiDeployment `pg:"rel:has-many"`
 
-	ApplicationID int64
+	ApplicationID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
