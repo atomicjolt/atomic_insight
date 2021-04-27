@@ -1,4 +1,4 @@
-package model
+package repo
 
 import (
 	"github.com/atomicjolt/atomic_insight/config"
