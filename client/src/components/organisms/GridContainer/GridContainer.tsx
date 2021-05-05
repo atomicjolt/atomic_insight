@@ -78,7 +78,7 @@ export const GridContainer = ({ children, title }: ButtonProps) => {
       </div>
     );
 
-    const listData = children.map((item) => ({
+    const listData = React.Children.map(children, (item) => ({
       key: item.key,
       name: `Item ${item.key}`,
     }));
