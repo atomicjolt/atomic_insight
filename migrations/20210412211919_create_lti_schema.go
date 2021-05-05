@@ -19,6 +19,9 @@ type LtiDeployment struct {
 	ID           int64
 	DeploymentID string `pg:",notnull"`
 
+	LtiInstallID          int64 `pg:"on_delete:CASCADE"`
+	ApplicationInstanceID int64 `pg:"on_delete:CASCADE"`
+
 	Timestamps
 }
 
@@ -30,6 +33,22 @@ type User struct {
 	LtiUserId   string `pg:",notnull"`
 	LtiProvider string `pg:",notnull"`
 
+	ApplicationInstanceID int64 `pg:"on_delete:CASCADE"`
+
+	Timestamps
+}
+
+type LtiLaunch struct {
+	ID                       int64
+	DeploymentID             string             `pg:",notnull"`
+	Config                   *ApplicationConfig `pg:"type:jsonb,notnull"`
+	ContextID                string             `pg:",notnull"`
+	ResourceLinkID           string             `pg:",notnull"`
+	Token                    string             `pg:",notnull"`
+	ToolConsumerInstanceGuid string             `pg:",notnull"`
+
+	ApplicationInstanceID int64 `pg:"on_delete:CASCADE"`
+
 	Timestamps
 }
 
@@ -40,7 +59,10 @@ type ApplicationInstance struct {
 	Description           string             `pg:",notnull"`
 	Key                   string             `pg:",notnull"`
 	LtiDeployments        []*LtiDeployment   `pg:"rel:has-many"`
+	LtiLaunches           []*LtiLaunch       `pg:"rel:has-many"`
 	Users                 []*User            `pg:"rel:has-many"`
+
+	ApplicationID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
@@ -50,12 +72,16 @@ type Jwk struct {
 	kid string `pg:",notnull"`
 	pem string `pg:",notnull"`
 
+	ApplicationID int64 `pg:"on_delete:CASCADE"`
+
 	Timestamps
 }
 
 type LtiInstall struct {
 	ID             int64
 	LtiDeployments []*LtiDeployment `pg:"rel:has-many"`
+
+	ApplicationID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
 }
@@ -78,6 +104,7 @@ type Application struct {
 var models []interface{} = []interface{}{
 	(*LtiDeployment)(nil),
 	(*User)(nil),
+	(*LtiLaunch)(nil),
 	(*ApplicationInstance)(nil),
 	(*Jwk)(nil),
 	(*LtiInstall)(nil),
