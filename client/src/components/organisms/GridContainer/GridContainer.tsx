@@ -1,7 +1,7 @@
 import React  from 'react';
 import 'react-grid-layout/css/styles.css';
 import './GridContainer.scss';
-import Panel from '../../molecules/GridPanel/Panel';
+import Panel from '../../molecules/Panel/Panel';
 import Grid from '../../molecules/Grid/Grid';
 
 export interface ButtonProps extends React.PropsWithChildren<any> {

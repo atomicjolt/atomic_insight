@@ -1,9 +1,3 @@
-.panel__content {
-  > div {
-    margin: 0;
-  }
-  .react-grid-layout {
-    margin-top: -10px;
-  }
+.panel .react-grid-layout {
   padding-bottom: 10px;
 }

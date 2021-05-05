@@ -18,7 +18,7 @@ export const Grid = ({ children }: React.PropsWithChildren<any>) => {
       rowHeight={rowHeight}
       isResizable={false}
       margin={[15, 15]}
-      containerPadding={[20, 20]}
+      containerPadding={[0, 0]}
       onWidthChange={(width, margin, cols, padding) => {
         // Calculates tile height by subtracting margins and paddings from the width of container divided by columns
         const tileHeight = (width - margin[0] - padding[0] * cols) / cols;
