@@ -1,0 +1,53 @@
+
+.item-list {
+  > div {
+    display: flex;
+    box-shadow: none;
+
+    > div {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      padding: 12px;
+      border-radius: inherit;
+      background: #f3f4f6;
+
+      > div {
+        margin-left: 12px;
+        display: flex;
+        height: 100%;
+      }
+    }
+
+    input {
+      padding-bottom: 4px;
+      font-size: 20px;
+      font-weight: 500;
+      color: #4b5563;
+      background: none;
+      border: none;
+      border-bottom: 1px solid #e5e7eb;
+      flex: 1;
+
+      &:focus {
+        border-bottom-color: #9ca3af;
+        outline: none;
+      }
+    }
+
+    button {
+      height: 100%;
+      margin: 0;
+      background: none;
+      color: #6b7280;
+      border: none;
+      flex: 1;
+      transition: opacity 100ms;
+
+      &:active {
+        opacity: 0.5;
+        color: #6b7280;
+      }
+    }
+  }
+}

@@ -5,56 +5,91 @@
 }
 
 .grid-container {
-  background: #F3F4F6;
+  position: relative;
+  background: #f3f4f6;
   border-radius: 10px;
-  width: 100%;
-  overflow: hidden;
-  .react-grid-layout{
-    margin-bottom: 5px;
-    margin-top: -10px;
-  }
+  width: 100%;  
 
-  button {
-    padding: 10px;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 10px;
+    color: #4B5563;
 
-    svg {
-      margin-right: 10px;
-    }
-    width: 100%;
-    height: 60px;
-    border: none;
-    background: none;
-    text-align: left;
-    font-size: 20px;
-    margin-left: 10px;
-    display: inline-block;
-    font-weight: bold;
+    button {
+      padding: 10px;
+      color: inherit;
 
-    &:hover {
-      cursor: pointer;
-    }
+      &:first-child {
+        flex: 1;
+      }
 
-    &:focus {
-      outline: 0;
+      svg {
+        margin-right: 10px;
+      }
+      height: 60px;
+      border: none;
+      background: none;
+      text-align: left;
+      font-size: 20px;
+      font-weight: bold;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:active {
+        color: inherit;
+      }
+
+      &:focus {
+        outline: 0;
+      }
     }
   }
 
   &.close {
-    max-height: 60px;
-    animation: close .3s ease;
     .fa-caret-down {
       transform: rotateZ(-90deg);
-      animation: rotate-right .2s ease;
+      animation: rotate-right 0.2s ease;
     }
   }
 
   &.open {
-    max-height: 100%;
-    animation: open .2s ease;
     .fa-caret-down {
       transform: rotateZ(0deg);
-      animation: rotate-down .2s ease;
+      animation: rotate-down 0.2s ease;
     }
+  }
+
+  &__content {
+    overflow: hidden;
+    .react-grid-layout {
+      margin-bottom: 5px;
+      margin-top: -10px;
+    }
+  }
+
+  &.close &__content {
+    max-height: 0px;
+    animation: close 0.3s ease;
+  }
+
+  &.open &__content {
+    max-height: 100%;
+    animation: open 0.2s ease;
+  }
+}
+
+.manage-cards {
+  &__modal {
+    background: #F3F4F6;  
+    &__button {
+      background: white;
+    }
+  }
+  &__list-item {
+    background: white !important;  
   }
 }
 
@@ -63,13 +98,13 @@
     max-height: 2000px;
   }
   to {
-    max-height: 60px;
+    max-height: 0px;
   }
 }
 
 @keyframes open {
   from {
-    max-height: 60px;
+    max-height: 0px;
   }
   to {
     max-height: 2000px;

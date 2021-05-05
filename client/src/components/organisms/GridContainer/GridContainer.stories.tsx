@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import { GridContainer } from './GridContainer';
 
 export default {
-  title: 'Example/Grid',
+  title: 'Organisms/Grid',
   component: GridContainer,
 };
 

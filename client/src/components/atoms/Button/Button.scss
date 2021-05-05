@@ -1,0 +1,46 @@
+.btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  border: none;
+  border-radius: 5px;
+
+  background-color: #F3F4F6;
+  color: #374151;
+
+  &--primary {
+    background-color: #1a8bac;
+    color: white;
+  }
+
+  &--light {
+    background-color: #F9FAFB;
+  }
+
+  &--border {
+    border: 1px solid #D1D5DB;
+  }
+
+  &:not(&--icon) {
+    i {
+      position: relative;
+
+      &:first-child {
+        left: -0.15em;
+      }
+
+      &:last-child {
+        right: -0.15em;
+      }
+    }
+  }
+
+  &--icon {
+    padding: 8px;
+  }  
+}
