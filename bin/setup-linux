@@ -16,11 +16,11 @@ source .env
 set +a
 
 # Create config file for the app / site.
-cat > "/etc/nginx/servers/atomic_insight.conf" <<-EOF
+cat > "/etc/nginx/sites-available/atomicinsight.conf" <<-EOF
 server {
 
     listen *:443;
-    server_name ${HOST};
+    server_name atomicinsightassets.atomicjolt.xyz;
 
     ssl on;
     ssl_session_cache         builtin:1000  shared:SSL:10m;
@@ -47,7 +47,7 @@ server {
 server {
 
     listen *:443;
-    server_name atomic_insight.atomicjolt.xyz;
+    server_name atomicinsight.atomicjolt.xyz;
 
     ssl on;
     ssl_session_cache         builtin:1000  shared:SSL:10m;
@@ -72,12 +72,14 @@ server {
 }
 EOF
 
+ln -sf /etc/nginx/sites-available/atomicinsight.conf /etc/nginx/sites-enabled/
+
 # Restarting nginx
 echo "Restarting nginx..."
 systemctl restart nginx
 echo "-------------------------------------"
 echo "Your app has been added."
 echo "Your next steps..."
-echo "yarn start"
+echo "cd build && yarn build"
 echo "Visit your app / project here: https://${HOST}"
 echo "-------------------------------------"
