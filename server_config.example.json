@@ -5,7 +5,7 @@
     "database": "atomic_insight_dev",
     "server_port": "8888",
     "assets_dir": "build",
-    "client_id": "401928091284091824091"
+    "client_id": "43460000000000439"
   },
   "test": {
     "db_user": "your_username",
@@ -13,6 +13,6 @@
     "database": "atomic_insight_test",
     "server_port": "8888",
     "assets_dir": "build",
-    "client_id": "401928091284091824091"
+    "client_id": "43460000000000439"
   }
 }
