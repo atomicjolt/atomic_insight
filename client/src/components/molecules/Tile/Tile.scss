@@ -1,8 +1,14 @@
 .grid-tile {
-  background: #FFFFFF;
+  background: white;
   height: 100%;
   width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #cbcbcb;
+  border: 2px solid transparent;
+  padding: 16px;
+  box-sizing: border-box;
   &:hover {
+    border: 2px solid #cbcbcb;
     .tile-header {
       .tile-impact {
         display: none;
@@ -15,7 +21,7 @@
   .tile-header {
     position: relative;
     display: flex;
-    height: 40px;
+    padding: 5px 0;
     width: 100%;
     align-content: center;
     align-items: center;
@@ -33,19 +39,20 @@
         background: #E3F5FF;
         padding: 5px;
         border-radius: 5px;
+        &.impact-low {
+          background: #F3F4F6;
+        }
       }
     }
     .tile-buttons {
       position: absolute;
       right: 0;
-      top: 0;
       display: none;
       justify-content: space-between;
       i {
         height: 10%;
       }
       button {
-        display: grid;
         margin: 0;
         background: none;
         font-size: 1em;
@@ -64,6 +71,8 @@
     }
   }
   .tile-contents {
-    height: 100%;
+    display: block;
+    padding-top: 5px;
+    box-sizing: border-box;
   }
 }

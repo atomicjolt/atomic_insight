@@ -16,7 +16,6 @@ export interface TileProps extends React.PropsWithChildren<any> {
 }
 
 export const Tile = ({ className, children, title, impact, pinned, onEdit, onPin }: TileProps) => {
-  console.log(impact);
   return (
     <div
       className={`grid-tile ${className || ''}`}
@@ -24,7 +23,7 @@ export const Tile = ({ className, children, title, impact, pinned, onEdit, onPin
       <div className="tile-header">
         <h4 className="title">{title}</h4>
         <div className="tile-impact">
-          <h5 className="impact-title" children={impact} />
+          <h5 className={`impact-title ${impact === Impact.High ? 'impact-high' : 'impact-low'}`}>{impact}</h5>
         </div>
         <div className="tile-buttons">
           <button onClick={() => onPin && onPin(!pinned)}>
