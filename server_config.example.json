@@ -4,13 +4,15 @@
     "db_host": "localhost:5432",
     "database": "atomic_insight_dev",
     "server_port": "8888",
-    "assets_dir": "build"
+    "assets_dir": "build",
+    "client_id": "401928091284091824091"
   },
   "test": {
     "db_user": "your_username",
     "db_host": "localhost:5432",
     "database": "atomic_insight_test",
     "server_port": "8888",
-    "assets_dir": "build"
+    "assets_dir": "build",
+    "client_id": "401928091284091824091"
   }
 }
