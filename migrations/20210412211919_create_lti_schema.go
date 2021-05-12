@@ -69,8 +69,8 @@ type ApplicationInstance struct {
 
 type Jwk struct {
 	ID  int64
-	kid string `pg:",notnull"`
-	pem string `pg:",notnull"`
+	Kid string `pg:",notnull"`
+	Pem string `pg:",notnull"`
 
 	ApplicationID int64 `pg:"on_delete:CASCADE"`
 
@@ -78,7 +78,13 @@ type Jwk struct {
 }
 
 type LtiInstall struct {
-	ID             int64
+	ID       int64
+	ClientID string `pg:",notnull"`
+	Iss      string `pg:",notnull"`
+	JwksUrl  string `pg:",notnull"`
+	OidcUrl  string `pg:",notnull"`
+	TokenUrl string `pg:",notnull"`
+
 	LtiDeployments []*LtiDeployment `pg:"rel:has-many"`
 
 	ApplicationID int64 `pg:"on_delete:CASCADE"`
