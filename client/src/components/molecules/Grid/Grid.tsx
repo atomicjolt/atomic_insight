@@ -9,9 +9,11 @@ export const Grid = ({ children }: React.PropsWithChildren<any>) => {
   const [rowHeight, setRowHeight] = useState(10);
 
   const tileRatio = 4 / 5; // Ratio of height / width
+  const cardScale = rowHeight / 240; // Ratio of height / standard height
 
   return (
     <GridLayout
+      style={{ '--card-scale': cardScale }}
       className="layout"
       breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
       cols={{ lg: 3, md: 3, sm: 3, xs: 3, xxs: 3 }}
