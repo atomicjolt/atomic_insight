@@ -9,17 +9,16 @@ import (
 
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/controllers"
-	"github.com/atomicjolt/atomic_insight/model"
 	"github.com/atomicjolt/atomic_insight/repo"
 	"github.com/gorilla/handlers"
 )
 
 func main() {
-	localConfig := config.GetConfig()
+	localConfig := config.GetServerConfig()
 	port := localConfig.ServerPort
 	assetsPath := filepath.Join("client", localConfig.AssetsDir)
 
-	db := model.GetConnection()
+	db := repo.GetConnection()
 	insightRepo := repo.NewRepo(db)
 
 	router := controllers.NewRouter(insightRepo, assetsPath)
