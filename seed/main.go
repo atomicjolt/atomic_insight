@@ -7,6 +7,8 @@ package main
  */
 
 import (
+	"log"
+
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/model"
 	"github.com/atomicjolt/atomic_insight/repo"
@@ -51,7 +53,7 @@ func main() {
 	err := insightRepo.Application.Insert(application)
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	applicationInstance.ApplicationID = application.ID
