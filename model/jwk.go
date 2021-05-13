@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/lestrrat-go/jwx/jwk"
 	"github.com/spacemonkeygo/openssl"
 )
 
@@ -35,18 +34,4 @@ func NewJwk() *Jwk {
 		Kid: strconv.FormatInt(time.Now().UTC().Unix(), 10),
 		Pem: string(pem),
 	}
-}
-
-func (j *Jwk) PublicKey() (jwk.Key, error) {
-	keyPair, err := jwk.ParseKey([]byte(j.Pem), jwk.WithPEM(true))
-	if err != nil {
-		return nil, err
-	}
-
-	pubKey, err := jwk.PublicKeyOf(keyPair)
-	if err != nil {
-		return nil, err
-	}
-
-	return pubKey, nil
 }
