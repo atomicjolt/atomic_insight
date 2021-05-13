@@ -1,9 +1,10 @@
 package model
 
 import (
-	"github.com/spacemonkeygo/openssl"
 	"strconv"
 	"time"
+
+	"github.com/spacemonkeygo/openssl"
 )
 
 type Jwk struct {

@@ -12,6 +12,7 @@ func NewRouter(repo *repo.Repo, assetsPath string) *mux.Router {
 		AssetsPath: assetsPath,
 	}
 
+	router.HandleFunc("/jwks", controllerContext.NewJwksController())
 	router.Handle("/{path:.*}", controllerContext.NewClientFilesHandler())
 
 	return router
