@@ -13,6 +13,7 @@ type Repo struct {
 	ApplicationInstance *ApplicationInstanceRepo
 	Jwk                 *JwkRepo
 	LtiInstall          *LtiInstallRepo
+	LtiLaunch           *LtiLaunchRepo
 	Application         *ApplicationRepo
 }
 

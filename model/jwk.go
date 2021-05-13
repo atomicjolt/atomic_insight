@@ -1,5 +1,11 @@
 package model
 
+import (
+	"github.com/spacemonkeygo/openssl"
+	"strconv"
+	"time"
+)
+
 type Jwk struct {
 	ID  int64
 	Kid string `pg:",notnull"`
@@ -8,4 +14,23 @@ type Jwk struct {
 	ApplicationID int64 `pg:"on_delete:CASCADE"`
 
 	Timestamps
+}
+
+func NewJwk() *Jwk {
+	privateKey, err := openssl.GenerateRSAKey(4096)
+
+	if err != nil {
+		panic(err)
+	}
+
+	pem, err := privateKey.MarshalPKCS1PrivateKeyPEM()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return &Jwk{
+		Kid: strconv.FormatInt(time.Now().UTC().Unix(), 10),
+		Pem: string(pem),
+	}
 }

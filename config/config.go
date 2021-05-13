@@ -10,55 +10,75 @@ import (
 	"sync"
 )
 
-// Config is the struct that the config json will be parsed into
-type Config struct {
+type ServerConfig struct {
 	ServerPort string `json:"server_port"`
 	DbUser     string `json:"db_user"`
 	DbHost     string `json:"db_host"`
 	Database   string `json:"database"`
 	AssetsDir  string `json:"assets_dir"`
+	ClientId   string `json:"client_id"`
+}
+
+type ApplicationConfig struct{}
+
+type LtiPlacement struct {
+	Placement       string `json:"placement"`
+	TargetLinkUri   string `json:"target_link_uri"`
+	Text            string `json:"text"`
+	Enabled         bool   `json:"enabled"`
+	IconUrl         string `json:"icon_url"`
+	MessageType     string `json:"message_type"`
+	CanvasIconClass string `json:"canvas_icon_class"`
+}
+
+type LtiAdvantageExtensionSetting struct {
+	Text            string         `json:"text"`
+	IconUrl         string         `json:"icon_url"`
+	SelectionWidth  int            `json:"selection_width"`
+	SelectionHeight int            `json:"selection_height"`
+	Placements      []LtiPlacement `json:"placements"`
+}
+
+type LtiAdvantageExtension struct {
+	Platform     string                       `json:"platform"`
+	Domain       string                       `json:"domain"`
+	ToolId       string                       `json:"tool_id"`
+	PrivacyLevel string                       `json:"privacy_level"`
+	Settings     LtiAdvantageExtensionSetting `json:"settings"`
+}
+
+type LtiAdvantageConfig struct {
+	Title             string                  `json:"title"`
+	Scopes            []string                `json:"scopes"`
+	Extensions        []LtiAdvantageExtension `json:"extensions"`
+	TargetLinkUri     string                  `json:"target_link_uri"`
+	OidcInitiationUrl string                  `json:"oidc_initiation_url"`
+	PublicJwk         string                  `json:"public_jwk"`
+	Description       string                  `json:"description"`
+	CustomFields      []map[string]string
 }
 
 var once sync.Once
-var cachedConfig *Config
+var cachedConfig *ServerConfig
 
 // GetConfig returns the config options for the current environment
-func GetConfig() *Config {
+func GetServerConfig() *ServerConfig {
 	once.Do(func() {
-		var configs map[string]Config
-		err := json.Unmarshal(loadJSON(), &configs)
+		var configs map[string]ServerConfig
+		err := json.Unmarshal(loadJsonFrom("./server_config.json"), &configs)
 		if err != nil {
-			log.Fatal("Config file is not valid json: " + err.Error())
+			log.Fatal("Server config file is not valid json: " + err.Error())
 		}
 
 		env := determineEnv()
 		selectedConfig, isPresent := configs[env]
 		if !isPresent {
-			log.Fatal("Config not found for env: " + env)
+			log.Fatal("Server config not found for env: " + env)
 		}
 		cachedConfig = &selectedConfig
 	})
 
 	return cachedConfig
-}
-
-// depending on how deployment works, this may load the config based on a cli
-// argument or something else
-func loadJSON() []byte {
-	projectRoot := os.Getenv("ATOMIC_INSIGHT_PATH")
-	if projectRoot == "" {
-		log.Fatal("ATOMIC_INSIGHT_PATH env var not set")
-	}
-
-	configFile, err := os.Open(filepath.Join(projectRoot, "config.json"))
-	defer configFile.Close()
-
-	if err != nil {
-		log.Fatal("Error reading config file:" + err.Error())
-	}
-
-	configString, _ := ioutil.ReadAll(configFile)
-	return configString
 }
 
 func determineEnv() string {
@@ -73,4 +93,28 @@ func determineEnv() string {
 	}
 
 	return env
+}
+
+func GetLtiAdvantageConfig() LtiAdvantageConfig {
+	var ltiAdvantageConfig LtiAdvantageConfig
+
+	err := json.Unmarshal(loadJsonFrom("./lti_advantage_config.json"), &ltiAdvantageConfig)
+
+	if err != nil {
+		log.Fatal("Config file is not valid json: " + err.Error())
+	}
+
+	return ltiAdvantageConfig
+}
+
+func loadJsonFrom(location string) []byte {
+	configFile, err := os.Open(filepath.Join(location))
+	defer configFile.Close()
+
+	if err != nil {
+		log.Fatal("Error reading config file:" + err.Error())
+	}
+
+	configString, _ := ioutil.ReadAll(configFile)
+	return configString
 }

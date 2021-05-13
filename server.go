@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	localConfig := config.GetConfig()
+	localConfig := config.GetServerConfig()
 	port := localConfig.ServerPort
 	assetsPath := filepath.Join("client", localConfig.AssetsDir)
 

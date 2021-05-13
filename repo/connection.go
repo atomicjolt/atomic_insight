@@ -7,7 +7,7 @@ import (
 
 // GetConnection returns a database connection object
 func GetConnection() *pg.DB {
-	config := config.GetConfig()
+	config := config.GetServerConfig()
 	return pg.Connect(&pg.Options{
 		Database: config.Database,
 		User:     config.DbUser,
