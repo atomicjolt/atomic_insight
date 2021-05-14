@@ -13,6 +13,7 @@ type ControllerContext struct {
 
 type ControllerFactory interface {
 	NewClientFilesHandler() http.Handler
+	NewOpenIDInitHandler() http.HandlerFunc
 }
 
 /**

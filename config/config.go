@@ -11,12 +11,14 @@ import (
 )
 
 type ServerConfig struct {
-	ServerPort string `json:"server_port"`
-	DbUser     string `json:"db_user"`
-	DbHost     string `json:"db_host"`
-	Database   string `json:"database"`
-	AssetsDir  string `json:"assets_dir"`
-	ClientId   string `json:"client_id"`
+	ServerPort       string `json:"server_port"`
+	DbUser           string `json:"db_user"`
+	DbHost           string `json:"db_host"`
+	Database         string `json:"database"`
+	AssetsDir        string `json:"assets_dir"`
+	ClientId         string `json:"client_id"`
+	AuthClientSecret string `json:"auth0_client_secret"`
+	AuthClientId     string `json:"auth0_client_id"`
 }
 
 type ApplicationConfig struct{}

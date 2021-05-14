@@ -77,6 +77,14 @@ type Jwk struct {
 	Timestamps
 }
 
+type OpenIdState struct {
+	ID int64
+
+	Nonce string
+
+	Timestamps
+}
+
 type LtiInstall struct {
 	ID       int64
 	ClientID string `pg:",notnull"`
@@ -113,6 +121,7 @@ var models []interface{} = []interface{}{
 	(*LtiLaunch)(nil),
 	(*ApplicationInstance)(nil),
 	(*Jwk)(nil),
+	(*OpenIdState)(nil),
 	(*LtiInstall)(nil),
 	(*Application)(nil),
 }

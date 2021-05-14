@@ -5,7 +5,9 @@
     "database": "atomic_insight_dev",
     "server_port": "8888",
     "assets_dir": "build",
-    "client_id": "43460000000000439"
+    "client_id": "43460000000000439",
+    "auth0_client_id": "atomic_insight",
+    "auth0_client_secret": "1387643cd80e329486403caa513350a71c4cfb9562e406a90deae556119dbedbcea4a69490eeda42f39582f66ee723231470754ad86c2ea5a396483d00fc7eb9"
   },
   "test": {
     "db_user": "your_username",
@@ -13,6 +15,8 @@
     "database": "atomic_insight_test",
     "server_port": "8888",
     "assets_dir": "build",
-    "client_id": "43460000000000439"
+    "client_id": "43460000000000439",
+    "auth0_client_id": "atomic_insight",
+    "auth0_client_secret": "1387643cd80e329486403caa513350a71c4cfb9562e406a90deae556119dbedbcea4a69490eeda42f39582f66ee723231470754ad86c2ea5a396483d00fc7eb9"
   }
 }
