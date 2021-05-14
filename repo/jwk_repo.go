@@ -41,6 +41,7 @@ func (r *JwkRepo) PublicJwkSet() (jwk.Set, error) {
 
 		key.Set("kid", j.Kid)
 		key.Set("use", "sig")
+		key.Set("alg", "RS256")
 
 		set.Add(key)
 	}
