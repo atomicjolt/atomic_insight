@@ -21,9 +21,9 @@ func (r *LtiInstallRepo) Find(id int64) (*model.LtiInstall, error) {
 }
 
 func (r *LtiInstallRepo) From(iss, clientId string) (*model.LtiInstall, error) {
-	var ltiInstall *model.LtiInstall
+	ltiInstall := new(model.LtiInstall)
 
-	err := r.DB.Model(&ltiInstall).
+	err := r.DB.Model(ltiInstall).
 		Where("lti_install.iss = ?", iss).
 		Where("lti_install.client_id = ?", clientId).
 		Select()
