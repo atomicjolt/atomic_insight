@@ -12,6 +12,7 @@ type Repo struct {
 	User                *UserRepo
 	ApplicationInstance *ApplicationInstanceRepo
 	Jwk                 *JwkRepo
+	OpenIdState         *OpenIdStateRepo
 	LtiInstall          *LtiInstallRepo
 	LtiLaunch           *LtiLaunchRepo
 	Application         *ApplicationRepo
