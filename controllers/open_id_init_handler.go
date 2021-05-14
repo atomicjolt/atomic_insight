@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/atomicjolt/atomic_insight/lib"
 	"net/http"
 	"net/url"
@@ -65,8 +64,6 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 		oidcQuery.Set("prompt", "none")
 		oidcQuery.Set("lti_message_hint", ltiMessageHint)
 		oidcQuery.Set("nonce", nonce)
-
-		fmt.Println(oidcUrl + "?" + oidcQuery.Encode())
 
 		http.Redirect(w, r, oidcUrl+"?"+oidcQuery.Encode(), http.StatusSeeOther)
 	}
