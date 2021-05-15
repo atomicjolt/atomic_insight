@@ -6,15 +6,6 @@ import (
 
 func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//query := r.URL.Query()
-		//payload := query.Get("state")
-		//fmt.Println("Method:")
-		//fmt.Println(r.Method)
-		//fmt.Println("Request:")
-		//fmt.Println(r)
-		//fmt.Println("Query:")
-		//fmt.Println(query)
-
 		var state string
 
 		switch r.Method {
