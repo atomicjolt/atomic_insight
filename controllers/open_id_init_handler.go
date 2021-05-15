@@ -33,13 +33,7 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 			panic("Open ID Connect Controller cannot handle this type of request.")
 		}
 
-		nonce, err := lib.RandomHex(64)
-
-		if err != nil {
-			panic(err)
-		}
-
-		openIdState, err := c.Repo.OpenIdState.NewState()
+		authNonce, err := lib.RandomHex(64)
 
 		if err != nil {
 			panic(err)
@@ -54,16 +48,22 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 		oidcUrl := ltiInstall.OidcUrl
 		oidcQuery := url.Values{}
 
+		state, err := c.Repo.OpenIdState.IssueToken()
+
+		if err != nil {
+			panic(err)
+		}
+
 		oidcQuery.Add("response_type", "id_token")
 		oidcQuery.Add("redirect_uri", targetLinkUri)
 		oidcQuery.Add("response_mode", "form_post")
 		oidcQuery.Add("client_id", clientId)
 		oidcQuery.Add("scope", "openid")
-		oidcQuery.Add("state", openIdState.IssueToken())
+		oidcQuery.Add("state", state)
 		oidcQuery.Set("login_hint", loginHint)
 		oidcQuery.Set("prompt", "none")
 		oidcQuery.Set("lti_message_hint", ltiMessageHint)
-		oidcQuery.Set("nonce", nonce)
+		oidcQuery.Set("nonce", authNonce)
 
 		http.Redirect(w, r, oidcUrl+"?"+oidcQuery.Encode(), http.StatusSeeOther)
 	}
