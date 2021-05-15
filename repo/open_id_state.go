@@ -2,7 +2,6 @@ package repo
 
 import (
 	"errors"
-	"fmt"
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/lib"
 	"github.com/atomicjolt/atomic_insight/model"
@@ -103,7 +102,6 @@ func (r *OpenIdStateRepo) ValidateStateOf(payload string) (bool, error) {
 	keyset := jwk.NewSet()
 	keyset.Add(authKey)
 
-	fmt.Println("JWT Payload: " + payload)
 	token, err := jwt.Parse([]byte(payload), jwt.WithKeySet(keyset))
 
 	if err != nil {
