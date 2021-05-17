@@ -22,7 +22,9 @@ func main() {
 	insightRepo := repo.NewRepo(db)
 
 	router := controllers.NewRouter(insightRepo, assetsPath)
-	middleware := handlers.RecoveryHandler()(handlers.LoggingHandler(os.Stdout, router))
+
+	middleware := handlers.LoggingHandler(os.Stdout, router)
+	middleware = handlers.RecoveryHandler()(middleware)
 
 	fmt.Printf("Listening on port %v\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, middleware))
