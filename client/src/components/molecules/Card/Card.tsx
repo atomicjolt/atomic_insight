@@ -1,12 +1,12 @@
 import React  from 'react';
-import './Tile.scss';
+import './Card.scss';
 
 export enum Impact {
   Low = "Low Impact",
   High = "High Impact"
 }
 
-export interface TileProps extends React.PropsWithChildren<any> {
+export interface CardProps extends React.PropsWithChildren<any> {
   title: string;
   className?: string;
   impact: Impact;
@@ -15,17 +15,17 @@ export interface TileProps extends React.PropsWithChildren<any> {
   onPin?: (b: boolean) => void;
 }
 
-export const Tile = ({ className, children, title, impact, pinned, onEdit, onPin }: TileProps) => {
+export const Card = ({ className, children, title, impact, pinned, onEdit, onPin }: CardProps) => {
   return (
     <div
-      className={`grid-tile ${className || ''}`}
+      className={`grid-card ${className || ''}`}
     >
-      <div className="tile-header">
+      <div className="card-header">
         <h4 className="title">{title}</h4>
-        <div className="tile-impact">
+        <div className="card-impact">
           <h5 className={`impact-title ${impact === Impact.High ? 'impact-high' : 'impact-low'}`}>{impact}</h5>
         </div>
-        <div className="tile-buttons">
+        <div className="card-buttons">
           <button onClick={() => onPin && onPin(!pinned)}>
             <i className={`material-icons${pinned ? '' : '-outlined'}`}>push_pin</i>
           </button>
@@ -34,7 +34,7 @@ export const Tile = ({ className, children, title, impact, pinned, onEdit, onPin
           </button>
         </div>
       </div>
-      <div className="tile-contents">
+      <div className="card-contents">
         {children}
       </div>
     </div>

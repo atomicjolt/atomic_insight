@@ -1,11 +1,11 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import { Impact, Tile, TileProps } from './Tile';
+import { Impact, Card, CardProps } from './Card';
 
 export default {
-  title: 'Molecules/Tile',
-  component: Tile,
+  title: 'Molecules/Card',
+  component: Card,
   argTypes: {
     title: {
       defaultValue: 'Default'
@@ -19,10 +19,10 @@ export default {
   }
 };
 
-export const Default: Story<TileProps> = ({ pinned, impact, title }: TileProps) => {
+export const Default: Story<CardProps> = ({ pinned, impact, title }: CardProps) => {
   return (
     <div style={{ width: '500px', height: '400px' }}>
-      <Tile title={title} impact={impact} pinned={pinned}>Contents</Tile>
+      <Card title={title} impact={impact} pinned={pinned}>Contents</Card>
     </div>
   );
 };
