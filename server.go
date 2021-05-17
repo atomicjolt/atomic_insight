@@ -23,6 +23,9 @@ func main() {
 
 	router := controllers.NewRouter(insightRepo, assetsPath)
 
+	middleware := handlers.LoggingHandler(os.Stdout, router)
+	middleware = handlers.RecoveryHandler()(middleware)
+
 	fmt.Printf("Listening on port %v\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, handlers.LoggingHandler(os.Stdout, router)))
+	log.Fatal(http.ListenAndServe(":"+port, middleware))
 }
