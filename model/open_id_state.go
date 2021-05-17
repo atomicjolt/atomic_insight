@@ -27,7 +27,7 @@ func (o *OpenIdState) IssueToken() string {
 	token.Set(jwt.ExpirationKey, time.Now().Add(time.Hour*24).UTC().Unix())
 	token.Set("nonce", o.Nonce)
 
-	signed, err := jwt.Sign(token, jwa.HS512, authClientSecret)
+	signed, err := jwt.Sign(token, jwa.HS512, []byte(authClientSecret))
 
 	if err != nil {
 		panic(err)

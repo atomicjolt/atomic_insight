@@ -42,7 +42,9 @@ func populateRepos(base *BaseRepo) *Repo {
 		User:                &UserRepo{BaseRepo: base},
 		ApplicationInstance: &ApplicationInstanceRepo{BaseRepo: base},
 		Jwk:                 &JwkRepo{BaseRepo: base},
+		OpenIdState:         &OpenIdStateRepo{BaseRepo: base},
 		LtiInstall:          &LtiInstallRepo{BaseRepo: base},
+		LtiLaunch:           &LtiLaunchRepo{BaseRepo: base},
 		Application:         &ApplicationRepo{BaseRepo: base},
 	}
 }
