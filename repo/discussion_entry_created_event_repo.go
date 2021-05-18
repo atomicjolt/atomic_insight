@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"fmt"
 	"github.com/atomicjolt/atomic_insight/model"
 )
 
@@ -20,4 +21,12 @@ func (r *DiscussionEntryCreatedEventRepo) Find(id int64) (*model.DiscussionEntry
 	err := r.DB.Model(event).WherePK().Select()
 
 	return event, err
+}
+
+func (r *DiscussionEntryCreatedEventRepo) CreateFromPayload(payload string) (*model.DiscussionEntryCreatedEvent, error) {
+
+	/* TODO: Implement CreateFromPayload method that takes an event
+	payload string and creates the event in the db. */
+
+	panic(fmt.Errorf("not implemented"))
 }
