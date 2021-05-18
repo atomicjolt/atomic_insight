@@ -12,8 +12,3 @@ Atomic Insight is a tool that ingests events from Canvas and provides a custom d
 * Create a client build with `yarn build` in the client directory
 * Run the server with `go run server.go` in the project root
 * View the project at https://atomicinsight.atomicjolt.xyz
-
-## Graphql
-* The graphql playground can be found at https://atomicinsight.atomicjolt.xyz/graphql/playground
-* This project uses [gqlgen](https://github.com/99designs/gqlgen) to generate the server code from the schema
-    * After changing the schema, run `go generate ./...` to update the generated code.
