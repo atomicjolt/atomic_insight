@@ -70,3 +70,15 @@ If you are using `asdf`, just run `asdf install` after the clone step in the env
 ### 5: Running
 * Make sure you are running `go run server.go` in the project root and have run `yarn build` in the client folder
 * Navigate to your test course and open up *Atomic Insight* on the sidebar, and the tool should launch
+
+## Development
+
+### Graphql
+This project used [gqlgen](https://github.com/99designs/gqlgen) to generate code for a graphql server.
+Documentation can be found at https://gqlgen.com/.
+
+#### Configuration
+The locations for generated code, mappings between graphql types and go types, and other configuration values are in `gqlgen.yml`
+
+#### Schema
+When the graphql schema is changed, the generated code needs to be updated with `go generate ./...`
