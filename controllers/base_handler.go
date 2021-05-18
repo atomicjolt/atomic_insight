@@ -16,6 +16,7 @@ type ControllerFactory interface {
 	NewOpenIDInitHandler() http.HandlerFunc
 	NewLtiLaunchHandler() http.HandlerFunc
 	NewJwksController() http.HandlerFunc
+	NewGraphqlHandler() http.Handler
 }
 
 /**
