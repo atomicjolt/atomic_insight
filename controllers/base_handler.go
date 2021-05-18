@@ -25,9 +25,3 @@ type ControllerFactory interface {
  * Go does not ensure this normally.
  */
 var _ ControllerFactory = (*ControllerContext)(nil)
-
-func newControllerContext(repo *repo.Repo) *ControllerContext {
-	return &ControllerContext{
-		Repo: repo,
-	}
-}
