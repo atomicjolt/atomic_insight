@@ -15,6 +15,7 @@ type ControllerFactory interface {
 	NewClientFilesHandler() http.Handler
 	NewOpenIDInitHandler() http.HandlerFunc
 	NewLtiLaunchHandler() http.HandlerFunc
+	NewJwksController() http.HandlerFunc
 }
 
 /**
