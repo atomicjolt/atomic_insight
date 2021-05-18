@@ -1,0 +1,3 @@
+#!/bin/bash
+go run seeds/main.go
+ATOMIC_INSIGHT_ENV=test go run seeds/main.go
