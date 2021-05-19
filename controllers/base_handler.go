@@ -15,6 +15,8 @@ type ControllerFactory interface {
 	NewClientFilesHandler() http.Handler
 	NewOpenIDInitHandler() http.HandlerFunc
 	NewLtiLaunchHandler() http.HandlerFunc
+	NewJwksController() http.HandlerFunc
+	NewGraphqlHandler() http.Handler
 }
 
 /**
@@ -23,9 +25,3 @@ type ControllerFactory interface {
  * Go does not ensure this normally.
  */
 var _ ControllerFactory = (*ControllerContext)(nil)
-
-func newControllerContext(repo *repo.Repo) *ControllerContext {
-	return &ControllerContext{
-		Repo: repo,
-	}
-}
