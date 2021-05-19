@@ -3,8 +3,8 @@ package model
 import "time"
 
 type DiscussionEntryCreatedMetadata struct {
-	ID      int64
-	EventID int64 `pg:"on_delete:CASCADE"`
+	ID                            int64
+	DiscussionEntryCreatedEventID int64 `pg:"on_delete:CASCADE"`
 
 	EventName          string    `pg:",notnull" json:"event_name"`
 	EventTime          time.Time `pg:",notnull" json:"event_time"`

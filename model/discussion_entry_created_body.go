@@ -3,8 +3,8 @@ package model
 import "time"
 
 type DiscussionEntryCreatedBody struct {
-	ID      int64
-	EventID int64 `pg:"on_delete:CASCADE"`
+	ID                            int64
+	DiscussionEntryCreatedEventID int64 `pg:"on_delete:CASCADE"`
 
 	CanvasCreatedAt         time.Time `pg:",notnull" json:"created_at"`
 	DiscussionEntryId       string    `pg:",notnull" json:"discussion_entry_id"`
