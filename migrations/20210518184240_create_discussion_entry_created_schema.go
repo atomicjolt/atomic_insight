@@ -8,8 +8,8 @@ import (
 )
 
 type DiscussionEntryCreatedMetadata struct {
-	ID      int64
-	EventID int64 `pg:"on_delete:CASCADE"`
+	ID                            int64
+	DiscussionEntryCreatedEventID int64 `pg:"on_delete:CASCADE"`
 
 	EventName          string    `pg:",notnull" json:"event_name"`
 	EventTime          time.Time `pg:",notnull" json:"event_time"`
@@ -40,8 +40,8 @@ type DiscussionEntryCreatedMetadata struct {
 }
 
 type DiscussionEntryCreatedBody struct {
-	ID      int64
-	EventID int64 `pg:"on_delete:CASCADE"`
+	ID                            int64
+	DiscussionEntryCreatedEventID int64 `pg:"on_delete:CASCADE"`
 
 	CanvasCreatedAt         time.Time `pg:",notnull" json:"created_at"`
 	DiscussionEntryId       string    `pg:",notnull" json:"discussion_entry_id"`
