@@ -1,15 +1,29 @@
 import React from 'react';
 
-import { ComparisonSummary } from '../../atoms/ComparisonSummary/ComparisonSummary';
+import {
+  ComparisonSummary,
+  ComparisonDisplayType,
+} from '../../atoms/ComparisonSummary/ComparisonSummary';
+
 import './IconVisual.scss';
 
 export interface IconVisualCSS extends React.CSSProperties {
   '--scale': number;
 }
 
+export enum IconSize {
+  Normal = 'normal',
+  Half = 'half',
+}
+
+export enum IconDisplayType {
+  Value = 'value',
+  Comparison = 'comparison',
+}
+
 export interface IconVisualProps {
-  size?: 'normal' | 'half';
-  display: 'value' | 'comparison';
+  size?: IconSize;
+  display: IconDisplayType;
   data: {
     value: number;
     comparisonValue: number;
@@ -30,7 +44,7 @@ export interface IconVisualProps {
 
 export const IconVisual = ({
   display,
-  size = 'normal',
+  size = IconSize.Normal,
   data,
   feedback,
 }: IconVisualProps) => {
@@ -46,9 +60,9 @@ export const IconVisual = ({
   }
 
   const { icon, message } = getFeedback() || {};
-  const comparisonDisplay = {
-    normal: 'inline',
-    half: 'stacked',
+  const comparisonDisplay: ComparisonDisplayType = {
+    normal: ComparisonDisplayType.Inline,
+    half: ComparisonDisplayType.Stacked,
   }[size];
 
   return (
