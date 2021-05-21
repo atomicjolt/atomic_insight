@@ -1,5 +1,8 @@
 # Atomic Insight
 
+[![Client Build](https://github.com/atomicjolt/atomic_insight/actions/workflows/node.js.yml/badge.svg)](https://github.com/atomicjolt/atomic_insight/actions/workflows/node.js.yml)
+[![Server Build](https://github.com/atomicjolt/atomic_insight/actions/workflows/go.yml/badge.svg)](https://github.com/atomicjolt/atomic_insight/actions/workflows/go.yml)
+
 Atomic Insight is a tool that ingests events from Canvas and provides a custom dashboard experience via a LTI tool. Data is produced via a plugin for Canvas, then ingested using Go. The LTI is backed by Go as well, with a React front-end that interacts with the back-end API via GraphQL.
 
 ## Setup
