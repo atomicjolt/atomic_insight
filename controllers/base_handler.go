@@ -7,8 +7,7 @@ import (
 )
 
 type ControllerContext struct {
-	Repo       *repo.Repo
-	AssetsPath string
+	Repo *repo.Repo
 }
 
 type ControllerFactory interface {
