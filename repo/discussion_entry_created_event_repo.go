@@ -1,8 +1,10 @@
 package repo
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/atomicjolt/atomic_insight/model"
+	"github.com/go-pg/pg/v10"
 )
 
 type DiscussionEntryCreatedEventRepo struct {
@@ -23,27 +25,34 @@ func (r *DiscussionEntryCreatedEventRepo) Find(id int64) (*model.DiscussionEntry
 	return event, err
 }
 
-func (r *DiscussionEntryCreatedEventRepo) CreateFromPayload(payload []byte) (*model.DiscussionEntryCreatedEvent, error) {
+func (r *DiscussionEntryCreatedEventRepo) CreateFromPayload(payload []byte) error {
 	var event *model.DiscussionEntryCreatedEvent
 	err := json.Unmarshal(payload, &event)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	err = r.Insert(event.Metadata)
-	if err != nil {
-		return nil, err
-	}
+	db := GetConnection()
+	ctx := context.Background()
 
-	err = r.Insert(event.Body)
-	if err != nil {
-		return nil, err
-	}
+	err = db.RunInTransaction(ctx, func(tx *pg.Tx) error {
+		_, err = tx.Model(event.Metadata).Insert()
+		if err != nil {
+			return err
+		}
 
-	err = r.Insert(event)
-	if err != nil {
-		return nil, err
-	}
+		_, err = tx.Model(event.Body).Insert()
+		if err != nil {
+			return err
+		}
 
-	return event, err
+		_, err = tx.Model(event).Insert()
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
 }
