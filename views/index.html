@@ -10,6 +10,7 @@
     <link rel="manifest" href="./manifest.json" />
     {{ range .Manifest.Entrypoints.Styles }}
       <link href="https://atomicinsight.atomicjolt.xyz/{{ . }}" rel="stylesheet">
+      </link>
     {{ end }}
     <title>React App</title>
   </head>
@@ -18,6 +19,7 @@
     <div id="root"></div>
     {{ range .Manifest.Entrypoints.Scripts }}
       <script src="https://atomicinsight.atomicjolt.xyz/{{ . }}" type="text/javascript">
+      </script>
     {{ end }}
   </body>
 </html>
