@@ -19,7 +19,6 @@ func index(w http.ResponseWriter) error {
 		return err
 	}
 
-	// TODO: Use config for build path, or remove it from config
 	manifest, err := webpack.NewFromBuildPath("client/build")
 
 	state := &ViewState{
