@@ -1,7 +1,12 @@
 package controllers
 
-import "net/http"
+import (
+	"github.com/atomicjolt/atomic_insight/config"
+	"net/http"
+)
 
 func (c *ControllerContext) NewClientFilesHandler() http.Handler {
-	return http.FileServer(http.Dir(c.AssetsPath))
+	assetsDir := config.GetServerConfig().AssetsDir
+
+	return http.FileServer(http.Dir(assetsDir))
 }

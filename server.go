@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/controllers"
@@ -16,12 +15,11 @@ import (
 func main() {
 	localConfig := config.GetServerConfig()
 	port := localConfig.ServerPort
-	assetsPath := filepath.Join("client", localConfig.AssetsDir)
 
 	db := repo.GetConnection()
 	insightRepo := repo.NewRepo(db)
 
-	router := controllers.NewRouter(insightRepo, assetsPath)
+	router := controllers.NewRouter(insightRepo)
 
 	middleware := handlers.LoggingHandler(os.Stdout, router)
 	middleware = handlers.RecoveryHandler()(middleware)
