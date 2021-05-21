@@ -16,8 +16,7 @@ func main() {
 	localConfig := config.GetServerConfig()
 	port := localConfig.ServerPort
 
-	db := repo.GetConnection()
-	insightRepo := repo.NewRepo(db)
+	insightRepo := repo.NewRepo()
 
 	router := controllers.NewRouter(insightRepo)
 
