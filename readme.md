@@ -23,7 +23,6 @@ If you are using `asdf`, just run `asdf install` after the clone step in the env
     * `db_host`
     * `database`
     * `server_port`
-    * `assets_dir`
   * `client_id`: You will need to set up a new LTI key for your dev environment, so see the instructions for that
   * `auth0_client_id`: This can be left alone, or set to something you choose. It just identifies your client when doing the Open ID Connect process to initiate an LTI Advantage Launch with Canvas.
   * `autho0_client_secret`: For production, this of course needs to be kept secret, but for dev you could just use the default value. If you want, you can generate a new random secret and replace the existing one.
