@@ -1,8 +1,37 @@
 package controllers
 
 import (
+	"github.com/atomicjolt/atomic_insight/webpack"
+
 	"net/http"
+	"path"
+	"text/template"
 )
+
+type ViewState struct {
+	Manifest *webpack.Manifest
+}
+
+func index(w http.ResponseWriter) error {
+	view, err := template.ParseFiles(path.Join("views", "index.html"))
+
+	if err != nil {
+		return err
+	}
+
+	// TODO: Use config for build path, or remove it from config
+	manifest, err := webpack.NewFromBuildPath("client/build")
+
+	state := &ViewState{
+		Manifest: manifest,
+	}
+
+	if err != nil {
+		return err
+	}
+
+	return view.Execute(w, state)
+}
 
 func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +49,7 @@ func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 
 			state = r.FormValue("state")
 		default:
-			panic("Open ID Connect Controller cannot handle this type of request.")
+			panic("LTI Launch Controller cannot handle this type of request.")
 		}
 
 		isValid, err := c.Repo.OpenIdState.ValidateStateOf(state)
@@ -30,7 +59,9 @@ func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 		}
 
 		if isValid {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			if err = index(w); err != nil {
+				panic(err)
+			}
 		} else {
 			panic("OIDC token could not be validated.")
 		}
