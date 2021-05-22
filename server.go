@@ -8,7 +8,6 @@ import (
 
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/controllers"
-	"github.com/atomicjolt/atomic_insight/repo"
 	"github.com/gorilla/handlers"
 )
 
@@ -16,9 +15,7 @@ func main() {
 	localConfig := config.GetServerConfig()
 	port := localConfig.ServerPort
 
-	insightRepo := repo.NewRepo()
-
-	router := controllers.NewRouter(insightRepo)
+	router := controllers.NewRouter()
 
 	middleware := handlers.LoggingHandler(os.Stdout, router)
 	middleware = handlers.RecoveryHandler()(middleware)

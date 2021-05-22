@@ -6,10 +6,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func NewRouter(repo *repo.Repo) *mux.Router {
+func NewRouter() *mux.Router {
 	router := mux.NewRouter()
 	controllerContext := &ControllerContext{
-		Repo: repo,
+		Repo: repo.NewRepo(),
 	}
 
 	router.Handle("/graphql", controllerContext.NewGraphqlHandler())
