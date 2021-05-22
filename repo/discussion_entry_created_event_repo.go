@@ -1,7 +1,6 @@
 package repo
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/atomicjolt/atomic_insight/model"
 	"github.com/go-pg/pg/v10"
@@ -26,33 +25,28 @@ func (r *DiscussionEntryCreatedEventRepo) Find(id int64) (*model.DiscussionEntry
 }
 
 func (r *DiscussionEntryCreatedEventRepo) CreateFromPayload(payload []byte) error {
-	var event *model.DiscussionEntryCreatedEvent
-	err := json.Unmarshal(payload, &event)
-	if err != nil {
-		return err
-	}
-
-	db := GetConnection()
-	ctx := context.Background()
-
-	err = db.RunInTransaction(ctx, func(tx *pg.Tx) error {
-		_, err = tx.Model(event.Metadata).Insert()
+	return NewTransaction(r.DB.(*pg.DB), func(txRepo *Repo) error {
+		var event *model.DiscussionEntryCreatedEvent
+		err := json.Unmarshal(payload, &event)
 		if err != nil {
 			return err
 		}
 
-		_, err = tx.Model(event.Body).Insert()
+		err = txRepo.DiscussionEntryCreatedEvent.Insert(event.Metadata)
 		if err != nil {
 			return err
 		}
 
-		_, err = tx.Model(event).Insert()
+		err = txRepo.DiscussionEntryCreatedEvent.Insert(event.Body)
+		if err != nil {
+			return err
+		}
+
+		err = txRepo.DiscussionEntryCreatedEvent.Insert(event)
 		if err != nil {
 			return err
 		}
 
 		return nil
 	})
-
-	return err
 }
