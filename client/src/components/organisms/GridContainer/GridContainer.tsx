@@ -4,14 +4,15 @@ import './GridContainer.scss';
 import Panel from '../../molecules/Panel/Panel';
 import Grid from '../../molecules/Grid/Grid';
 
-export interface ButtonProps extends React.PropsWithChildren<any> {
+export interface GridContainerProps extends React.PropsWithChildren<any> {
   title: string;
+  layout?: [];
 }
 
-export const GridContainer = ({ children, title }: ButtonProps) => {
+export const GridContainer = ({ children, title, layout }: GridContainerProps) => {
   return (
     <Panel title={title}>
-      <Grid children={children} />
+      <Grid children={children} layout={layout} />
     </Panel>
   );
 };

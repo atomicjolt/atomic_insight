@@ -5,7 +5,11 @@ import './Grid.scss';
 
 const GridLayout = WidthProvider(Responsive);
 
-export const Grid = ({ children }: React.PropsWithChildren<any>) => {
+export interface GridProps extends React.PropsWithChildren<any> {
+  layout?: [];
+}
+
+export const Grid = ({ children, layout }: GridProps) => {
   const [rowHeight, setRowHeight] = useState(10);
 
   const cardRatio = 4 / 5; // Ratio of height / width
@@ -20,6 +24,7 @@ export const Grid = ({ children }: React.PropsWithChildren<any>) => {
       rowHeight={rowHeight}
       isResizable={false}
       margin={[15, 15]}
+      layout={layout}
       containerPadding={[0, 0]}
       onWidthChange={(width, margin, cols, padding) => {
         // Calculates card height by subtracting margins and paddings from the width of container divided by columns
