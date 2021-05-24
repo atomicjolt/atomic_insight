@@ -2,13 +2,14 @@ package repo
 
 import (
 	"errors"
+	"time"
+
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/lib"
 	"github.com/atomicjolt/atomic_insight/model"
 	"github.com/lestrrat-go/jwx/jwa"
 	"github.com/lestrrat-go/jwx/jwk"
 	"github.com/lestrrat-go/jwx/jwt"
-	"time"
 )
 
 type OpenIdStateRepo struct {
@@ -61,7 +62,7 @@ func (r *OpenIdStateRepo) IssueToken() (string, error) {
 	authClientSecret := serverConfig.AuthClientSecret
 	authKey := jwk.NewSymmetricKey()
 
-	err = authKey.FromRaw([]byte(authClientSecret))
+	err = authKey.FromRaw(authClientSecret)
 
 	if err != nil {
 		return "", err
@@ -90,7 +91,7 @@ func (r *OpenIdStateRepo) ValidateStateOf(payload string) (bool, error) {
 
 	authKey := jwk.NewSymmetricKey()
 
-	err := authKey.FromRaw([]byte(authClientSecret))
+	err := authKey.FromRaw(authClientSecret)
 
 	if err != nil {
 		return false, err
