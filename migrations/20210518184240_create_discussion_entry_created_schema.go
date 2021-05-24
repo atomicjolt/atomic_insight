@@ -77,7 +77,7 @@ func init() {
 
 	up := func(db orm.DB) error {
 		for _, model := range modelsUp {
-			err := db.Model(model).CreateTable(&orm.CreateTableOptions{FKConstraints: true})
+			err := db.Model(model).CreateTable(&orm.CreateTableOptions{})
 			if err != nil {
 				return err
 			}

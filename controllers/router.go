@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/atomicjolt/atomic_insight/middleware"
 	"github.com/atomicjolt/atomic_insight/repo"
 	"github.com/gorilla/mux"
 )
@@ -11,6 +12,10 @@ func NewRouter(repo *repo.Repo) *mux.Router {
 	controllerContext := &ControllerContext{
 		Repo: repo,
 	}
+
+	eventsHandler := controllerContext.NewEventsHandler()
+	handler := middleware.NewJwtValidator("events", eventsHandler)
+	router.Handle("/events", handler)
 
 	router.Handle("/graphql", controllerContext.NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
