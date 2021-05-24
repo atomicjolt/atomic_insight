@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"flag"
 	"io/ioutil"
@@ -16,7 +17,7 @@ type ServerConfig struct {
 	DbHost           string `json:"db_host"`
 	Database         string `json:"database"`
 	ClientId         string `json:"client_id"`
-	AuthClientSecret string `json:"auth0_client_secret"`
+	AuthClientSecret []byte `json:"auth0_client_secret"`
 	AuthClientId     string `json:"auth0_client_id"`
 }
 
@@ -77,6 +78,8 @@ func GetServerConfig() *ServerConfig {
 			log.Fatal("Server config not found for env: " + env)
 		}
 		cachedConfig = &selectedConfig
+
+		base64.StdEncoding.Decode(cachedConfig.AuthClientSecret, cachedConfig.AuthClientSecret)
 	})
 
 	return cachedConfig
