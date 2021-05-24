@@ -24,7 +24,7 @@ func (r *DiscussionEntryCreatedEventRepo) Find(id int64) (*model.DiscussionEntry
 	return event, err
 }
 
-func (r *DiscussionEntryCreatedEventRepo) CreateFromPayload(payload []byte) error {
+func (r *DiscussionEntryCreatedEventRepo) CreateFrom(payload []byte) error {
 	return NewTransaction(r.DB.(*pg.DB), func(txRepo *Repo) error {
 		var event *model.DiscussionEntryCreatedEvent
 		err := json.Unmarshal(payload, &event)

@@ -26,7 +26,7 @@ func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 
 				switch eventName {
 				case "discussion_entry_created":
-					err = c.Repo.DiscussionEntryCreatedEvent.CreateFromPayload(payload)
+					err = c.Repo.DiscussionEntryCreatedEvent.CreateFrom(payload)
 				default:
 					panic(fmt.Errorf("Invalid event type: %q", eventName))
 				}
