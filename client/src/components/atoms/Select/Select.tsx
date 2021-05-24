@@ -17,9 +17,6 @@ export const Select = ({ className, children, defaultValue, onChange }: SelectPr
   return (
     <div className={`custom-select ${className}`}>
       <div className="select-box">
-        <select value={value}>
-          {children}
-        </select>
         <button className="select-selected" onClick={() => setShowing(!showing)}>
           {items[0].props.title || items[0].props.children}
         </button>
