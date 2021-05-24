@@ -15,8 +15,7 @@ import (
 )
 
 func main() {
-	db := repo.GetConnection()
-	insightRepo := repo.NewRepo(db)
+	insightRepo := repo.NewRepo()
 	ltiAdvantageConfig := config.GetLtiAdvantageConfig()
 	serverConfig := config.GetServerConfig()
 

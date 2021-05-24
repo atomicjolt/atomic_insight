@@ -20,9 +20,8 @@ type Repo struct {
 }
 
 // NewRepo is a convenience function for easily creating a Repo
-// db is a database connection, or a transaction, which is useful for testing
-func NewRepo(db *pg.DB) *Repo {
-	return populateRepos(&BaseRepo{DB: db})
+func NewRepo() *Repo {
+	return populateRepos(&BaseRepo{DB: GetConnection()})
 }
 
 // NewTransaction returns a Repo that will run any queries in a single
