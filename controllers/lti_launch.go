@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/webpack"
 
 	"net/http"
