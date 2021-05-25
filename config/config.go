@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func determineEnv() string {
+func DetermineEnv() string {
 	if flag.Lookup("test.v") != nil {
 		return "test"
 	}
