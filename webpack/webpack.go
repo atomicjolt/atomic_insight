@@ -32,6 +32,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path"
 	"strings"
@@ -44,6 +45,29 @@ type Manifest struct {
 
 type Files map[string]string
 type Entrypoints []string
+
+func NewFromDevServer(manifestUrl string) (*Manifest, error) {
+	manifest := &Manifest{}
+
+	res, err := http.Get(manifestUrl)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+	content, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(content, manifest); err != nil {
+		return nil, err
+	}
+
+	return manifest, nil
+}
 
 func NewFromBuildPath(buildPath string) (*Manifest, error) {
 	manifest := &Manifest{}
