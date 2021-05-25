@@ -23,7 +23,8 @@ func NewRouter() *mux.Router {
 	router.HandleFunc("/lti_launches", controllerContext.NewLtiLaunchHandler())
 	router.HandleFunc("/oidc_init", controllerContext.NewOpenIDInitHandler())
 	router.HandleFunc("/jwks", controllerContext.NewJwksController())
-	router.Handle("/{path:.*}", controllerContext.NewClientFilesHandler())
+
+	router.Handle("/{path:.*}", NewHotReloadProxy("http://127.0.0.1:3000"))
 
 	return router
 }
