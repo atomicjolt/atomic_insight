@@ -1,67 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import 'react-grid-layout/css/styles.css';
 import './Panel.scss';
 
-import { Menu } from '../Menu/Menu';
-import { Modal } from '../Modal/Modal';
-import { ItemList } from '../ItemList/ItemList';
+import useMenuState from '../../../hooks/use_menu_state';
+import { Menu } from '../../molecules/Menu/Menu';
+import { MenuButton } from '../../molecules/MenuButton/MenuButton';
+import { Modal } from '../../molecules/Modal/Modal';
+import { ItemList } from '../../molecules/ItemList/ItemList';
 import { Button } from '../../atoms/Button/Button';
+import { Grid } from '../../molecules/Grid/Grid';
 
-
-export interface ButtonProps extends React.PropsWithChildren<any> {
+export interface PanelProps extends React.PropsWithChildren<any> {
   title: string;
+  layout?: any[];
 }
 
-export const Panel = ({ children, title }: ButtonProps) => {
+export const Panel = ({ children, title, layout }: PanelProps) => {
   const [opened, setOpened] = useState('');
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  useEffect(() => {
-    function onDocumentClick() {
-      if (menuIsOpen) {
-        setMenuIsOpen(false);
-      }
-    }
-
-    document.addEventListener('click', onDocumentClick);
-    return () => {
-      document.removeEventListener('click', onDocumentClick);
-    };
-  }, [menuIsOpen]);
-
-  function renderPanelMenu() {
-    return (
-      <Menu isOpen={menuIsOpen}>
-        <li>
-          <button onClick={() => setModalIsOpen(true)}>
-            <i className="material-icons-outlined">more_horiz</i>
-            <span>Manage Cards</span>
-          </button>
-        </li>
-        <li>
-          <button>
-            <i className="material-icons-outlined">swap_vert</i>
-            <span>Sort</span>
-          </button>
-        </li>
-        <li>
-          <button>
-            <i className="material-icons-outlined">visibility_off</i>
-            <span>Hide</span>
-          </button>
-        </li>
-        <li>
-          <button>
-            <i className="material-icons-outlined">delete</i>
-            <span>Delete</span>
-          </button>
-        </li>
-      </Menu>
-    );
-  }
 
   function renderPanelModal() {
     const modalActionButtons = (
@@ -119,21 +78,50 @@ export const Panel = ({ children, title }: ButtonProps) => {
     <div className={`panel ${opened}`}>
       <div className="panel__header">
         <button
+          className="panel__header__button"
           onClick={() => setOpened(opened === 'close' ? 'open' : 'close')}
         >
           <FontAwesomeIcon icon={faCaretDown} />
           {title}
         </button>
-        <button onClick={() => (menuIsOpen ? null : setMenuIsOpen(true))}>
-          <i className="material-icons-outlined">edit</i>
-        </button>
+        <MenuButton>
+          <button
+            className="panel__header__button"
+            onClick={() => (menuIsOpen ? null : setMenuIsOpen(true))}
+          >
+            <i className="material-icons-outlined">edit</i>
+          </button>
+          <Menu isOpen={menuIsOpen}>
+            <li>
+              <button onClick={() => setModalIsOpen(true)}>
+                <i className="material-icons-outlined">more_horiz</i>
+                <span>Manage Cards</span>
+              </button>
+            </li>
+            <li>
+              <button>
+                <i className="material-icons-outlined">swap_vert</i>
+                <span>Sort</span>
+              </button>
+            </li>
+            <li>
+              <button>
+                <i className="material-icons-outlined">visibility_off</i>
+                <span>Hide</span>
+              </button>
+            </li>
+            <li>
+              <button>
+                <i className="material-icons-outlined">delete</i>
+                <span>Delete</span>
+              </button>
+            </li>
+          </Menu>
+        </MenuButton>
       </div>
       <div className="panel__content">
-        <div>
-          {children}
-        </div>
+        <Grid layout={layout}>{children}</Grid>
       </div>
-      {renderPanelMenu()}
       {renderPanelModal()}
     </div>
   );
