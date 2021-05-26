@@ -39,11 +39,6 @@ const comparisonOptions = [
   },
 ];
 
-// const layout = [
-//   [0, 2, 4],
-//   [5, 6, 7],
-// ];
-
 const layout = [
   { i: 1, x: 0, y: 0, w: 1, h: 2 },
   { i: 2, x: 1, y: 0, w: 1, h: 1 },
