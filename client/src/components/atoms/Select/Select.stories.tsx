@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Story } from '@storybook/react';
 import { Select, SelectProps } from './Select';
 
@@ -7,18 +7,32 @@ export default {
   component: Select,
 };
 
-export const Default: Story<SelectProps> = () =>
-  <Select defaultValue="Weekly">
-    <option value="weekly" title="Weekly">
-      <b>Weekly</b>
-      <div>Other weeks of this course</div>
-    </option>
-    <option value="classes" title="My Classes">
-      <b>My Classes</b>
-      <div>Other classes I've taught</div>
-    </option>
-    <option value="department" title="Department">
-      <b>Department</b>
-      <div>Other courses in this department</div>
-    </option>
-  </Select>;
+const options = [
+  {
+    key: 1,
+    title: 'Item 1',
+    subtitle: 'Description',
+  },
+  {
+    key: 2,
+    title: 'Item 2',
+    subtitle: 'Description',
+  },
+  {
+    key: 3,
+    title: 'Item 3',
+    subtitle: 'Description',
+  },
+];
+
+export const Default: Story<SelectProps> = () => {
+  const [selectedKey, setSelectedKey] = useState(1);
+
+  return (
+    <Select
+      selectedKey={selectedKey}
+      onChange={setSelectedKey}
+      options={options}
+    />
+  );
+};
