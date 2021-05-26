@@ -6,14 +6,26 @@ import './Grid.scss';
 const GridLayout = WidthProvider(Responsive);
 
 export interface GridProps extends React.PropsWithChildren<any> {
-  layout?: [];
+  layout?: any[];
 }
 
-export const Grid = ({ children, layout }: GridProps) => {
-  const [rowHeight, setRowHeight] = useState(10);
+const baseCell = {
+  width: 300,
+  height: 112,
+};
 
-  const cardRatio = 4 / 5; // Ratio of height / width
-  const cardScale = rowHeight / 240; // Ratio of height / standard height
+export const Grid = ({ children, layout }: GridProps) => {
+  const [rowHeight, setRowHeight] = useState(baseCell.height);
+
+  const cardRatio = baseCell.height / baseCell.width; // Ratio of height / width
+  const cardScale = rowHeight / baseCell.height; // Ratio of height / standard height
+
+  // Formated layout
+  const fLayout = layout?.map((card) => {
+    const fCard = card;
+    fCard.i = String(fCard.i);
+    return fCard;
+  }) ?? undefined;
 
   return (
     <GridLayout
@@ -23,13 +35,14 @@ export const Grid = ({ children, layout }: GridProps) => {
       cols={{ lg: 3, md: 3, sm: 3, xs: 3, xxs: 3 }}
       rowHeight={rowHeight}
       isResizable={false}
-      margin={[15, 15]}
-      layout={layout}
+      margin={[16, 16]}
+      layouts={{ lg: fLayout, md: fLayout, sm: fLayout, xs: fLayout, xxs: fLayout }}
       containerPadding={[0, 0]}
-      onWidthChange={(width, margin, cols, padding) => {
-        // Calculates card height by subtracting margins and paddings from the width of container divided by columns
-        const cardHeight = (width - margin[0] - padding[0] * cols) / cols;
-        setRowHeight(cardHeight * cardRatio);
+      onWidthChange={(width, margin, cols) => {
+        // Calculates card height based on card width
+        const cardWidth = (width - (margin[0] * (cols - 1))) / cols;
+        const cardHeight = cardWidth * cardRatio;
+        setRowHeight(cardHeight);
       }}
       children={children}
     />
