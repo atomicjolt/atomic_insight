@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/webpack"
 
 	"net/http"
@@ -19,14 +20,20 @@ func index(w http.ResponseWriter) error {
 		return err
 	}
 
-	manifest, err := webpack.NewFromBuildPath("client/build")
+	var manifest *webpack.Manifest
 
-	state := &ViewState{
-		Manifest: manifest,
+	if config.DetermineEnv() == "development" {
+		manifest, err = webpack.NewFromDevServer("http://127.0.0.1:3000/asset-manifest.json")
+	} else {
+		manifest, err = webpack.NewFromBuildPath("client/build")
 	}
 
 	if err != nil {
 		return err
+	}
+
+	state := &ViewState{
+		Manifest: manifest,
 	}
 
 	return view.Execute(w, state)

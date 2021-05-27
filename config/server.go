@@ -30,7 +30,7 @@ func GetServerConfig() *ServerConfig {
 			log.Fatal("Server config file is not valid json: " + err.Error())
 		}
 
-		env := determineEnv()
+		env := DetermineEnv()
 		selectedConfig, isPresent := configs[env]
 		if !isPresent {
 			log.Fatal("Server config not found for env: " + env)
