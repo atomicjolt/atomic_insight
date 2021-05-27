@@ -11,6 +11,15 @@ export interface IconVisualCSS extends React.CSSProperties {
   '--scale': number;
 }
 
+const defaultData = {
+  value: 0,
+  comparisonValue: 1,
+};
+const defaultFeedback = {
+  icon: 'assignment_turned_in',
+  message: 'Feedback',
+};
+
 export enum IconSize {
   Normal = 'normal',
   Half = 'half',
@@ -23,13 +32,13 @@ export enum IconDisplayType {
 
 export interface IconVisualProps {
   size?: IconSize;
-  display: IconDisplayType;
-  data: {
+  display?: IconDisplayType;
+  data?: {
     value: number;
     comparisonValue: number;
     unit?: string;
   };
-  feedback:
+  feedback?:
     | {
         icon: string;
         message: string;
@@ -43,10 +52,10 @@ export interface IconVisualProps {
 }
 
 export const IconVisual = ({
-  display,
+  display = IconDisplayType.Value,
   size = IconSize.Normal,
-  data,
-  feedback,
+  data = defaultData,
+  feedback = defaultFeedback,
 }: IconVisualProps) => {
   function getFeedback() {
     if (Array.isArray(feedback)) {

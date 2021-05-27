@@ -10,7 +10,7 @@
     margin: 0 10px;
     color: #4B5563;
 
-    button {
+    &__button {
       padding: 10px;
       color: inherit;
 
@@ -21,16 +21,17 @@
       svg {
         margin-right: 10px;
       }
+
+      i {
+        font-size: 1.3em;
+      }
+
       height: 60px;
       border: none;
       background: none;
       text-align: left;
       font-size: 20px;
       font-weight: bold;
-
-      &:hover {
-        cursor: pointer;
-      }
 
       &:active {
         color: inherit;

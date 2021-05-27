@@ -4,11 +4,13 @@
   width: 100%;
   border-radius: 5px;
   box-shadow: 0 0 5px #cbcbcb;
-  border: 2px solid transparent;
+  border: 1px solid #d1d5db;
   padding: 16px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   &:hover {
-    border: 2px solid #cbcbcb;
+    border: 1px solid #9ca3af;
     .card-header {
       .card-impact {
         display: none;
@@ -29,18 +31,18 @@
       padding: 0;
       margin: 0;
     }
-    .card-impact{
+    .card-impact {
       position: absolute;
       right: 0;
       margin-top: auto;
       .impact-title {
         position: relative;
         margin: auto auto;
-        background: #E3F5FF;
+        background: #e3f5ff;
         padding: 5px;
         border-radius: 5px;
         &.impact-low {
-          background: #F3F4F6;
+          background: #f3f4f6;
         }
       }
     }
@@ -60,18 +62,15 @@
         grid-auto-flow: column;
         grid-gap: 1em;
         align-items: center;
-        color: #4B5563;
+        color: #4b5563;
         &:active {
           color: initial;
-        }
-        &:hover {
-          cursor: pointer;
         }
       }
     }
   }
   .card-contents {
-    display: block;
+    flex: 1;
     padding-top: 5px;
     box-sizing: border-box;
   }

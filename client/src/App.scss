@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
+
+:root {
+  font-family: 'Lato', sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+.root {
+  margin: 10px;
+}
+
+button {
+  cursor: pointer;
+}

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import { Grid } from './Grid';
-import { Card } from '../Card/Card';
+import { Panel } from './Panel';
+import { Card } from '../../molecules/Card/Card';
 
 export default {
-  title: 'Molecules/Grid',
-  component: Grid,
+  title: 'Organisms/Panel',
+  component: Panel,
 };
 
 const layout = [
@@ -17,7 +17,7 @@ const layout = [
 ];
 
 export const Default: Story = () => (
-  <Grid title="Default" layout={layout}>
+  <Panel title="Default" layout={layout}>
     <div key={1}>
       <Card title="Card 1" />
     </div>
@@ -30,5 +30,5 @@ export const Default: Story = () => (
     <div key={4}>
       <Card title="Card 4" />
     </div>
-  </Grid>
+  </Panel>
 );

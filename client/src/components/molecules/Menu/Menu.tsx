@@ -7,7 +7,7 @@ export interface MenuProps extends React.PropsWithChildren<any> {
   className?: string;
 }
 
-export const Menu = ({ className, isOpen, children }: MenuProps) => {
+export const Menu = ({ className = '', isOpen, children }: MenuProps) => {
   return (
     <ul className={`menu ${isOpen ? 'is-open' : ''} ${className}`}>
       {children}
