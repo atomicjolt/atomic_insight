@@ -3,12 +3,15 @@ env:
   browser: true
   es6: true
   jest: true
-extends: atomicjolt
-parser: babel-eslint
+extends: 
+  - atomicjolt
+  - 'plugin:@typescript-eslint/recommended'
+parser: '@typescript-eslint/parser'
 plugins:
   - react
   - jsx-a11y
   - import
+  - '@typescript-eslint'
 globals:
   describe: false
   beforeAll: false
@@ -36,5 +39,15 @@ rules: {
   ],
   "import/extensions": [2, {
     "stories": "always"
-  } ]
+  } ],
+  
+  "no-use-before-define": "off",
+  "@typescript-eslint/no-use-before-define": ["error"],
+  
+  "no-shadow": "off",
+  "@typescript-eslint/no-shadow": ["error"],
+
+  "@typescript-eslint/explicit-module-boundary-types": "off",
+  "@typescript-eslint/no-explicit-any": "off",
+  "@typescript-eslint/no-empty-interface": "off",
 }
