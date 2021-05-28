@@ -18,7 +18,7 @@ export interface CardProps extends React.PropsWithChildren<any> {
 export const Card = ({ className, children, title, impact, pinned = false, onEdit, onPin }: CardProps) => {
   return (
     <div
-      className={`grid-card ${className || ''}`}
+      className={`card ${className || ''}`}
     >
       <div className="card-header">
         <h4 className="title">{title}</h4>
@@ -29,7 +29,7 @@ export const Card = ({ className, children, title, impact, pinned = false, onEdi
         ) : null}
         <div className="card-buttons">
           <button onClick={() => onPin && onPin(!pinned)}>
-            <i className={`material-icons${pinned ? '' : '-outlined'}`}>push_pin</i>
+            <i className={`material-icons${pinned ? '' : '-outlined'} pin`}>push_pin</i>
           </button>
           <button onClick={onEdit}>
             <i className="material-icons-outlined">edit</i>
