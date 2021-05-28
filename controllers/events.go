@@ -11,7 +11,7 @@ func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "POST":
-			jwtData := r.Context().Value(middleware.DecodedJwtKey).(map[string]interface{})
+			jwtData := middleware.GetJwtClaims(r)
 			eventsString := jwtData["events"].(string)
 			eventPayloads, err := lib.EventPayloadsFrom([]byte(eventsString))
 			if err != nil {

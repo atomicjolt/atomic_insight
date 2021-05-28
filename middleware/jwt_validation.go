@@ -11,7 +11,7 @@ import (
 //See docs for context.WithValue
 type contextKey int
 
-const DecodedJwtKey contextKey = 0
+const decodedJwtKey contextKey = 0
 
 func NewJwtValidator(jwtKey string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -32,8 +32,12 @@ func NewJwtValidator(jwtKey string, next http.Handler) http.Handler {
 			panic(err)
 		}
 
-		newCtx := context.WithValue(r.Context(), DecodedJwtKey, claims)
+		newCtx := context.WithValue(r.Context(), decodedJwtKey, claims)
 		newReq := r.WithContext(newCtx)
 		next.ServeHTTP(w, newReq)
 	})
+}
+
+func GetJwtClaims(r *http.Request) map[string]interface{} {
+	return r.Context().Value(decodedJwtKey).(map[string]interface{})
 }
