@@ -5,7 +5,7 @@ class CustomEventClient
     events = records.map do |e|
       data = JSON.parse(e[:data])
       data['metadata'] = data.delete('attributes')
-      { type: data.dig('metadata', 'event_name'), payload: data.to_s }
+      { name: data.dig('metadata', 'event_name'), payload: data.to_json }
     end
     send_events(events)
 
