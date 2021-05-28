@@ -1,5 +1,6 @@
 import React from 'react';
-import './App.scss';
+import './styles/base.scss';
+
 import MainPage from './components/pages/MainPage/MainPage';
 
 export const App = () => {
