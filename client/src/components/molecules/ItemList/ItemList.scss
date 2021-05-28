@@ -10,7 +10,7 @@
       flex: 1;
       align-items: center;
       padding: 12px;
-      border-radius: inherit;
+      border-radius: 5px;
       background: $gray-2;
 
       > div {
@@ -29,6 +29,7 @@
       border: none;
       border-bottom: 1px solid $gray-3;
       flex: 1;
+      width: 100px;
 
       &:focus {
         border-bottom-color: $gray-5;

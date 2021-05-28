@@ -19,7 +19,7 @@ export const Border: Story<ButtonProps> = () => (
 );
 
 export const Icon: Story<ButtonProps> = () => (
-  <Button className="btn--icon btn--border btn--light">
+  <Button className="btn--icon btn--border btn--white">
     <i className="material-icons-outlined">more_vert</i>
   </Button>
 );

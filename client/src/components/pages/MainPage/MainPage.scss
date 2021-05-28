@@ -20,11 +20,19 @@
         font-weight: normal;
       }
       > p {
+        &:first-child {
+          margin-left: 0;
+        }
         margin: 0 8px 0 16px;
       }
     }
-    .btn, .menu-btn {
+    .menu-btn {
+      height: 100%
+    }
+    .btn {
       height: 100%;
+      padding: 0px 8px;
+      color: $gray-7
     }
   }
 }

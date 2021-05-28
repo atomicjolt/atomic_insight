@@ -3,6 +3,7 @@
 .panel {
   position: relative;
   width: 100%;
+  min-width: 600px;
   background: $gray-2;
   border-radius: 10px;
 
@@ -77,17 +78,17 @@
   }
 }
 
-.manage-cards {
-  &__modal {
-    background: $gray-2;
-    &__button {
-      background: $white;
-    }
-  }
-  &__list-item {
-    background: $white !important;
-  }
-}
+// .manage-cards {
+//   &__modal {
+//     background: $gray-2;
+//     &__button {
+//       background: $white;
+//     }
+//   }
+//   &__list-item {
+//     background: $white !important;
+//   }
+// }
 
 @keyframes close {
   from {

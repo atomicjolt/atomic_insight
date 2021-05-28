@@ -16,6 +16,7 @@
   transform: translate(-50%, -50%);
   flex-direction: column;
   justify-content: space-between;
+  z-index: 5;
 
   &__header {
     display: flex;
@@ -65,4 +66,8 @@
   &:focus {
     outline: none;
   }
+}
+
+.ReactModal__Overlay {
+  z-index: 5;
 }

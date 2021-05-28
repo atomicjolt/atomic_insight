@@ -4,13 +4,15 @@
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 16px;
+  padding: 1em;
   background: $white;
   border-radius: 5px;
   box-shadow: 0 0 5px #cbcbcb;
   border: 1px solid $gray-4;
   display: flex;
   flex-direction: column;
+  font-size: calc(var(--card-scale, 1) * 16px);
+  overflow: hidden;
 
   &:hover {
     border: 1px solid $gray-5;
@@ -29,7 +31,7 @@
     align-content: center;
     align-items: center;
     width: 100%;
-    padding-bottom: 8px;
+    padding-bottom: 0.5em;
     .title {
       padding: 0;
       margin: 0;
@@ -37,13 +39,13 @@
     }
     .card-impact {
       position: absolute;
-      top: -4px;
-      right: -4px;
+      top: -0.25em;
+      right: -0.25em;
       margin-top: auto;
       .impact-title {
         color: $gray-9;
         position: relative;
-        padding: 6px 8px;
+        padding: 0.375em 0.5em;
         margin: auto auto;
         background: $light-blue;
         border-radius: 3px;
@@ -54,11 +56,14 @@
     }
     .card-buttons {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: -0.25em;
+      right: -0.25em;
       display: none;
       grid-auto-flow: column;
-      grid-gap: 4px;
+      grid-gap: 0.25em;
+      background: $white;
+      border-radius: 3px;
+      padding: 0.2em;
       i {
         height: 10%;
         &.pin {
@@ -70,7 +75,6 @@
       button {
         padding: 0;
         margin: 0;
-        font-size: 1em;
         background: none;
         border: none;
         grid-auto-flow: column;

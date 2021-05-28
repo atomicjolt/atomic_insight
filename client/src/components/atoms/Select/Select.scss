@@ -9,7 +9,7 @@
     visibility: hidden;
     box-sizing: border-box;
     border: $gray-4 1px solid;
-    padding: 12px;
+    padding: 10px 12px;
     h4 {
       margin: 0;
     }
@@ -47,7 +47,7 @@
 
   &__option {
     box-sizing: border-box;
-    padding: 12px;
+    padding: 10px 12px;
     margin: 0;
     text-align: start;
     background: none;
@@ -55,6 +55,7 @@
     transition: all 0.1s;
     font-size: 1em;
     flex: 1;
+    color: $gray-8;
 
     &__title {
       margin: 0;

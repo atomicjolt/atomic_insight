@@ -105,12 +105,12 @@ export const MainPage = ({ title }: MainPageProps) => {
             onChange={setSelectedComparison}
             options={comparisonOptions}
           />
-          <Button className="btn--icon btn--border btn--light">
+          <Button className="btn--icon btn--border btn--white">
             <i className="material-icons-outlined">email</i>
           </Button>
           <MenuButton>
             <Button
-              className="btn--icon btn--border btn--light"
+              className="btn--icon btn--border btn--white"
               onClick={() => setMenuIsOpen(!menuIsOpen)}
             >
               <i className="material-icons-outlined">more_vert</i>
