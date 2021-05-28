@@ -5,7 +5,7 @@ class CustomEventClient
     events = records.map do |e|
       data = JSON.parse(e[:data])
       data['metadata'] = data.delete('attributes')
-      data
+      { type: data.dig('metadata', 'event_name'), payload: data.to_s }
     end
     send_events(events)
 
@@ -21,7 +21,7 @@ end
 
 def send_events(events)
   secret = 'shared_secret'
-  claims = { events: events.to_json }
+  claims = { events: events }
 
   jwt = JSON::JWT.new(claims).sign(secret, :HS256)
 
