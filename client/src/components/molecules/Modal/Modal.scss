@@ -1,3 +1,5 @@
+@use 'src/styles/utils' as *;
+
 .modal {
   position: absolute;
   display: flex;
@@ -8,7 +10,7 @@
   overflow-y: scroll;
   min-width: 500px;
   padding: 2.5rem;
-  background-color: white;
+  background-color: $white;
   border-radius: 5px;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
   transform: translate(-50%, -50%);
@@ -31,7 +33,7 @@
       margin: 0;
       background: none;
       border: none;
-      color: #374151;
+      color: $gray-8;
 
       &:focus {
         outline: none;
@@ -39,7 +41,7 @@
 
       &:active {
         opacity: 0.5;
-        color: #374151;
+        color: $gray-8;
       }
     }
   }

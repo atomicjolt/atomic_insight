@@ -1,3 +1,5 @@
+@use 'src/styles/utils' as *;
+
 .comparison-summary {
   $block: &;
 
@@ -21,7 +23,7 @@
 
     &.increase {
       display: inline-block;
-      color: #0f903e;
+      color: $green;
       transform: rotate(-90deg);
     }
 
@@ -29,7 +31,7 @@
       position: relative;
       top: -0.03em;
       display: inline-block;
-      color: #a31616;
+      color: $red;
       transform: rotate(90deg);
     }
   }

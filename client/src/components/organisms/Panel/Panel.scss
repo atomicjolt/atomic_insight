@@ -1,18 +1,27 @@
+@use 'src/styles/utils' as *;
+
 .panel {
   position: relative;
-  background: #f3f4f6;
-  border-radius: 10px;
   width: 100%;
+  background: $gray-2;
+  border-radius: 10px;
 
   &__header {
     display: flex;
     justify-content: space-between;
     margin: 0 10px;
-    color: #4B5563;
+    color: $gray-7;
 
     &__button {
+
+      height: 60px;
       padding: 10px;
+      font-size: 20px;
+      font-weight: bold;
       color: inherit;
+      text-align: left;
+      background: none;
+      border: none;
 
       &:first-child {
         flex: 1;
@@ -25,13 +34,6 @@
       i {
         font-size: 1.3em;
       }
-
-      height: 60px;
-      border: none;
-      background: none;
-      text-align: left;
-      font-size: 20px;
-      font-weight: bold;
 
       &:active {
         color: inherit;
@@ -77,13 +79,13 @@
 
 .manage-cards {
   &__modal {
-    background: #F3F4F6;
+    background: $gray-2;
     &__button {
-      background: white;
+      background: $white;
     }
   }
   &__list-item {
-    background: white !important;
+    background: $white !important;
   }
 }
 

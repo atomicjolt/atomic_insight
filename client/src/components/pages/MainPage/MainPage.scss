@@ -1,3 +1,5 @@
+@use 'src/styles/utils' as *;
+
 .main-page {
   &__header {
     display: flex;
@@ -12,7 +14,7 @@
       grid-gap: 4px;
 
       align-items: center;
-      color: #4B5563;
+      color: $gray-7;
       > h1 {
         margin: 0 0 0.4em;
         font-weight: normal;
