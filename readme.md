@@ -71,6 +71,8 @@ If you are using `asdf`, just run `asdf install` after the clone step in the env
 
 ### 5: Running
 * Make sure you are running `go run server.go` in the project root and have run `yarn build` in the client folder
+  - To enable hot reload for the client, run `yarn start` in the client directory, and make sure to set the environment variable: `ATOMIC_INSIGHT_ENV=development`
+  - If you have `entr` installed, you can run `find . -name "*.go" | entr -cr go run server.go` or similar to enable hot reload for the server
 * Navigate to your test course and open up *Atomic Insight* on the sidebar, and the tool should launch
 
 ## Development
