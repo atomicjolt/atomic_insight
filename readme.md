@@ -86,3 +86,11 @@ The locations for generated code, mappings between graphql types and go types, a
 
 #### Schema
 When the graphql schema is changed, the generated code needs to be updated with `go generate ./...`
+
+### Canvas Events
+This project expects canvas live events to be sent via a signed jwt using POST requests, which is not the default behavior.
+In order for this to work an initializer must be added to the canvas instance, and live events must be configured:
+* run `./bin/install_initializer.sh path/to/canvas/`
+* In the initializer, set the correct url to send events to
+  - If using vagrant to run canvas, add a private network to the vagrantfile: `config.vm.network "private_network", ip: "192.168.33.10"`
+* In the Canvas admin page, enable the live events plugin and set the stream name to "stubbed_kinesis_stream"

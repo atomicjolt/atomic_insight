@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/atomicjolt/atomic_insight/lib"
 	"github.com/atomicjolt/atomic_insight/middleware"
 	"net/http"
 )
@@ -11,28 +10,34 @@ func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "POST":
-			jwtData := r.Context().Value(middleware.DecodedJwtKey).(map[string]interface{})
-			eventsString := jwtData["events"].(string)
-			eventPayloads, err := lib.EventPayloadsFrom([]byte(eventsString))
-			if err != nil {
-				panic(err)
-			}
+			jwtData := middleware.GetJwtClaims(r)
+			events := jwtData["events"].([]interface{})
 
-			for _, payload := range eventPayloads {
-				eventName, err := lib.EventNameOf(payload)
-				if err != nil {
-					panic(err)
+			for _, event := range events {
+				eventMap, ok := event.(map[string]interface{})
+				if !ok {
+					panic(fmt.Errorf("unexpected payload shape: %v", eventMap))
+				}
+
+				eventName, ok := eventMap["name"]
+				if !ok {
+					panic(fmt.Errorf("missing event name in payload"))
 				}
 
 				switch eventName {
 				case "discussion_entry_created":
-					err = c.Repo.DiscussionEntryCreatedEvent.CreateFrom(payload)
+					payload, ok := eventMap["payload"]
+					if !ok {
+						panic(fmt.Errorf("missing event data in payload"))
+					}
+
+					payloadStr := payload.(string)
+					err := c.Repo.DiscussionEntryCreatedEvent.CreateFrom([]byte(payloadStr))
+					if err != nil {
+						panic(err)
+					}
 				default:
 					panic(fmt.Errorf("Invalid event type: %q", eventName))
-				}
-
-				if err != nil {
-					panic(err)
 				}
 			}
 		default:
