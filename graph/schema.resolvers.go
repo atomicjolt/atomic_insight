@@ -6,11 +6,12 @@ package graph
 import (
 	"context"
 	"github.com/atomicjolt/atomic_insight/graph/generated"
+	"github.com/atomicjolt/atomic_insight/lib"
 	model1 "github.com/atomicjolt/atomic_insight/model"
 )
 
 func (r *queryResolver) DiscussionEntryCreatedEvents(_ context.Context) ([]model1.DiscussionEntryCreatedEvent, error) {
-	return r.Repo.DiscussionEntryCreatedEvent.All()
+	return r.Repo.DiscussionEntryCreatedEvent.AllSince(lib.LastSunday())
 }
 
 // Query returns generated.QueryResolver implementation.
