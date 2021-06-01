@@ -54,3 +54,10 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+
+  Metadata:
+    model:
+      - github.com/atomicjolt/atomic_insight/model.DiscussionEntryCreatedMetadata
+  DiscussionEntryCreatedBody:
+    model:
+      - github.com/atomicjolt/atomic_insight/model.DiscussionEntryCreatedBody
