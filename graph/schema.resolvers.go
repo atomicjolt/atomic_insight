@@ -5,13 +5,12 @@ package graph
 
 import (
 	"context"
-
 	"github.com/atomicjolt/atomic_insight/graph/generated"
-	"github.com/atomicjolt/atomic_insight/graph/model"
+	model1 "github.com/atomicjolt/atomic_insight/model"
 )
 
-func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) ([]*model.DiscussionEntryCreatedEvent, error) {
-	return []*model.DiscussionEntryCreatedEvent{}, nil
+func (r *queryResolver) DiscussionEntryCreatedEvents(_ context.Context) ([]model1.DiscussionEntryCreatedEvent, error) {
+	return r.Repo.DiscussionEntryCreatedEvent.All()
 }
 
 // Query returns generated.QueryResolver implementation.
