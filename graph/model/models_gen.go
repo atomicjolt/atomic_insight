@@ -2,11 +2,6 @@
 
 package model
 
-import (
-	"github.com/atomicjolt/atomic_insight/model"
-)
-
-type DiscussionEntryCreatedEvent struct {
-	Metadata *model.DiscussionEntryCreatedMetadata `json:"metadata"`
-	Body     *model.DiscussionEntryCreatedBody     `json:"body"`
+type Empty struct {
+	Dummy int `json:"dummy"`
 }

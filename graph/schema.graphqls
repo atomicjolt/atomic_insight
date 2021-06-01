@@ -4,6 +4,10 @@
 
 scalar Time
 
+type Empty {
+  dummy: Int!
+}
+
 type Metadata {
   client_ip: String!
   context_account_id: String!
