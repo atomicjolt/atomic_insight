@@ -20,23 +20,3 @@ func EventNameOf(payload []byte) (string, error) {
 	}
 	return eventName, nil
 }
-
-// Returns array of event payloads from events string (json)
-func EventPayloadsFrom(eventsString []byte) ([][]byte, error) {
-	var eventMaps []map[string]map[string]string
-	err := json.Unmarshal(eventsString, &eventMaps)
-	if err != nil {
-		return nil, err
-	}
-
-	var eventPayloads [][]byte
-	for _, eventMap := range eventMaps {
-		payload, err := json.Marshal(eventMap)
-		if err != nil {
-			return nil, err
-		}
-		eventPayloads = append(eventPayloads, payload)
-	}
-
-	return eventPayloads, nil
-}
