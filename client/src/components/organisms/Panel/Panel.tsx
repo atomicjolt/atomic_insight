@@ -33,6 +33,28 @@ export const Panel: React.FC<PanelProps> = ({
   const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  function renderListItem(item) {
+    return (
+      <div className="manage-cards__list-item">
+        <input defaultValue={item.name} />
+        <div>
+          <button>
+            <i className="material-icons-outlined">edit</i>
+          </button>
+          <button>
+            <i className="material-icons-outlined">visibility_off</i>
+          </button>
+          <button>
+            <i className="material-icons-outlined">delete</i>
+          </button>
+          <button className="draggable-handle">
+            <i className="material-icons-outlined">drag_handle</i>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   function renderPanelModal() {
     const modalActionButtons = (
       <div>
@@ -47,28 +69,6 @@ export const Panel: React.FC<PanelProps> = ({
       key: item.key,
       name: `Item ${item.key}`,
     }));
-
-    function renderListItem(item) {
-      return (
-        <div className="manage-cards__list-item">
-          <input defaultValue={item.name} />
-          <div>
-            <button>
-              <i className="material-icons-outlined">edit</i>
-            </button>
-            <button>
-              <i className="material-icons-outlined">visibility_off</i>
-            </button>
-            <button>
-              <i className="material-icons-outlined">delete</i>
-            </button>
-            <button className="draggable-handle">
-              <i className="material-icons-outlined">drag_handle</i>
-            </button>
-          </div>
-        </div>
-      );
-    }
 
     return (
       <Modal
