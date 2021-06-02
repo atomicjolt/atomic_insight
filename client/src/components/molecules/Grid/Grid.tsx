@@ -44,8 +44,9 @@ export const Grid = ({ children, layout }: GridProps) => {
         const cardHeight = cardWidth * cardRatio;
         setRowHeight(cardHeight);
       }}
-      children={children}
-    />
+    >
+      {children}
+    </GridLayout>
   );
 };
 
