@@ -11,7 +11,7 @@ export default {
 interface MyData {
   key: number;
   name: string;
-};
+}
 
 const data: MyData[] = [
   { key: 1, name: 'Item 1' },
