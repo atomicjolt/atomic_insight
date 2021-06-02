@@ -9,17 +9,17 @@ export default {
 };
 
 export const Primary: Story<ButtonProps> = () => (
-  <Button className="btn--primary">Button</Button>
+  <Button buttonType="btn--primary">Button</Button>
 );
 
 export const Secondary: Story<ButtonProps> = () => <Button>Button</Button>;
 
 export const Border: Story<ButtonProps> = () => (
-  <Button className="btn--border">Button</Button>
+  <Button buttonType="btn--border">Button</Button>
 );
 
 export const Icon: Story<ButtonProps> = () => (
-  <Button className="btn--icon btn--border btn--white">
+  <Button buttonType="btn--icon btn--border btn--white">
     <i className="material-icons-outlined">more_vert</i>
   </Button>
 );

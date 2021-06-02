@@ -1,27 +1,34 @@
-import { Responsive, WidthProvider } from 'react-grid-layout';
-import React, { useState } from 'react';
+import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
+import React, { useState, CSSProperties } from 'react';
 import 'react-grid-layout/css/styles.css';
 import './Grid.scss';
 
 const GridLayout = WidthProvider(Responsive);
 
-export interface GridProps extends React.PropsWithChildren<any> {
-  layout?: any[];
+interface CSSWithScale extends CSSProperties {
+  '--card-scale': number;
 }
+
+export type GridProps = React.PropsWithChildren<{
+  layout: Layout[];
+}>
 
 const baseCell = {
   width: 300,
   height: 112,
 };
 
-export const Grid = ({ children, layout }: GridProps) => {
+export const Grid: React.FC<GridProps> = ({
+  children,
+  layout = [],
+}: GridProps) => {
   const [rowHeight, setRowHeight] = useState(baseCell.height);
 
   const cardRatio = baseCell.height / baseCell.width; // Ratio of height / width
   const cardScale = rowHeight / baseCell.height; // Ratio of height / standard height
 
   // Formated layout
-  const fLayout = layout?.map((card) => {
+  const fLayout = layout.map((card) => {
     const fCard = card;
     fCard.i = String(fCard.i);
     return fCard;
@@ -29,7 +36,7 @@ export const Grid = ({ children, layout }: GridProps) => {
 
   return (
     <GridLayout
-      style={{ '--card-scale': cardScale }}
+      style={{ '--card-scale': cardScale } as CSSWithScale}
       className="layout"
       breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
       cols={{ lg: 3, md: 3, sm: 3, xs: 3, xxs: 3 }}

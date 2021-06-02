@@ -4,18 +4,18 @@ import ReactModal from 'react-modal';
 import { Button } from '../../atoms/Button/Button';
 import './Modal.scss';
 
-export interface ModalProps extends React.PropsWithChildren<any> {
+export type ModalProps = React.PropsWithChildren<{
   className?: string;
   title?: string;
   isOpen: boolean;
-  onCancel?: any;
-  onSave?: any;
+  onCancel?: () => void;
+  onSave?: () => void;
   cancelButtonClassName?: string;
   saveButtonClassName?: string;
-  actionButtons?: any;
-}
+  actionButtons?: React.ReactNode;
+}>
 
-export const Modal = ({
+export const Modal: React.FC<ModalProps> = ({
   title,
   isOpen,
   onCancel,
@@ -38,9 +38,11 @@ export const Modal = ({
       <div className="modal__footer">
         <div>{actionButtons}</div>
         <div>
-          {onCancel ? <Button className={cancelButtonClassName} onClick={onCancel}>Cancel</Button> : null}
+          {onCancel !== undefined ? (
+            <Button buttonType={cancelButtonClassName} onClick={onCancel}>Cancel</Button>
+          ) : null}
           {onSave ? (
-            <Button className={`btn--primary ${saveButtonClassName}`} onClick={onSave}>
+            <Button buttonType={`btn--primary ${saveButtonClassName}`} onClick={onSave}>
               Save
             </Button>
           ) : null}

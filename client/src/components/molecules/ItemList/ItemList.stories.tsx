@@ -8,14 +8,19 @@ export default {
   component: ItemList,
 };
 
-const data = [
+interface MyData {
+  key: number;
+  name: string;
+};
+
+const data: MyData[] = [
   { key: 1, name: 'Item 1' },
   { key: 2, name: 'Item 2' },
   { key: 3, name: 'Item 3' },
   { key: 4, name: 'Item 4' },
 ];
 
-function renderItem(item) {
+function renderItem(item: MyData): React.ReactElement {
   return (
     <div>
       <input defaultValue={item.key} />

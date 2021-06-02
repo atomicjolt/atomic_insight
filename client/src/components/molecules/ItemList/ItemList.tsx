@@ -5,15 +5,19 @@ import './ItemList.scss';
 
 const GridLayout = WidthProvider(Responsive);
 
-export interface ItemListProps extends React.PropsWithChildren<any> {
-  data: any;
-  renderItem: () => any;
+interface WithKey {
+  key: number | string;
 }
 
-export const ItemList = ({
+export type ItemListProps<DataType> = React.PropsWithChildren<{
+  data: DataType[];
+  renderItem: (item: DataType, index: number) => React.ReactElement;
+}>
+
+const ItemList = <DataType extends WithKey>({
   data,
   renderItem,
-}: React.PropsWithChildren<any>) => {
+}: ItemListProps<DataType>): React.ReactElement<ItemListProps<DataType>> => {
   function renderItemList() {
     return data.map((item, index) => (
       <div key={item.key} data-grid={{ x: 0, y: index, w: 1, h: 1 }}>
@@ -35,3 +39,5 @@ export const ItemList = ({
     />
   );
 };
+
+export { ItemList };

@@ -16,19 +16,20 @@ const layout = [
   { i: '4', x: 2, y: 1, w: 1, h: 1 },
 ];
 
+const cards = [{
+  key: 1,
+  element: <Card title="Card 1" />
+}, {
+  key: 2,
+  element: <Card title="Card 2" />
+}, {
+  key: 3,
+  element: <Card title="Card 3" />
+}, {
+  key: 4,
+  element: <Card title="Card 4" />
+}];
+
 export const Default: Story = () => (
-  <Panel title="Default" layout={layout}>
-    <div key={1}>
-      <Card title="Card 1" />
-    </div>
-    <div key={2}>
-      <Card title="Card 2" />
-    </div>
-    <div key={3}>
-      <Card title="Card 3" />
-    </div>
-    <div key={4}>
-      <Card title="Card 4" />
-    </div>
-  </Panel>
+  <Panel title="Default" layout={layout} items={cards} />
 );

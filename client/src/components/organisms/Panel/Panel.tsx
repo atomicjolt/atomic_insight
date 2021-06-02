@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Layout } from 'react-grid-layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import 'react-grid-layout/css/styles.css';
@@ -12,12 +13,22 @@ import { ItemList } from '../../molecules/ItemList/ItemList';
 import { Button } from '../../atoms/Button/Button';
 import { Grid } from '../../molecules/Grid/Grid';
 
-export interface PanelProps extends React.PropsWithChildren<any> {
-  title: string;
-  layout?: any[];
+interface PanelChildType {
+  key: number | string;
+  element: React.ReactElement;
 }
 
-export const Panel = ({ children, title, layout }: PanelProps) => {
+export interface PanelProps {
+  items: PanelChildType[];
+  title: string;
+  layout: Layout[];
+}
+
+export const Panel: React.FC<PanelProps> = ({
+  items,
+  title,
+  layout = [],
+}: PanelProps) => {
   const [opened, setOpened] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -25,14 +36,14 @@ export const Panel = ({ children, title, layout }: PanelProps) => {
   function renderPanelModal() {
     const modalActionButtons = (
       <div>
-        <Button className="manage-cards__modal__button">
+        <Button buttonType="manage-cards__modal__button">
           <i className="material-icons">add</i>
           <span>New Card</span>
         </Button>
       </div>
     );
 
-    const listData = React.Children.map(children, (item) => ({
+    const listData = items.map((item) => ({
       key: item.key,
       name: `Item ${item.key}`,
     }));
@@ -120,7 +131,7 @@ export const Panel = ({ children, title, layout }: PanelProps) => {
         </MenuButton>
       </div>
       <div className="panel__content">
-        <Grid layout={layout}>{children}</Grid>
+        <Grid layout={layout}>{items.map(({ element }) => element)}</Grid>
       </div>
       {renderPanelModal()}
     </div>

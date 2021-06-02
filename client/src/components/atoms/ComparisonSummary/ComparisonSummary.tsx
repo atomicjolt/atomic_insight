@@ -14,7 +14,7 @@ export interface ComparisonSummaryProps {
   display?: ComparisonDisplayType;
 }
 
-export const ComparisonSummary = ({
+export const ComparisonSummary: React.FC<ComparisonSummaryProps> = ({
   value,
   display = ComparisonDisplayType.Inline,
 }: ComparisonSummaryProps) => {

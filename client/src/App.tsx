@@ -3,7 +3,7 @@ import './styles/base.scss';
 
 import MainPage from './components/pages/MainPage/MainPage';
 
-export const App = () => {
+const App: React.FC = () => {
   return (
     <MainPage title="Course Diagnostics" />
   );
