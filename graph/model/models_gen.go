@@ -2,19 +2,15 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+import (
+	"github.com/atomicjolt/atomic_insight/model"
+)
+
+type DiscussionEntryCreated struct {
+	Events []model.DiscussionEntryCreatedEvent `json:"events"`
+	Count  int                                 `json:"count"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
-}
-
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type Empty struct {
+	Dummy int `json:"dummy"`
 }

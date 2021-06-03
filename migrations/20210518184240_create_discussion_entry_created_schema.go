@@ -18,12 +18,12 @@ type DiscussionEntryCreatedMetadata struct {
 	RootAccountLtiGuid string    `pg:",notnull" json:"root_account_lti_guid"`
 	UserLogin          string    `pg:",notnull" json:"user_login"`
 	UserAccountId      string    `pg:",notnull" json:"user_account_id"`
-	UserSisId          string    `pg:",notnull" json:"user_sis_id"`
+	UserSisId          string    `json:"user_sis_id"`
 	UserId             string    `pg:",notnull" json:"user_id"`
 	TimeZone           string    `pg:",notnull" json:"time_zone"`
 	ContextType        string    `pg:",notnull" json:"context_type"`
 	ContextId          string    `pg:",notnull" json:"context_id"`
-	ContextSisSourceId string    `pg:",notnull" json:"context_sis_source_id"`
+	ContextSisSourceId string    `json:"context_sis_source_id"`
 	ContextAccountId   string    `pg:",notnull" json:"context_account_id"`
 	ContextRole        string    `pg:",notnull" json:"context_role"`
 	RequestId          string    `pg:",notnull" json:"request_id"`
@@ -46,7 +46,7 @@ type DiscussionEntryCreatedBody struct {
 	CanvasCreatedAt         time.Time `pg:",notnull" json:"created_at"`
 	DiscussionEntryId       string    `pg:",notnull" json:"discussion_entry_id"`
 	DiscussionTopicId       string    `pg:",notnull" json:"discussion_topic_id"`
-	ParentDiscussionEntryId string    `pg:",notnull" json:"parent_discussion_entry_id"`
+	ParentDiscussionEntryId string    `json:"parent_discussion_entry_id"`
 	Text                    string    `pg:",notnull" json:"text"`
 	UserId                  string    `pg:",notnull" json:"user_id"`
 

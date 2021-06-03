@@ -7,10 +7,10 @@ import (
 	"net/http"
 )
 
-func (_ *ControllerContext) NewGraphqlHandler() http.Handler {
+func (c *ControllerContext) NewGraphqlHandler() http.Handler {
 	return handler.NewDefaultServer(
 		generated.NewExecutableSchema(generated.Config{
-			Resolvers: &graph.Resolver{},
+			Resolvers: &graph.Resolver{Repo: c.Repo},
 		}),
 	)
 }

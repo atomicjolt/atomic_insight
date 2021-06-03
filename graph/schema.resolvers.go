@@ -5,25 +5,36 @@ package graph
 
 import (
 	"context"
-	"fmt"
-
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/atomicjolt/atomic_insight/graph/generated"
 	"github.com/atomicjolt/atomic_insight/graph/model"
+	"github.com/atomicjolt/atomic_insight/lib"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
-}
+func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*model.DiscussionEntryCreated, error) {
+	result := model.DiscussionEntryCreated{}
+	fields := graphql.CollectAllFields(ctx)
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
-}
+	if lib.StringContains(fields, "count") {
+		count, err := r.Repo.DiscussionEntryCreatedEvent.CountAllSince(lib.LastSunday())
+		if err != nil {
+			return nil, err
+		}
+		result.Count = count
+	}
 
-// Mutation returns generated.MutationResolver implementation.
-func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
+	if lib.StringContains(fields, "events") {
+		events, err := r.Repo.DiscussionEntryCreatedEvent.AllSince(lib.LastSunday())
+		if err != nil {
+			return nil, err
+		}
+		result.Events = events
+	}
+
+	return &result, nil
+}
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
-type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

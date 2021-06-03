@@ -2,27 +2,58 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+scalar Time
+
+type Empty {
+  dummy: Int!
 }
 
-type User {
-  id: ID!
-  name: String!
+type Metadata {
+  client_ip: String!
+  context_account_id: String!
+  context_id: String!
+  context_role: String!
+  context_sis_source_id: String
+  context_type: String!
+  event_name: String!
+  event_time: Time!
+  hostname: String!
+  http_method: String!
+  producer: String!
+  referrer: String!
+  request_id: String!
+  root_account_id: String!
+  root_account_lti_guid: String!
+  root_account_uuid: String!
+  session_id: String!
+  time_zone: String!
+  url: String!
+  user_account_id: String!
+  user_agent: String!
+  user_id: String!
+  user_login: String!
+  user_sis_id: String
+}
+
+type DiscussionEntryCreatedBody {
+  canvas_created_at: Time!
+  discussion_entry_id: String!
+  discussion_topic_id: String!
+  parent_discussion_entry_id: String
+  text: String!
+  user_id: String!
+}
+
+type DiscussionEntryCreatedEvent {
+  metadata: Metadata
+  body: DiscussionEntryCreatedBody
+}
+
+type DiscussionEntryCreated {
+  events: [DiscussionEntryCreatedEvent!]!
+  count: Int!
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
-}
-
-type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  discussionEntryCreatedEvents: DiscussionEntryCreated
 }
