@@ -5,13 +5,33 @@ package graph
 
 import (
 	"context"
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/atomicjolt/atomic_insight/graph/generated"
+	"github.com/atomicjolt/atomic_insight/graph/model"
 	"github.com/atomicjolt/atomic_insight/lib"
-	model1 "github.com/atomicjolt/atomic_insight/model"
 )
 
-func (r *queryResolver) DiscussionEntryCreatedEvents(_ context.Context) ([]model1.DiscussionEntryCreatedEvent, error) {
-	return r.Repo.DiscussionEntryCreatedEvent.AllSince(lib.LastSunday())
+func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*model.DiscussionEntryCreated, error) {
+	result := model.DiscussionEntryCreated{}
+	fields := graphql.CollectAllFields(ctx)
+
+	if lib.StringContains(fields, "count") {
+		count, err := r.Repo.DiscussionEntryCreatedEvent.CountAllSince(lib.LastSunday())
+		if err != nil {
+			return nil, err
+		}
+		result.Count = count
+	}
+
+	if lib.StringContains(fields, "events") {
+		events, err := r.Repo.DiscussionEntryCreatedEvent.AllSince(lib.LastSunday())
+		if err != nil {
+			return nil, err
+		}
+		result.Events = events
+	}
+
+	return &result, nil
 }
 
 // Query returns generated.QueryResolver implementation.

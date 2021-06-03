@@ -2,6 +2,15 @@
 
 package model
 
+import (
+	"github.com/atomicjolt/atomic_insight/model"
+)
+
+type DiscussionEntryCreated struct {
+	Events []model.DiscussionEntryCreatedEvent `json:"events"`
+	Count  int                                 `json:"count"`
+}
+
 type Empty struct {
 	Dummy int `json:"dummy"`
 }

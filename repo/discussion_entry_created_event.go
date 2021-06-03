@@ -70,3 +70,7 @@ func (r *DiscussionEntryCreatedEventRepo) AllSince(time time.Time) ([]model.Disc
 
 	return events, err
 }
+
+func (r *DiscussionEntryCreatedEventRepo) CountAllSince(time time.Time) (int, error) {
+	return r.allSinceQuery((*model.DiscussionEntryCreatedEvent)(nil), time).Count()
+}

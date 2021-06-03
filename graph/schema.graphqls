@@ -49,6 +49,11 @@ type DiscussionEntryCreatedEvent {
   body: DiscussionEntryCreatedBody
 }
 
+type DiscussionEntryCreated {
+  events: [DiscussionEntryCreatedEvent!]!
+  count: Int!
+}
+
 type Query {
-  discussionEntryCreatedEvents: [DiscussionEntryCreatedEvent!]!
+  discussionEntryCreatedEvents: DiscussionEntryCreated
 }

@@ -8,13 +8,12 @@ import (
 	"errors"
 	"strconv"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	model1 "github.com/atomicjolt/atomic_insight/graph/model"
-	"github.com/atomicjolt/atomic_insight/model"
+	"github.com/atomicjolt/atomic_insight/graph/model"
+	model1 "github.com/atomicjolt/atomic_insight/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -44,6 +43,11 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	DiscussionEntryCreated struct {
+		Count  func(childComplexity int) int
+		Events func(childComplexity int) int
+	}
+
 	DiscussionEntryCreatedBody struct {
 		CanvasCreatedAt         func(childComplexity int) int
 		DiscussionEntryId       func(childComplexity int) int
@@ -95,7 +99,7 @@ type ComplexityRoot struct {
 }
 
 type QueryResolver interface {
-	DiscussionEntryCreatedEvents(ctx context.Context) ([]model.DiscussionEntryCreatedEvent, error)
+	DiscussionEntryCreatedEvents(ctx context.Context) (*model.DiscussionEntryCreated, error)
 }
 
 type executableSchema struct {
@@ -112,6 +116,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "DiscussionEntryCreated.count":
+		if e.complexity.DiscussionEntryCreated.Count == nil {
+			break
+		}
+
+		return e.complexity.DiscussionEntryCreated.Count(childComplexity), true
+
+	case "DiscussionEntryCreated.events":
+		if e.complexity.DiscussionEntryCreated.Events == nil {
+			break
+		}
+
+		return e.complexity.DiscussionEntryCreated.Events(childComplexity), true
 
 	case "DiscussionEntryCreatedBody.canvas_created_at":
 		if e.complexity.DiscussionEntryCreatedBody.CanvasCreatedAt == nil {
@@ -452,8 +470,13 @@ type DiscussionEntryCreatedEvent {
   body: DiscussionEntryCreatedBody
 }
 
+type DiscussionEntryCreated {
+  events: [DiscussionEntryCreatedEvent!]!
+  count: Int!
+}
+
 type Query {
-  discussionEntryCreatedEvents: [DiscussionEntryCreatedEvent!]!
+  discussionEntryCreatedEvents: DiscussionEntryCreated
 }
 `, BuiltIn: false},
 }
@@ -516,7 +539,77 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _DiscussionEntryCreatedBody_canvas_created_at(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreated_events(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreated) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DiscussionEntryCreated",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Events, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]model1.DiscussionEntryCreatedEvent)
+	fc.Result = res
+	return ec.marshalNDiscussionEntryCreatedEvent2ᚕgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedEventᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DiscussionEntryCreated_count(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreated) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DiscussionEntryCreated",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Count, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DiscussionEntryCreatedBody_canvas_created_at(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -551,7 +644,7 @@ func (ec *executionContext) _DiscussionEntryCreatedBody_canvas_created_at(ctx co
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DiscussionEntryCreatedBody_discussion_entry_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreatedBody_discussion_entry_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -586,7 +679,7 @@ func (ec *executionContext) _DiscussionEntryCreatedBody_discussion_entry_id(ctx 
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DiscussionEntryCreatedBody_discussion_topic_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreatedBody_discussion_topic_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -621,7 +714,7 @@ func (ec *executionContext) _DiscussionEntryCreatedBody_discussion_topic_id(ctx 
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DiscussionEntryCreatedBody_parent_discussion_entry_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreatedBody_parent_discussion_entry_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -653,7 +746,7 @@ func (ec *executionContext) _DiscussionEntryCreatedBody_parent_discussion_entry_
 	return ec.marshalOString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DiscussionEntryCreatedBody_text(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreatedBody_text(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -688,7 +781,7 @@ func (ec *executionContext) _DiscussionEntryCreatedBody_text(ctx context.Context
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DiscussionEntryCreatedBody_user_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreatedBody_user_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedBody) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -723,7 +816,7 @@ func (ec *executionContext) _DiscussionEntryCreatedBody_user_id(ctx context.Cont
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DiscussionEntryCreatedEvent_metadata(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedEvent) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreatedEvent_metadata(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedEvent) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -750,12 +843,12 @@ func (ec *executionContext) _DiscussionEntryCreatedEvent_metadata(ctx context.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*model.DiscussionEntryCreatedMetadata)
+	res := resTmp.(*model1.DiscussionEntryCreatedMetadata)
 	fc.Result = res
 	return ec.marshalOMetadata2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedMetadata(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DiscussionEntryCreatedEvent_body(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedEvent) (ret graphql.Marshaler) {
+func (ec *executionContext) _DiscussionEntryCreatedEvent_body(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedEvent) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -782,12 +875,12 @@ func (ec *executionContext) _DiscussionEntryCreatedEvent_body(ctx context.Contex
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*model.DiscussionEntryCreatedBody)
+	res := resTmp.(*model1.DiscussionEntryCreatedBody)
 	fc.Result = res
 	return ec.marshalODiscussionEntryCreatedBody2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedBody(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Empty_dummy(ctx context.Context, field graphql.CollectedField, obj *model1.Empty) (ret graphql.Marshaler) {
+func (ec *executionContext) _Empty_dummy(ctx context.Context, field graphql.CollectedField, obj *model.Empty) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -822,7 +915,7 @@ func (ec *executionContext) _Empty_dummy(ctx context.Context, field graphql.Coll
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_client_ip(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_client_ip(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -857,7 +950,7 @@ func (ec *executionContext) _Metadata_client_ip(ctx context.Context, field graph
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_context_account_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_context_account_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -892,7 +985,7 @@ func (ec *executionContext) _Metadata_context_account_id(ctx context.Context, fi
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_context_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_context_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -927,7 +1020,7 @@ func (ec *executionContext) _Metadata_context_id(ctx context.Context, field grap
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_context_role(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_context_role(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -962,7 +1055,7 @@ func (ec *executionContext) _Metadata_context_role(ctx context.Context, field gr
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_context_sis_source_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_context_sis_source_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -994,7 +1087,7 @@ func (ec *executionContext) _Metadata_context_sis_source_id(ctx context.Context,
 	return ec.marshalOString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_context_type(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_context_type(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1029,7 +1122,7 @@ func (ec *executionContext) _Metadata_context_type(ctx context.Context, field gr
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_event_name(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_event_name(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1064,7 +1157,7 @@ func (ec *executionContext) _Metadata_event_name(ctx context.Context, field grap
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_event_time(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_event_time(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1099,7 +1192,7 @@ func (ec *executionContext) _Metadata_event_time(ctx context.Context, field grap
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_hostname(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_hostname(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1134,7 +1227,7 @@ func (ec *executionContext) _Metadata_hostname(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_http_method(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_http_method(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1169,7 +1262,7 @@ func (ec *executionContext) _Metadata_http_method(ctx context.Context, field gra
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_producer(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_producer(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1204,7 +1297,7 @@ func (ec *executionContext) _Metadata_producer(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_referrer(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_referrer(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1239,7 +1332,7 @@ func (ec *executionContext) _Metadata_referrer(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_request_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_request_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1274,7 +1367,7 @@ func (ec *executionContext) _Metadata_request_id(ctx context.Context, field grap
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_root_account_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_root_account_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1309,7 +1402,7 @@ func (ec *executionContext) _Metadata_root_account_id(ctx context.Context, field
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_root_account_lti_guid(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_root_account_lti_guid(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1344,7 +1437,7 @@ func (ec *executionContext) _Metadata_root_account_lti_guid(ctx context.Context,
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_root_account_uuid(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_root_account_uuid(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1379,7 +1472,7 @@ func (ec *executionContext) _Metadata_root_account_uuid(ctx context.Context, fie
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_session_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_session_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1414,7 +1507,7 @@ func (ec *executionContext) _Metadata_session_id(ctx context.Context, field grap
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_time_zone(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_time_zone(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1449,7 +1542,7 @@ func (ec *executionContext) _Metadata_time_zone(ctx context.Context, field graph
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_url(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_url(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1484,7 +1577,7 @@ func (ec *executionContext) _Metadata_url(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_user_account_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_user_account_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1519,7 +1612,7 @@ func (ec *executionContext) _Metadata_user_account_id(ctx context.Context, field
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_user_agent(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_user_agent(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1554,7 +1647,7 @@ func (ec *executionContext) _Metadata_user_agent(ctx context.Context, field grap
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_user_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_user_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1589,7 +1682,7 @@ func (ec *executionContext) _Metadata_user_id(ctx context.Context, field graphql
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_user_login(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_user_login(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1624,7 +1717,7 @@ func (ec *executionContext) _Metadata_user_login(ctx context.Context, field grap
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Metadata_user_sis_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
+func (ec *executionContext) _Metadata_user_sis_id(ctx context.Context, field graphql.CollectedField, obj *model1.DiscussionEntryCreatedMetadata) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1681,14 +1774,11 @@ func (ec *executionContext) _Query_discussionEntryCreatedEvents(ctx context.Cont
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.([]model.DiscussionEntryCreatedEvent)
+	res := resTmp.(*model.DiscussionEntryCreated)
 	fc.Result = res
-	return ec.marshalNDiscussionEntryCreatedEvent2ᚕgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedEventᚄ(ctx, field.Selections, res)
+	return ec.marshalODiscussionEntryCreated2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋgraphᚋmodelᚐDiscussionEntryCreated(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2857,9 +2947,41 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** object.gotpl ****************************
 
+var discussionEntryCreatedImplementors = []string{"DiscussionEntryCreated"}
+
+func (ec *executionContext) _DiscussionEntryCreated(ctx context.Context, sel ast.SelectionSet, obj *model.DiscussionEntryCreated) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, discussionEntryCreatedImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("DiscussionEntryCreated")
+		case "events":
+			out.Values[i] = ec._DiscussionEntryCreated_events(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "count":
+			out.Values[i] = ec._DiscussionEntryCreated_count(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var discussionEntryCreatedBodyImplementors = []string{"DiscussionEntryCreatedBody"}
 
-func (ec *executionContext) _DiscussionEntryCreatedBody(ctx context.Context, sel ast.SelectionSet, obj *model.DiscussionEntryCreatedBody) graphql.Marshaler {
+func (ec *executionContext) _DiscussionEntryCreatedBody(ctx context.Context, sel ast.SelectionSet, obj *model1.DiscussionEntryCreatedBody) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, discussionEntryCreatedBodyImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2908,7 +3030,7 @@ func (ec *executionContext) _DiscussionEntryCreatedBody(ctx context.Context, sel
 
 var discussionEntryCreatedEventImplementors = []string{"DiscussionEntryCreatedEvent"}
 
-func (ec *executionContext) _DiscussionEntryCreatedEvent(ctx context.Context, sel ast.SelectionSet, obj *model.DiscussionEntryCreatedEvent) graphql.Marshaler {
+func (ec *executionContext) _DiscussionEntryCreatedEvent(ctx context.Context, sel ast.SelectionSet, obj *model1.DiscussionEntryCreatedEvent) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, discussionEntryCreatedEventImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2934,7 +3056,7 @@ func (ec *executionContext) _DiscussionEntryCreatedEvent(ctx context.Context, se
 
 var emptyImplementors = []string{"Empty"}
 
-func (ec *executionContext) _Empty(ctx context.Context, sel ast.SelectionSet, obj *model1.Empty) graphql.Marshaler {
+func (ec *executionContext) _Empty(ctx context.Context, sel ast.SelectionSet, obj *model.Empty) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, emptyImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2961,7 +3083,7 @@ func (ec *executionContext) _Empty(ctx context.Context, sel ast.SelectionSet, ob
 
 var metadataImplementors = []string{"Metadata"}
 
-func (ec *executionContext) _Metadata(ctx context.Context, sel ast.SelectionSet, obj *model.DiscussionEntryCreatedMetadata) graphql.Marshaler {
+func (ec *executionContext) _Metadata(ctx context.Context, sel ast.SelectionSet, obj *model1.DiscussionEntryCreatedMetadata) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, metadataImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -3119,9 +3241,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_discussionEntryCreatedEvents(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
 				return res
 			})
 		case "__type":
@@ -3399,11 +3518,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNDiscussionEntryCreatedEvent2githubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedEvent(ctx context.Context, sel ast.SelectionSet, v model.DiscussionEntryCreatedEvent) graphql.Marshaler {
+func (ec *executionContext) marshalNDiscussionEntryCreatedEvent2githubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedEvent(ctx context.Context, sel ast.SelectionSet, v model1.DiscussionEntryCreatedEvent) graphql.Marshaler {
 	return ec._DiscussionEntryCreatedEvent(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNDiscussionEntryCreatedEvent2ᚕgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedEventᚄ(ctx context.Context, sel ast.SelectionSet, v []model.DiscussionEntryCreatedEvent) graphql.Marshaler {
+func (ec *executionContext) marshalNDiscussionEntryCreatedEvent2ᚕgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedEventᚄ(ctx context.Context, sel ast.SelectionSet, v []model1.DiscussionEntryCreatedEvent) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -3738,14 +3857,21 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return graphql.MarshalBoolean(*v)
 }
 
-func (ec *executionContext) marshalODiscussionEntryCreatedBody2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedBody(ctx context.Context, sel ast.SelectionSet, v *model.DiscussionEntryCreatedBody) graphql.Marshaler {
+func (ec *executionContext) marshalODiscussionEntryCreated2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋgraphᚋmodelᚐDiscussionEntryCreated(ctx context.Context, sel ast.SelectionSet, v *model.DiscussionEntryCreated) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._DiscussionEntryCreated(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalODiscussionEntryCreatedBody2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedBody(ctx context.Context, sel ast.SelectionSet, v *model1.DiscussionEntryCreatedBody) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._DiscussionEntryCreatedBody(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOMetadata2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedMetadata(ctx context.Context, sel ast.SelectionSet, v *model.DiscussionEntryCreatedMetadata) graphql.Marshaler {
+func (ec *executionContext) marshalOMetadata2ᚖgithubᚗcomᚋatomicjoltᚋatomic_insightᚋmodelᚐDiscussionEntryCreatedMetadata(ctx context.Context, sel ast.SelectionSet, v *model1.DiscussionEntryCreatedMetadata) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
