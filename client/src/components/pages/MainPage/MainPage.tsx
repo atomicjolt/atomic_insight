@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import './MainPage.scss';
 
 import useMenuState from '../../../hooks/use_menu_state';
 import { Panel } from '../../organisms/Panel/Panel';
-import { Card } from '../../molecules/Card/Card';
 import { Menu } from '../../molecules/Menu/Menu';
 import { Button } from '../../atoms/Button/Button';
 import { MenuButton } from '../../molecules/MenuButton/MenuButton';
@@ -39,11 +39,11 @@ const comparisonOptions = [
   },
 ];
 
-const layout = [
-  { i: 1, x: 0, y: 0, w: 1, h: 2 },
-  { i: 2, x: 1, y: 0, w: 1, h: 1 },
-  { i: 3, x: 1, y: 0, w: 1, h: 1 },
-  { i: 4, x: 2, y: 0, w: 1, h: 2 },
+const layout: Layout[] = [
+  { i: '1', x: 0, y: 0, w: 1, h: 2 },
+  { i: '2', x: 1, y: 0, w: 1, h: 1 },
+  { i: '3', x: 1, y: 0, w: 1, h: 1 },
+  { i: '4', x: 2, y: 0, w: 1, h: 2 },
 ];
 
 const data = {
@@ -51,41 +51,31 @@ const data = {
   comparisonValue: 1.08,
 };
 
-const cards = [
-  {
-    key: 1,
-    title: 'Discussion Posts',
-    children: <IconVisual data={data} />,
-  },
-  {
-    key: 2,
-    title: 'Discussion Posts',
-    children: <IconVisual data={data} size={IconSize.Half} />,
-  },
-  {
-    key: 3,
-    title: 'Discussion Posts',
-    children: (
-      <IconVisual
-        data={data}
-        size={IconSize.Half}
-        display={IconDisplayType.Comparison}
-      />
-    ),
-  },
-  {
-    key: 4,
-    title: 'Discussion Posts',
-    children: <IconVisual data={data} display={IconDisplayType.Comparison} />,
-  },
-];
+const cards = [{
+  key: 1,
+  title: 'Discussion Posts',
+  element: <IconVisual data={data} />,
+}, {
+  key: 2,
+  title: 'Discussion Posts',
+  element: <IconVisual data={data} size={IconSize.Half} />,
+}, {
+  key: 3,
+  title: 'Discussion Posts',
+  element: <IconVisual data={data} size={IconSize.Half} display={IconDisplayType.Comparison} />,
+}, {
+  key: 4,
+  title: 'Discussion Posts',
+  element: <IconVisual data={data} display={IconDisplayType.Comparison} />,
+}];
+
 
 export interface MainPageProps {
   title: string;
   layout?: [];
 }
 
-export const MainPage = ({ title }: MainPageProps) => {
+export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
   const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [selectedComparison, setSelectedComparison] = useState(
     ComparisonOption.Weekly
@@ -105,12 +95,12 @@ export const MainPage = ({ title }: MainPageProps) => {
             onChange={setSelectedComparison}
             options={comparisonOptions}
           />
-          <Button className="btn--icon btn--border btn--white">
+          <Button buttonType="btn--icon btn--border btn--white">
             <i className="material-icons-outlined">email</i>
           </Button>
           <MenuButton>
             <Button
-              className="btn--icon btn--border btn--white"
+              buttonType="btn--icon btn--border btn--white"
               onClick={() => setMenuIsOpen(!menuIsOpen)}
             >
               <i className="material-icons-outlined">more_vert</i>
@@ -138,13 +128,7 @@ export const MainPage = ({ title }: MainPageProps) => {
           </MenuButton>
         </div>
       </div>
-      <Panel title="Pinned" layout={layout}>
-        {cards.map((card) => (
-          <div key={card.key}>
-            <Card {...card} />
-          </div>
-        ))}
-      </Panel>
+      <Panel title="Pinned" layout={layout} cards={cards} />
     </div>
   );
 };

@@ -6,16 +6,23 @@ export enum Impact {
   High = 'High Impact'
 }
 
-export interface CardProps extends React.PropsWithChildren<any> {
+export type CardProps = React.PropsWithChildren<{
   title: string;
   className?: string;
   impact?: Impact;
   pinned?: boolean;
   onEdit?: () => void;
   onPin?: (b: boolean) => void;
-}
+}>
 
-export const Card = ({ className, children, title, impact, pinned = false, onEdit, onPin }: CardProps) => {
+export const Card: React.FC<CardProps> = ({
+  className,
+  children,
+  title,
+  impact,
+  pinned = false,
+  onEdit, onPin
+}: CardProps) => {
   return (
     <div
       className={`card ${className || ''}`}

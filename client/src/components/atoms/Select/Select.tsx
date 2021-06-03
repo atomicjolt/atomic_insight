@@ -2,31 +2,34 @@ import React from 'react';
 import './Select.scss';
 import useMenuState from '../../../hooks/use_menu_state';
 
-export interface SelectProps {
-  options: {
-    key: any;
-    title: string;
-    subtitle?: string;
-  }[];
-  selectedKey: any;
+type OptionKey = number | string;
 
-  onChange?: (any) => void;
+interface OptionType {
+  key: OptionKey;
+  title: string;
+  subtitle?: string;
+}
+
+export interface SelectProps {
+  options: OptionType[];
+  selectedKey: OptionKey;
+  onChange?: (OptionKey) => void;
   className?: string;
 }
 
-export const Select = ({
+export const Select: React.FC<SelectProps> = ({
   options,
   selectedKey,
-  onChange = () => null,
+  onChange,
   className = '',
 }: SelectProps) => {
   const [active, setActive] = useMenuState(false);
   const selectedOption = options.find((o) => o.key === selectedKey);
   const sortedOptions = options.sort((o) => (o.key === selectedKey ? -1 : 1));
 
-  function onOptionClick(option) {
+  function onOptionClick(optionKey: OptionKey): void {
     if (active) {
-      onChange(option);
+      onChange?.(optionKey);
     }
     setActive(!active);
   }

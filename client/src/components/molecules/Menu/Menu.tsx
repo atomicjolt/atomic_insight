@@ -2,14 +2,18 @@ import React from 'react';
 
 import './Menu.scss';
 
-export interface MenuProps extends React.PropsWithChildren<any> {
+export type MenuProps = React.PropsWithChildren<{
   isOpen: boolean;
-  className?: string;
-}
+  menuType?: string;
+}>
 
-export const Menu = ({ className = '', isOpen, children }: MenuProps) => {
+export const Menu: React.FC<MenuProps> = ({
+  menuType = '',
+  isOpen,
+  children,
+}: MenuProps) => {
   return (
-    <ul className={`menu ${isOpen ? 'is-open' : ''} ${className}`}>
+    <ul className={`menu ${isOpen ? 'is-open' : ''} ${menuType}`}>
       {children}
     </ul>
   );
