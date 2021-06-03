@@ -6,6 +6,7 @@ import 'react-grid-layout/css/styles.css';
 import './Panel.scss';
 
 import useMenuState from '../../../hooks/use_menu_state';
+import { Card } from '../../molecules/Card/Card';
 import { Menu } from '../../molecules/Menu/Menu';
 import { MenuButton } from '../../molecules/MenuButton/MenuButton';
 import { Modal } from '../../molecules/Modal/Modal';
@@ -15,6 +16,7 @@ import { Grid } from '../../molecules/Grid/Grid';
 
 interface CardType {
   key: number | string;
+  title: string;
   element: React.ReactElement;
 }
 
@@ -127,10 +129,13 @@ export const Panel: React.FC<PanelProps> = ({
       </div>
       <div className="panel__content">
         <Grid layout={layout}>
-          {cards
-            .map(({ element, key }): [React.FC, string | number] => [() => element, key])
-            .map(([Element, key]) => <Element key={key} />)
-          }
+          {cards.map(({ element, key, title: cardTitle }) => (
+            <div key={key}>
+              <Card title={cardTitle}>
+                {element}
+              </Card>
+            </div>
+          ))}
         </Grid>
       </div>
       {renderPanelModal()}

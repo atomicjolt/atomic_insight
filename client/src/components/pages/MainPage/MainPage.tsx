@@ -53,15 +53,19 @@ const data = {
 
 const cards = [{
   key: 1,
+  title: 'Discussion Posts',
   element: <IconVisual data={data} />,
 }, {
   key: 2,
+  title: 'Discussion Posts',
   element: <IconVisual data={data} size={IconSize.Half} />,
 }, {
   key: 3,
+  title: 'Discussion Posts',
   element: <IconVisual data={data} size={IconSize.Half} display={IconDisplayType.Comparison} />,
 }, {
   key: 4,
+  title: 'Discussion Posts',
   element: <IconVisual data={data} display={IconDisplayType.Comparison} />,
 }];
 
