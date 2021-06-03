@@ -31,5 +31,5 @@ const cards = [{
 }];
 
 export const Default: Story = () => (
-  <Panel title="Default" layout={layout} items={cards} />
+  <Panel title="Default" layout={layout} cards={cards} />
 );

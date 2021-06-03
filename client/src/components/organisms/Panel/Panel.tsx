@@ -13,19 +13,19 @@ import { ItemList } from '../../molecules/ItemList/ItemList';
 import { Button } from '../../atoms/Button/Button';
 import { Grid } from '../../molecules/Grid/Grid';
 
-interface PanelChildType {
+interface CardType {
   key: number | string;
   element: React.ReactElement;
 }
 
 export interface PanelProps {
-  items: PanelChildType[];
+  cards: CardType[];
   title: string;
   layout: Layout[];
 }
 
 export const Panel: React.FC<PanelProps> = ({
-  items,
+  cards,
   title,
   layout = [],
 }: PanelProps) => {
@@ -65,9 +65,9 @@ export const Panel: React.FC<PanelProps> = ({
       </div>
     );
 
-    const listData = items.map((item) => ({
-      key: item.key,
-      name: `Item ${item.key}`,
+    const listData = cards.map(({ key }) => ({
+      key,
+      name: `Item ${key}`,
     }));
 
     return (
@@ -131,7 +131,12 @@ export const Panel: React.FC<PanelProps> = ({
         </MenuButton>
       </div>
       <div className="panel__content">
-        <Grid layout={layout}>{items.map(({ element }) => element)}</Grid>
+        <Grid layout={layout}>
+          {cards
+            .map(({ element, key }): [React.FC, string | number] => [() => element, key])
+            .map(([Element, key]) => <Element key={key} />)
+          }
+        </Grid>
       </div>
       {renderPanelModal()}
     </div>

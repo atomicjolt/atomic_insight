@@ -124,7 +124,7 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
           </MenuButton>
         </div>
       </div>
-      <Panel title="Pinned" layout={layout} items={cards} />
+      <Panel title="Pinned" layout={layout} cards={cards} />
     </div>
   );
 };
