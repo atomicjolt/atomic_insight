@@ -33,10 +33,10 @@ export const Panel: React.FC<PanelProps> = ({
   const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  function renderListItem(item) {
+  function renderListItem(card: CardType): React.ReactElement {
     return (
       <div className="manage-cards__list-item">
-        <input defaultValue={item.name} />
+        <input defaultValue={`Item ${card.key}`} />
         <div>
           <button>
             <i className="material-icons-outlined">edit</i>
@@ -65,11 +65,6 @@ export const Panel: React.FC<PanelProps> = ({
       </div>
     );
 
-    const listData = cards.map(({ key }) => ({
-      key,
-      name: `Item ${key}`,
-    }));
-
     return (
       <Modal
         className="manage-cards__modal"
@@ -80,7 +75,7 @@ export const Panel: React.FC<PanelProps> = ({
         onSave={() => setModalIsOpen(false)}
         onCancel={() => setModalIsOpen(false)}
       >
-        <ItemList data={listData} renderItem={renderListItem} />
+        <ItemList data={cards} renderItem={renderListItem} />
       </Modal>
     );
   }
