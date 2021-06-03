@@ -28,11 +28,10 @@ export const Grid: React.FC<GridProps> = ({
   const cardScale = rowHeight / baseCell.height; // Ratio of height / standard height
 
   // Formated layout
-  const fLayout = layout.map((card) => {
-    const fCard = card;
-    fCard.i = String(fCard.i);
-    return fCard;
-  }) ?? undefined;
+  const fLayout = layout.map((card) => ({
+    ...card,
+    i: `${card.i}`,
+  }));
 
   return (
     <GridLayout
@@ -45,7 +44,7 @@ export const Grid: React.FC<GridProps> = ({
       margin={[16, 16]}
       layouts={{ lg: fLayout, md: fLayout, sm: fLayout, xs: fLayout, xxs: fLayout }}
       containerPadding={[0, 0]}
-      onWidthChange={(width, margin, cols) => {
+      onWidthChange={(width: number, margin: [number, number], cols: number): void => {
         // Calculates card height based on card width
         const cardWidth = (width - (margin[0] * (cols - 1))) / cols;
         const cardHeight = cardWidth * cardRatio;
