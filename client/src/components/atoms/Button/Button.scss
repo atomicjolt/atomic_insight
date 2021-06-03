@@ -1,3 +1,5 @@
+@use 'src/styles/utils' as *;
+
 .btn {
   position: relative;
   display: flex;
@@ -11,20 +13,23 @@
   border-radius: 5px;
   margin: 0;
 
-  background-color: #F3F4F6;
-  color: #374151;
+  background: $gray-2;
+  color: $gray-8;
 
   &--primary {
-    background-color: #1a8bac;
-    color: white;
+    background: $aqua;
+    color: $white;
   }
 
-  &--light {
-    background-color: #F9FAFB;
+  &--white {
+    background: $white;
+    &:hover {
+      background: $white;
+    }
   }
 
   &--border {
-    border: 1px solid #D1D5DB;
+    border: 1px solid $gray-4;
   }
 
   &:not(&--icon) {

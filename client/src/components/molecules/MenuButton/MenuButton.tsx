@@ -2,8 +2,6 @@ import React from 'react';
 
 import './MenuButton.scss';
 
-export interface MenuButtonProps extends React.PropsWithChildren<any> {}
-
-export const MenuButton = ({ children } : MenuButtonProps) => {
+export const MenuButton: React.FC = ({ children }: React.PropsWithChildren<Record<string, unknown>>) => {
   return <div className="menu-btn">{children}</div>;
 };

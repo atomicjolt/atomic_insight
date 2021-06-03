@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default (defaultValue) => {
+export default (defaultValue: boolean): [boolean, (boolean) => void] => {
   const [isOpen, setIsOpen] = useState(defaultValue);
 
   useEffect(() => {

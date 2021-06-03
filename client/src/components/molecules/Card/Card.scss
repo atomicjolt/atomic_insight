@@ -1,68 +1,87 @@
-.grid-card {
-  background: white;
-  height: 100%;
+@use 'src/styles/utils' as *;
+
+.card {
+  box-sizing: border-box;
   width: 100%;
+  height: 100%;
+  padding: 1em;
+  background: $white;
   border-radius: 5px;
   box-shadow: 0 0 5px #cbcbcb;
-  border: 1px solid #d1d5db;
-  padding: 16px;
-  box-sizing: border-box;
+  border: 1px solid $gray-4;
   display: flex;
   flex-direction: column;
+  font-size: calc(var(--card-scale, 1) * 16px);
+  overflow: hidden;
+
   &:hover {
-    border: 1px solid #9ca3af;
+    border: 1px solid $gray-5;
     .card-header {
       .card-impact {
         display: none;
       }
       .card-buttons {
-        display: flex;
+        display: grid;
       }
     }
   }
   .card-header {
     position: relative;
     display: flex;
-    padding: 5px 0;
-    width: 100%;
     align-content: center;
     align-items: center;
+    width: 100%;
+    padding-bottom: 0.5em;
     .title {
       padding: 0;
       margin: 0;
+      color: $gray-9;
     }
     .card-impact {
       position: absolute;
-      right: 0;
+      top: -0.25em;
+      right: -0.25em;
       margin-top: auto;
       .impact-title {
+        color: $gray-9;
         position: relative;
+        padding: 0.375em 0.5em;
         margin: auto auto;
-        background: #e3f5ff;
-        padding: 5px;
-        border-radius: 5px;
+        background: $light-blue;
+        border-radius: 3px;
         &.impact-low {
-          background: #f3f4f6;
+          background: $gray-2;
         }
       }
     }
     .card-buttons {
       position: absolute;
-      right: 0;
+      top: -0.25em;
+      right: -0.25em;
       display: none;
-      justify-content: space-between;
+      grid-auto-flow: column;
+      grid-gap: 0.25em;
+      background: $white;
+      border-radius: 3px;
+      padding: 0.2em;
       i {
         height: 10%;
+        &.pin {
+          position: relative;
+          bottom: -1px;
+          transform: rotate(45deg);
+        }
       }
       button {
+        padding: 0;
         margin: 0;
         background: none;
-        font-size: 1em;
         border: none;
         grid-auto-flow: column;
         grid-gap: 1em;
         align-items: center;
-        color: #4b5563;
+        color: $gray-7;
+
         &:active {
           color: initial;
         }
@@ -72,6 +91,5 @@
   .card-contents {
     flex: 1;
     padding-top: 5px;
-    box-sizing: border-box;
   }
 }

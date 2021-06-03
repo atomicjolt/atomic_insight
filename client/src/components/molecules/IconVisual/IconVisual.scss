@@ -1,3 +1,5 @@
+@use 'src/styles/utils' as *;
+
 @mixin flex-column {
   display: flex;
   flex: 1;
@@ -10,13 +12,13 @@
   height: 11.25em;
 
   padding: 16px;
-  font-size: calc(var(--card-scale, 1) * 16px);
-  background: white;
+  font-size: 1em;
+  background: $white;
   border-radius: 5px;
   box-shadow: 0 0 5px #cbcbcb;
 
   &.size--half {
-    height: 3.5em;
+    height: 5em;
   }
 }
 
@@ -25,7 +27,7 @@
   @include flex-column;
 
   height: 100%;
-  font-size: calc(var(--card-scale, 1) * 16px);
+  font-size: 1em;
 
   p,
   h1,
@@ -35,18 +37,18 @@
 
   p {
     font-size: 1em;
-    color: #4b5563;
+    color: $gray-7;
   }
 
   h1 {
     font-size: 3em;
-    color: #374151;
+    color: $gray-8;
   }
 
   h4 {
     font-size: 1.1em;
     font-weight: normal;
-    color: #6b7280;
+    color: $gray-6;
   }
 
   #{$block}.size--half &__feedback {
@@ -82,8 +84,8 @@
     justify-content: center;
     width: 4.5em;
     height: 4.5em;
-    color: #4b5563;
-    background: #f3f4f6;
+    color: $gray-7;
+    background: $gray-2;
     border-radius: 3px;
 
     i {

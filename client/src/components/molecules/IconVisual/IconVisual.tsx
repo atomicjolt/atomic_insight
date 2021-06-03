@@ -51,7 +51,7 @@ export interface IconVisualProps {
       };
 }
 
-export const IconVisual = ({
+export const IconVisual: React.FC<IconVisualProps> = ({
   display = IconDisplayType.Value,
   size = IconSize.Normal,
   data = defaultData,

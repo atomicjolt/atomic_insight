@@ -1,16 +1,20 @@
 import React from 'react';
 import './Button.scss';
 
-export interface ButtonProps extends React.PropsWithChildren<any> {
+export type ButtonProps = React.PropsWithChildren<{
   onClick?: () => void;
-  className?: string
-}
+  buttonType?: string
+}>
 
-export const Button = ({ onClick, className, children }: ButtonProps) => {
+export const Button: React.FC<ButtonProps> = ({
+  onClick,
+  buttonType,
+  children,
+}: ButtonProps) => {
   return (
     <button
       type="button"
-      className={`btn ${className}`}
+      className={`btn ${buttonType}`}
       onClick={onClick}
     >
       {children}
