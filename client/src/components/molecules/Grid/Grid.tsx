@@ -28,7 +28,7 @@ export const Grid: React.FC<GridProps> = ({
   const cardScale = rowHeight / baseCell.height; // Ratio of height / standard height
 
   // Formated layout
-  const fLayout = layout.map((card) => ({
+  const fLayout: Layout[] = layout.map((card) => ({
     ...card,
     i: `${card.i}`,
   }));
