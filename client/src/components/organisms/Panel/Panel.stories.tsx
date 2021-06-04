@@ -19,19 +19,19 @@ const layout = [
 const cards = [{
   key: 1,
   title: 'Card 1',
-  element: <Card title="Card 1" />
+  element: <div />
 }, {
   key: 2,
   title: 'Card 2',
-  element: <Card title="Card 2" />
+  element: <div />
 }, {
   key: 3,
   title: 'Card 3',
-  element: <Card title="Card 3" />
+  element: <div />
 }, {
   key: 4,
   title: 'Card 4',
-  element: <Card title="Card 4" />
+  element: <div />
 }];
 
 export const Default: Story = () => (
