@@ -2,7 +2,6 @@ import React from 'react';
 import { Story } from '@storybook/react';
 
 import { Panel } from './Panel';
-import { Card } from '../../molecules/Card/Card';
 
 export default {
   title: 'Organisms/Panel',
