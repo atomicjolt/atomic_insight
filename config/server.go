@@ -13,6 +13,9 @@ type ServerConfig struct {
 	ServerPort       string `json:"server_port"`
 	DbUser           string `json:"db_user"`
 	DbHost           string `json:"db_host"`
+	DbPassword       string `json:"db_password"`
+	SessionSslMode   string `json:"session_ssl_mode"`
+	SessionSecret    []byte `json:"session_secret"`
 	Database         string `json:"database"`
 	ClientId         string `json:"client_id"`
 	AuthClientSecret []byte `json:"auth0_client_secret"`
@@ -36,6 +39,11 @@ func GetServerConfig() *ServerConfig {
 			log.Fatal("Server config not found for env: " + env)
 		}
 		cachedServerConfig = &selectedConfig
+
+		base64.StdEncoding.Decode(
+			cachedServerConfig.SessionSecret,
+			cachedServerConfig.SessionSecret,
+		)
 
 		base64.StdEncoding.Decode(
 			cachedServerConfig.AuthClientSecret,
