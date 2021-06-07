@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"github.com/atomicjolt/atomic_insight/model"
 
 	"github.com/go-pg/pg/v10"
 )
@@ -48,4 +49,27 @@ func populateRepos(base *BaseRepo) *Repo {
 		Application:                 &ApplicationRepo{BaseRepo: base},
 		DiscussionEntryCreatedEvent: &DiscussionEntryCreatedEventRepo{BaseRepo: base},
 	}
+}
+
+func (r *Repo) InsertEvent(event model.Event) error {
+	return NewTransaction(r.ApplicationInstance.DB.(*pg.DB), func(txRepo *Repo) error {
+		err := txRepo.DiscussionEntryCreatedEvent.Insert(event)
+		if err != nil {
+			return err
+		}
+
+		event.SetChildFks()
+
+		err = txRepo.DiscussionEntryCreatedEvent.Insert(event.GetMetadata())
+		if err != nil {
+			return err
+		}
+
+		err = txRepo.DiscussionEntryCreatedEvent.Insert(event.GetBody())
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 }
