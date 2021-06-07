@@ -2,23 +2,23 @@ package middleware
 
 import (
 	"context"
-	"github.com/lestrrat-go/jwx/jwa"
 	"net/http"
 
 	"github.com/lestrrat-go/jwx/jwt"
 )
 
 //See docs for context.WithValue
-type contextKey int
+type JwtContextKey int
 
-const decodedJwtKey contextKey = 0
+const (
+	EventsContextKey JwtContextKey = iota
+	LtiLaunchParamsKey
+)
 
-func NewJwtValidator(jwtKey string, next http.Handler) http.Handler {
+func NewJwtValidator(next http.Handler, key JwtContextKey, options ...jwt.ParseOption) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, err := jwt.ParseRequest(r,
-			jwt.WithFormKey(jwtKey),
-			jwt.WithValidate(true),
-			jwt.WithVerify(jwa.HS256, []byte("shared_secret")),
+			options...,
 		)
 
 		if err != nil {
@@ -32,12 +32,16 @@ func NewJwtValidator(jwtKey string, next http.Handler) http.Handler {
 			panic(err)
 		}
 
-		newCtx := context.WithValue(r.Context(), decodedJwtKey, claims)
+		newCtx := context.WithValue(r.Context(), key, claims)
 		newReq := r.WithContext(newCtx)
 		next.ServeHTTP(w, newReq)
 	})
 }
 
-func GetJwtClaims(r *http.Request) map[string]interface{} {
-	return r.Context().Value(decodedJwtKey).(map[string]interface{})
+func GetEventsPayload(r *http.Request) map[string]interface{} {
+	return r.Context().Value(EventsContextKey).(map[string]interface{})
+}
+
+func GetLtiLaunchParams(r *http.Request) map[string]interface{} {
+	return r.Context().Value(LtiLaunchParamsKey).(map[string]interface{})
 }

@@ -10,7 +10,7 @@ func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "POST":
-			jwtData := middleware.GetJwtClaims(r)
+			jwtData := middleware.GetEventsPayload(r)
 			events := jwtData["events"].([]interface{})
 
 			for _, event := range events {
