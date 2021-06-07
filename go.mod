@@ -11,9 +11,9 @@ require (
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/lestrrat-go/jwx v1.2.0
 	github.com/lib/pq v1.10.2 // indirect
+	github.com/mitchellh/mapstructure v1.4.1
 	github.com/robinjoseph08/go-pg-migrations/v3 v3.0.0
 	github.com/spacemonkeygo/openssl v0.0.0-20181017203307-c2dcc5cca94a
-	github.com/stretchr/testify v1.7.0
 	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/sys v0.0.0-20210511113859-b0526f3d8744 // indirect
 )
