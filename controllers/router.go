@@ -7,10 +7,6 @@ import (
 	"github.com/atomicjolt/atomic_insight/repo"
 	"github.com/atomicjolt/atomic_insight/store"
 	"github.com/gorilla/mux"
-	"github.com/lestrrat-go/jwx/jwa"
-	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/lestrrat-go/jwx/jwt"
-	"log"
 )
 
 func NewRouter() *mux.Router {
@@ -20,26 +16,15 @@ func NewRouter() *mux.Router {
 		Store: store.NewStore(),
 	}
 
-	eventsHandler := controllerContext.NewEventsHandler()
-	handler := middleware.NewJwtValidator(eventsHandler,
-		middleware.EventsContextKey,
-		jwt.WithFormKey("events"),
-		jwt.WithValidate(true),
-		jwt.WithVerify(jwa.HS256, []byte("shared_secret")),
-	)
-	router.Handle("/events", handler)
+	eventsHandler := middleware.EventsJwtValidator(controllerContext.NewEventsHandler())
+	router.Handle("/events", eventsHandler)
 
 	router.Handle("/graphql", controllerContext.NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
 
 	router.HandleFunc("/oidc_init", controllerContext.NewOpenIDInitHandler())
 
-	ltiHandler := middleware.NewJwtValidator(controllerContext.NewLtiLaunchHandler(),
-		middleware.LtiLaunchParamsKey,
-		jwt.WithFormKey("state"),
-		jwt.WithValidate(true),
-		jwt.WithKeySet(getKeySet()),
-	)
+	ltiHandler := middleware.LtiJwtValidator(controllerContext.NewLtiLaunchHandler())
 	router.Handle("/lti_launches", ltiHandler).Methods("GET", "POST")
 
 	router.HandleFunc("/jwks", controllerContext.NewJwksController())
@@ -51,24 +36,4 @@ func NewRouter() *mux.Router {
 	}
 
 	return router
-}
-
-func getKeySet() jwk.Set {
-	authClientSecret := config.GetServerConfig().AuthClientSecret
-
-	authKey := jwk.NewSymmetricKey()
-
-	err := authKey.FromRaw(authClientSecret)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	authKey.Set(jwk.AlgorithmKey, jwa.HS512)
-	authKey.Set(jwk.KeyIDKey, "atomic_insight_auth0")
-
-	keyset := jwk.NewSet()
-	keyset.Add(authKey)
-
-	return keyset
 }

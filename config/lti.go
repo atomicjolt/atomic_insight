@@ -2,6 +2,8 @@ package config
 
 import (
 	"encoding/json"
+	"github.com/lestrrat-go/jwx/jwa"
+	"github.com/lestrrat-go/jwx/jwk"
 	"log"
 
 	"github.com/atomicjolt/atomic_insight/lib"
@@ -54,4 +56,26 @@ func GetLtiAdvantageConfig() LtiAdvantageConfig {
 	}
 
 	return ltiAdvantageConfig
+}
+
+func LtiKeySet() jwk.Set {
+	authClientSecret := GetServerConfig().AuthClientSecret
+	authKey := jwk.NewSymmetricKey()
+
+	err := authKey.FromRaw(authClientSecret)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := authKey.Set(jwk.AlgorithmKey, jwa.HS512); err != nil {
+		log.Fatal(err)
+	}
+	if err := authKey.Set(jwk.KeyIDKey, "atomic_insight_auth0"); err != nil {
+		log.Fatal(err)
+	}
+
+	keyset := jwk.NewSet()
+	keyset.Add(authKey)
+
+	return keyset
 }
