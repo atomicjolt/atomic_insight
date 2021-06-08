@@ -24,7 +24,7 @@ func NewRouter() *mux.Router {
 		jwt.WithValidate(true),
 		jwt.WithVerify(jwa.HS256, []byte("shared_secret")),
 	)
-	router.Handle("/events", handler)
+	router.Handle("/events", handler).Methods("POST")
 
 	router.Handle("/graphql", controllerContext.NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
