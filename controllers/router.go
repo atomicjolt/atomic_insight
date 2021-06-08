@@ -5,15 +5,13 @@ import (
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/middleware"
 	"github.com/atomicjolt/atomic_insight/repo"
-	"github.com/atomicjolt/atomic_insight/store"
 	"github.com/gorilla/mux"
 )
 
 func NewRouter() *mux.Router {
 	router := mux.NewRouter()
 	controllerContext := &ControllerContext{
-		Repo:  repo.NewRepo(),
-		Store: store.NewStore(),
+		Repo: repo.NewRepo(),
 	}
 
 	eventsHandler := middleware.EventsJwtValidator(controllerContext.NewEventsHandler())

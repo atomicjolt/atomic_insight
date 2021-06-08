@@ -4,16 +4,12 @@ go 1.15
 
 require (
 	github.com/99designs/gqlgen v0.13.0
-	github.com/antonlindstrom/pgstore v0.0.0-20200229204646-b08ebf1105e0
 	github.com/go-pg/pg/v10 v10.8.0
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
-	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/lestrrat-go/jwx v1.2.0
-	github.com/lib/pq v1.10.2 // indirect
 	github.com/robinjoseph08/go-pg-migrations/v3 v3.0.0
 	github.com/spacemonkeygo/openssl v0.0.0-20181017203307-c2dcc5cca94a
-	github.com/stretchr/testify v1.7.0
 	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/sys v0.0.0-20210511113859-b0526f3d8744 // indirect
 )
