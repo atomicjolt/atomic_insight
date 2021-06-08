@@ -18,7 +18,7 @@ type eventsPayload struct {
 func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var payload eventsPayload
-		err := mapstructure.Decode(middleware.GetJwtClaims(r), &payload)
+		err := mapstructure.Decode(middleware.GetEventsPayload(r), &payload)
 		if err != nil {
 			panic(err)
 		}

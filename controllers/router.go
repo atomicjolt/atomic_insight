@@ -19,7 +19,11 @@ func NewRouter() *mux.Router {
 	}
 
 	eventsHandler := controllerContext.NewEventsHandler()
-	handler := middleware.NewJwtValidator("events", eventsHandler)
+	handler := middleware.NewJwtValidator(eventsHandler, middleware.EventsContextKey,
+		jwt.WithFormKey("events"),
+		jwt.WithValidate(true),
+		jwt.WithVerify(jwa.HS256, []byte("shared_secret")),
+	)
 	router.Handle("/events", handler).Methods("POST")
 
 	router.Handle("/graphql", controllerContext.NewGraphqlHandler())
