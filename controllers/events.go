@@ -33,7 +33,7 @@ func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 				panic(err)
 			}
 
-			if err = c.Repo.InsertEvent(eventModel); err != nil {
+			if err = c.Repo.Event.InsertEvent(eventModel); err != nil {
 				panic(err)
 			}
 		}
