@@ -6,6 +6,7 @@ import { Grid } from './Grid';
 import { Card } from '../Card/Card';
 
 export default {
+  title: 'Molecules/Grid',
   component: Grid,
 };
 
