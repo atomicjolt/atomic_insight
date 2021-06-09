@@ -7,8 +7,6 @@ import (
 	"github.com/atomicjolt/atomic_insight/repo"
 	"github.com/atomicjolt/atomic_insight/store"
 	"github.com/gorilla/mux"
-	"github.com/lestrrat-go/jwx/jwa"
-	"github.com/lestrrat-go/jwx/jwt"
 )
 
 func NewRouter() *mux.Router {
@@ -18,19 +16,17 @@ func NewRouter() *mux.Router {
 		Store: store.NewStore(),
 	}
 
-	eventsHandler := controllerContext.NewEventsHandler()
-	handler := middleware.NewJwtValidator(eventsHandler, middleware.EventsContextKey,
-		jwt.WithFormKey("events"),
-		jwt.WithValidate(true),
-		jwt.WithVerify(jwa.HS256, []byte("shared_secret")),
-	)
-	router.Handle("/events", handler).Methods("POST")
+	eventsHandler := middleware.EventsJwtValidator(controllerContext.NewEventsHandler())
+	router.Handle("/events", eventsHandler).Methods("POST")
 
 	router.Handle("/graphql", controllerContext.NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
 
-	router.HandleFunc("/lti_launches", controllerContext.NewLtiLaunchHandler())
 	router.HandleFunc("/oidc_init", controllerContext.NewOpenIDInitHandler())
+
+	ltiHandler := middleware.LtiJwtValidator(controllerContext.NewLtiLaunchHandler())
+	router.Handle("/lti_launches", ltiHandler).Methods("GET", "POST")
+
 	router.HandleFunc("/jwks", controllerContext.NewJwksController())
 
 	if config.DetermineEnv() == "development" {
