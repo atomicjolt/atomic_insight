@@ -42,11 +42,15 @@ export interface CardData {
   key: number;
   title?: string;
   pinned?: boolean;
-  metric?: OptionKey; // TODO: create metric type
-  visual?: React.FC; // TODO: create visual type
+  metric?: OptionKey;         // TODO: create metric type
+  visual?: React.FC;          // TODO: create visual type
   impact?: CardImpact;
   display?: CardDisplay;
   size?: CardSize;
+  metricData?: {              // The `metricData` field is temporary
+    value: number;            // and will eventually come from a metric model
+    comparisonValue: number;
+  }
 }
 
 const defaultData: CardData = {
@@ -58,6 +62,10 @@ const defaultData: CardData = {
   impact: CardImpact.Low,
   display: CardDisplay.Value,
   size: CardSize.Normal,
+  metricData: {
+    value: 0,
+    comparisonValue: 1,
+  }
 };
 
 export type CardProps = React.PropsWithChildren<{
@@ -77,6 +85,7 @@ export const Card: React.FC<CardProps> = ({
   const visualProps = {
     display: data.display,
     size: data.size,
+    data: data.metricData,
   } as React.Attributes;
 
   const impactText = data.impact

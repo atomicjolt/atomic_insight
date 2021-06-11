@@ -76,7 +76,7 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
     return null;
   }
 
-  const cardData = loading ? {
+  const metricData = loading ? {
     value: 0,
     comparisonValue: 1
   } : {
@@ -88,21 +88,25 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
     key: 1,
     title: 'Discussion Posts',
     visual: IconVisual,
+    metricData,
   }, {
     key: 2,
     title: 'Discussion Posts',
     visual: IconVisual,
     size: CardSize.Half,
+    metricData,
   }, {
     key: 3,
     title: 'Discussion Posts',
     visual: IconVisual,
     size: CardSize.Half,
     display: CardDisplay.Comparison,
+    metricData,
   }, {
     key: 4,
     title: 'Discussion Posts',
-    display: CardDisplay.Comparison
+    display: CardDisplay.Comparison,
+    metricData,
   }];
 
   return (
@@ -153,7 +157,7 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
           </MenuButton>
         </div>
       </div>
-      <Panel title="Pinned" layout={layout} cards={cards} />
+      {loading ? null : <Panel title="Pinned" layout={layout} cards={cards} />}
     </div>
   );
 };
