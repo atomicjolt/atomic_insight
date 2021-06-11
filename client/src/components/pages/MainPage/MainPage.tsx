@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
+
 import { Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import './MainPage.scss';
@@ -45,32 +47,14 @@ const layout: Layout[] = [
   { i: '4', x: 2, y: 0, w: 1, h: 2 },
 ];
 
-// const data = {
-//   value: 12,
-//   comparisonValue: 1.08,
-// };
 
-const cards = [{
-  key: 1,
-  title: 'Discussion Posts',
-  visual: IconVisual,
-}, {
-  key: 2,
-  title: 'Discussion Posts',
-  visual: IconVisual,
-  size: CardSize.Half,
-}, {
-  key: 3,
-  title: 'Discussion Posts',
-  visual: IconVisual,
-  size: CardSize.Half,
-  display: CardDisplay.Comparison,
-}, {
-  key: 4,
-  title: 'Discussion Posts',
-  display: CardDisplay.Comparison
-}];
-
+const dataQuery = gql`
+  query DataQuery {
+    discussionEntryCreatedEvents {
+      count
+    }
+  }
+`;
 
 export interface MainPageProps {
   title: string;
@@ -82,6 +66,44 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
   const [selectedComparison, setSelectedComparison] = useState(
     ComparisonOption.Weekly
   );
+
+  const { loading, error, data } = useQuery(dataQuery);
+
+  if (error) {
+    // Should have an error banner component or something
+    // eslint-disable-next-line no-console
+    console.error(error.message);
+    return null;
+  }
+
+  const cardData = loading ? {
+    value: 0,
+    comparisonValue: 1
+  } : {
+    value: data.discussionEntryCreatedEvents.count,
+    comparisonValue: 1.08,
+  };
+
+  const cards = [{
+    key: 1,
+    title: 'Discussion Posts',
+    visual: IconVisual,
+  }, {
+    key: 2,
+    title: 'Discussion Posts',
+    visual: IconVisual,
+    size: CardSize.Half,
+  }, {
+    key: 3,
+    title: 'Discussion Posts',
+    visual: IconVisual,
+    size: CardSize.Half,
+    display: CardDisplay.Comparison,
+  }, {
+    key: 4,
+    title: 'Discussion Posts',
+    display: CardDisplay.Comparison
+  }];
 
   return (
     <div className="main-page">

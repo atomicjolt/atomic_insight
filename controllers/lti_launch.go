@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/atomicjolt/atomic_insight/config"
+	"github.com/atomicjolt/atomic_insight/middleware"
 	"github.com/atomicjolt/atomic_insight/webpack"
 
 	"net/http"
@@ -41,35 +43,23 @@ func index(w http.ResponseWriter) error {
 
 func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var state string
+		payload := middleware.GetLtiLaunchParams(r)
+		nonce, ok := payload["nonce"]
 
-		switch r.Method {
-		case "GET":
-			query := r.URL.Query()
-
-			state = query.Get("state")
-		case "POST":
-			if err := r.ParseForm(); err != nil {
-				panic(err)
-			}
-
-			state = r.FormValue("state")
-		default:
-			panic("LTI Launch Controller cannot handle this type of request.")
+		if !ok {
+			panic(fmt.Errorf("expected nonce in OIDC claims"))
 		}
 
-		isValid, err := c.Repo.OpenIdState.ValidateStateOf(state)
+		valid, err := c.Repo.OpenIdState.ValidateStateOf(nonce.(string))
 
 		if err != nil {
 			panic(err)
+		} else if !valid {
+			panic(fmt.Errorf("OIDC token could not be validated"))
 		}
 
-		if isValid {
-			if err = index(w); err != nil {
-				panic(err)
-			}
-		} else {
-			panic("OIDC token could not be validated.")
+		if err := index(w); err != nil {
+			panic(err)
 		}
 	}
 }

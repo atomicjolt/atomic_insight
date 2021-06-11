@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-
 	"github.com/go-pg/pg/v10"
 )
 
@@ -16,6 +15,7 @@ type Repo struct {
 	LtiInstall                  *LtiInstallRepo
 	LtiLaunch                   *LtiLaunchRepo
 	Application                 *ApplicationRepo
+	Event                       *EventRepo
 	DiscussionEntryCreatedEvent *DiscussionEntryCreatedEventRepo
 }
 
@@ -46,6 +46,7 @@ func populateRepos(base *BaseRepo) *Repo {
 		LtiInstall:                  &LtiInstallRepo{BaseRepo: base},
 		LtiLaunch:                   &LtiLaunchRepo{BaseRepo: base},
 		Application:                 &ApplicationRepo{BaseRepo: base},
+		Event:                       &EventRepo{BaseRepo: base},
 		DiscussionEntryCreatedEvent: &DiscussionEntryCreatedEventRepo{BaseRepo: base},
 	}
 }

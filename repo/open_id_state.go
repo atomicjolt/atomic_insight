@@ -2,6 +2,7 @@ package repo
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/atomicjolt/atomic_insight/config"
@@ -86,53 +87,25 @@ func (r *OpenIdStateRepo) IssueToken() (string, error) {
 	return string(signed), nil
 }
 
-func (r *OpenIdStateRepo) ValidateStateOf(payload string) (bool, error) {
-	authClientSecret := config.GetServerConfig().AuthClientSecret
-
-	authKey := jwk.NewSymmetricKey()
-
-	err := authKey.FromRaw(authClientSecret)
-
-	if err != nil {
-		return false, err
-	}
-
-	authKey.Set(jwk.AlgorithmKey, jwa.HS512)
-	authKey.Set(jwk.KeyIDKey, "atomic_insight_auth0")
-
-	keyset := jwk.NewSet()
-	keyset.Add(authKey)
-
-	token, err := jwt.Parse([]byte(payload), jwt.WithKeySet(keyset))
-
-	if err != nil {
-		return false, err
-	}
-
-	nonce, ok := token.Get("nonce")
-
-	if !ok {
-		return false, errors.New("Nonce not found in OpenID Connect response state.")
-	}
-
+func (r *OpenIdStateRepo) ValidateStateOf(nonce string) (bool, error) {
 	openIdState := new(model.OpenIdState)
 
-	err = r.DB.Model(openIdState).Where("nonce = ?", nonce).Select()
+	err := r.DB.Model(openIdState).Where("nonce = ?", nonce).Select()
 
 	if err != nil {
-		return false, errors.New("Nonce from OpenID response is unknown.")
+		return false, errors.New("nonce from OpenID response is unknown")
 	}
 
 	res, err := r.DB.Model(openIdState).Where("nonce = ?", nonce).Delete()
 
+	if err != nil {
+		return false, err
+	}
+
 	if res.RowsAffected() != 1 {
 		// This may look like a test, but if the nonce isn't deleted we open the user
 		// to a replay attack.
-		return false, errors.New("Expected to delete one OpenIdState, %d deleted instead.")
-	}
-
-	if err != nil {
-		return false, err
+		return false, fmt.Errorf("expected to delete one OpenIdState, deleted %d instead", res.RowsAffected())
 	}
 
 	return true, nil
