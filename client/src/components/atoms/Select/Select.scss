@@ -2,84 +2,106 @@
 
 .select {
   $block: &;
-  width: 200px;
   position: relative;
+  min-width: 200px;
 
   &__placeholder {
-    visibility: hidden;
     box-sizing: border-box;
-    border: $gray-4 1px solid;
     padding: 10px 12px;
+    visibility: hidden;
+    border: $gray-4 1px solid;
     h4 {
       margin: 0;
     }
   }
 
   &__container {
-    box-sizing: border-box;
     position: absolute;
     top: 0;
+    z-index: 1;
+    box-sizing: border-box;
     display: flex;
     flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+    background: $white;
     border: $gray-4 1px solid;
     border-radius: 5px;
-    background: $white;
-    width: 200px;
-    z-index: 1;
+    bottom: 0;
+
+    > div {
+      width: 100%
+    }
 
     #{$block}.active & {
+      bottom: auto;
       box-shadow: 0 1px 10px rgba(0,0,0,0.2);
+    }
+
+    #{$block}:not(.active) &:focus-within {
+      border-color: $gray-5;
     }
   }
   
   i {
     position: absolute;
-    right: 8px;
     top: 8px;
+    right: 8px;
     pointer-events: none;
+    color: $gray-6;
   }
 
   &__options-container {
     display: flex;
-    flex-direction: column;
     flex: 1;
+    flex-direction: column;
+
+    #{$block}.active & {
+      overflow-y: scroll;
+    }
+
+    #{$block}.searchable:not(.active) & {
+      display: none;
+    }
+
+    #{$block}.searchable & {
+      border-top: 1px solid $gray-4;
+    }
   }
 
   &__option {
+    $option-block: &;
     box-sizing: border-box;
+    flex: 1;
     padding: 10px 12px;
     margin: 0;
+    font-size: 1em;
+    color: $gray-8;
     text-align: start;
     background: none;
     border: none;
     transition: all 0.1s;
-    font-size: 1em;
-    flex: 1;
-    color: $gray-8;
 
     &__title {
       margin: 0;
-      #{$block}:not(.active) & {
+      #{$block}:not(.active) &, #{$option-block}.no-subtitle & {
         font-weight: normal;
       }
     }
 
     &__subtitle {
-      font-weight: normal;
       margin: 0;
       margin-top: 4px;
+      font-weight: normal;
 
-      #{$block}:not(.active) & {
+      #{$block}:not(.active) &, #{$option-block}.no-subtitle & {
         display: none;
       }
     }
 
-    #{$block}:not(.active) &:not(:first-child) {
-      display: none;
-    }
-
-    &:hover {
+    #{$block}.active &:hover, #{$block}.active &:focus {
       background: $gray-2;
+      outline: none;
     }
 
     &:active {
@@ -87,7 +109,33 @@
     }
   }
 
+  &__input {
+    box-sizing: border-box;
+    padding: 10px 12px;
+    margin: 0;
+    font-size: 1em;
+    background: $white;
+    border: none;
+    color: $gray-8;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
   &.active {
     height: unset;
   }
+
+  &.searchable {
+    i {
+      font-size: 1.3em;
+      right: 10px;
+    }
+  }
+}
+
+.select__label {
+  margin-bottom: 0.5em;
 }

@@ -36,3 +36,16 @@ export const Default: Story<SelectProps> = () => {
     />
   );
 };
+
+export const Searchable: Story<SelectProps> = () => {
+  const [selectedKey, setSelectedKey] = useState(1);
+
+  return (
+    <Select
+      selectedKey={selectedKey}
+      onChange={setSelectedKey}
+      options={options}
+      searchable={true}
+    />
+  );
+};
