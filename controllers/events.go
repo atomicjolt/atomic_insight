@@ -6,8 +6,10 @@ import (
 	"net/http"
 )
 
-func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
+func NewEventsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		controllerResources := middleware.GetResources(r.Context())
+
 		switch r.Method {
 		case "POST":
 			jwtData := middleware.GetEventsPayload(r)
@@ -32,7 +34,9 @@ func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 					}
 
 					payloadStr := payload.(string)
-					err := c.Repo.DiscussionEntryCreatedEvent.CreateFrom([]byte(payloadStr))
+					err := controllerResources.Repo.
+						DiscussionEntryCreatedEvent.
+						CreateFrom([]byte(payloadStr))
 					if err != nil {
 						panic(err)
 					}

@@ -5,7 +5,6 @@ import (
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/middleware"
 	"github.com/atomicjolt/atomic_insight/webpack"
-
 	"net/http"
 	"path"
 	"text/template"
@@ -41,8 +40,9 @@ func index(w http.ResponseWriter) error {
 	return view.Execute(w, state)
 }
 
-func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func NewLtiLaunchHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllerResources := middleware.GetResources(r.Context())
 		payload := middleware.GetLtiLaunchParams(r)
 		nonce, ok := payload["nonce"]
 
@@ -50,7 +50,7 @@ func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 			panic(fmt.Errorf("expected nonce in OIDC claims"))
 		}
 
-		valid, err := c.Repo.OpenIdState.ValidateStateOf(nonce.(string))
+		valid, err := controllerResources.Repo.OpenIdState.ValidateStateOf(nonce.(string))
 
 		if err != nil {
 			panic(err)
@@ -61,5 +61,5 @@ func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 		if err := index(w); err != nil {
 			panic(err)
 		}
-	}
+	})
 }

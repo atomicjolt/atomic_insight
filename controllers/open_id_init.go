@@ -2,19 +2,21 @@ package controllers
 
 import (
 	"github.com/atomicjolt/atomic_insight/lib"
+	"github.com/atomicjolt/atomic_insight/middleware"
 	"net/http"
 	"net/url"
 )
 
-func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		var iss, clientId, targetLinkUri, loginHint, ltiMessageHint string
+func NewOpenIDInitHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllerResources := middleware.GetResources(r.Context())
+		ltiInstall := middleware.GetLtiInstall(r.Context())
+		var clientId, targetLinkUri, loginHint, ltiMessageHint string
 
 		switch r.Method {
 		case "GET":
 			query := r.URL.Query()
 
-			iss = query.Get("iss")
 			clientId = query.Get("client_id")
 			targetLinkUri = query.Get("target_link_uri")
 			loginHint = query.Get("login_hint")
@@ -24,7 +26,6 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 				panic(err)
 			}
 
-			iss = r.FormValue("iss")
 			clientId = r.FormValue("client_id")
 			targetLinkUri = r.FormValue("target_link_uri")
 			loginHint = r.FormValue("login_hint")
@@ -39,16 +40,10 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 			panic(err)
 		}
 
-		ltiInstall, err := c.Repo.LtiInstall.From(iss, clientId)
-
-		if err != nil {
-			panic(err)
-		}
-
 		oidcUrl := ltiInstall.OidcUrl
 		oidcQuery := url.Values{}
 
-		state, err := c.Repo.OpenIdState.IssueToken()
+		state, err := controllerResources.Repo.OpenIdState.IssueToken()
 
 		if err != nil {
 			panic(err)
@@ -66,5 +61,5 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 		oidcQuery.Set("nonce", authNonce)
 
 		http.Redirect(w, r, oidcUrl+"?"+oidcQuery.Encode(), http.StatusSeeOther)
-	}
+	})
 }

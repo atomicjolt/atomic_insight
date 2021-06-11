@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"context"
-	"github.com/atomicjolt/atomic_insight/config"
-	"github.com/lestrrat-go/jwx/jwa"
 	"log"
 	"net/http"
 
+	"github.com/atomicjolt/atomic_insight/config"
+	"github.com/lestrrat-go/jwx/jwa"
 	"github.com/lestrrat-go/jwx/jwt"
 )
 
@@ -16,6 +16,7 @@ type jwtContextKey int
 const (
 	eventsContextKey jwtContextKey = iota
 	ltiLaunchParamsKey
+	ltiLaunchStateKey
 )
 
 func newJwtValidator(next http.Handler, key jwtContextKey, options ...jwt.ParseOption) http.Handler {
@@ -55,6 +56,15 @@ func GetEventsPayload(r *http.Request) map[string]interface{} {
 }
 
 func LtiJwtValidator(next http.Handler) http.Handler {
+	return newJwtValidator(next,
+		ltiLaunchParamsKey,
+		jwt.WithFormKey("state"),
+		jwt.WithValidate(true),
+		jwt.WithKeySet(config.LtiKeySet()),
+	)
+}
+
+func LtiStateDecoder(next http.Handler) http.Handler {
 	return newJwtValidator(next,
 		ltiLaunchParamsKey,
 		jwt.WithFormKey("state"),
