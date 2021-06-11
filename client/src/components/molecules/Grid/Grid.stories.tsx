@@ -3,7 +3,6 @@ import { Layout } from 'react-grid-layout';
 import { Story } from '@storybook/react';
 
 import { Grid } from './Grid';
-import { Card } from '../Card/Card';
 
 export default {
   title: 'Molecules/Grid',

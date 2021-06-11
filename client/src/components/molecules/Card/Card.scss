@@ -2,17 +2,17 @@
 
 .card {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   padding: 1em;
+  overflow: hidden;
+  font-size: calc(var(--card-scale, 1) * 16px);
   background: $white;
+  border: 1px solid $gray-4;
   border-radius: 5px;
   box-shadow: 0 0 5px #cbcbcb;
-  border: 1px solid $gray-4;
-  display: flex;
-  flex-direction: column;
-  font-size: calc(var(--card-scale, 1) * 16px);
-  overflow: hidden;
 
   &:hover {
     border: 1px solid $gray-5;
@@ -43,10 +43,10 @@
       right: -0.25em;
       margin-top: auto;
       .impact-title {
-        color: $gray-9;
         position: relative;
         padding: 0.375em 0.5em;
         margin: auto auto;
+        color: $gray-9;
         background: $light-blue;
         border-radius: 3px;
         &.impact-low {
@@ -59,11 +59,11 @@
       top: -0.25em;
       right: -0.25em;
       display: none;
-      grid-auto-flow: column;
-      grid-gap: 0.25em;
+      padding: 0.2em;
       background: $white;
       border-radius: 3px;
-      padding: 0.2em;
+      grid-auto-flow: column;
+      grid-gap: 0.25em;
       i {
         height: 10%;
         &.pin {
@@ -73,14 +73,14 @@
         }
       }
       button {
+        align-items: center;
         padding: 0;
         margin: 0;
+        color: $gray-7;
         background: none;
         border: none;
         grid-auto-flow: column;
         grid-gap: 1em;
-        align-items: center;
-        color: $gray-7;
 
         &:active {
           color: initial;
@@ -91,5 +91,31 @@
   .card-contents {
     flex: 1;
     padding-top: 5px;
+  }
+}
+
+.edit-card-modal {
+  overflow-y: unset !important;
+  &__grid {
+    padding: 16px 0;
+    display: grid;
+    align-items: flex-end;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'name name name impact'
+      'metric metric metric metric'
+      'visual visual display size';
+    grid-gap: 16px;
+
+    @include stack-top-bottom;
+  }
+
+  .select {
+    width: unset;
+    min-width: unset;
+    &__options-container {
+      max-height: 140px;  
+    }
   }
 }
