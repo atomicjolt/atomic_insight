@@ -1,0 +1,15 @@
+.label {
+  display: grid;
+  grid-gap: 0.5em;
+
+  &.display--inline {
+    grid-auto-flow: column;
+    align-items: center;
+  };
+
+  &.display--none {
+    p {
+      display: none;
+    }
+  }
+}
