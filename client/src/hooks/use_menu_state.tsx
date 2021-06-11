@@ -1,10 +1,22 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default (defaultValue: boolean): [boolean, (boolean) => void] => {
+export default (
+  defaultValue: boolean,
+  ref?: React.RefObject<HTMLDivElement>
+): [boolean, (boolean
+) => void] => {
   const [isOpen, setIsOpen] = useState(defaultValue);
 
   useEffect(() => {
-    const onGlobalClick = () => setIsOpen(false);
+    const onGlobalClick = (event) => {
+      if (ref?.current) {
+        if (!ref?.current.contains(event.target)) {
+          setIsOpen(false);
+        }
+      } else {
+        setIsOpen(false);
+      }
+    };
 
     if (isOpen) {
       window.addEventListener('click', onGlobalClick);

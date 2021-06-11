@@ -3,3 +3,10 @@
 .react-grid-placeholder {
   border-radius: 5px;
 }
+
+.mock-grid-item {
+  border-radius: 5px;
+  background: $white;
+  border: 1px solid $gray-4;
+  @include shadow(10px, 10%);
+}
