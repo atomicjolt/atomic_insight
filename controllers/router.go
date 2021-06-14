@@ -16,16 +16,18 @@ func NewRouter() *mux.Router {
 		Store: store.NewStore(),
 	}
 
-	eventsHandler := middleware.EventsJwtValidator(controllerContext.NewEventsHandler())
-	router.Handle("/events", eventsHandler).Methods("POST")
+	sub := router.Methods("POST").Subrouter()
+	sub.Handle("/events", controllerContext.NewEventsHandler())
+	sub.Use(middleware.EventsJwtValidator)
 
 	router.Handle("/graphql", controllerContext.NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
 
 	router.HandleFunc("/oidc_init", controllerContext.NewOpenIDInitHandler())
 
-	ltiHandler := middleware.LtiJwtValidator(controllerContext.NewLtiLaunchHandler())
-	router.Handle("/lti_launches", ltiHandler).Methods("GET", "POST")
+	sub = router.Methods("GET", "POST").Subrouter()
+	sub.Handle("/lti_launches", controllerContext.NewLtiLaunchHandler())
+	sub.Use(middleware.LtiJwtValidator)
 
 	router.HandleFunc("/jwks", controllerContext.NewJwksController())
 
