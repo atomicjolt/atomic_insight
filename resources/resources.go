@@ -1,15 +1,55 @@
 package resources
 
 import (
+	"context"
+	"github.com/atomicjolt/atomic_insight/model"
 	"github.com/atomicjolt/atomic_insight/repo"
+	"github.com/lestrrat-go/jwx/jwk"
+	"log"
 )
 
-type Resources struct {
-	Repo *repo.Repo
+/**
+ * TODO: Move this to the LTI package after merge
+ * ===
+ */
+type ToolConsumerJwks struct {
+	ToolConsumerAutoRefresh *jwk.AutoRefresh
 }
 
-func NewResources() Resources {
-	return Resources{
-		Repo: repo.NewRepo(),
+func NewToolConsumerJwks(ar *jwk.AutoRefresh) ToolConsumerJwks {
+	return ToolConsumerJwks{
+		ToolConsumerAutoRefresh: ar,
 	}
+}
+
+func (toolConsumerJwks *ToolConsumerJwks) ForInstall(ctx context.Context, inst *model.LtiInstall) (jwk.Set, error) {
+	keySet, err := toolConsumerJwks.ToolConsumerAutoRefresh.Fetch(ctx, inst.JwksUrl)
+	if err != nil {
+		return nil, err
+	}
+
+	return keySet, nil
+}
+
+/* === */
+
+type Resources struct {
+	Repo             *repo.Repo
+	ToolConsumerJwks ToolConsumerJwks
+}
+
+func NewResources() (Resources, context.CancelFunc) {
+	ctx, cancel := context.WithCancel(context.Background())
+	rootRepo := repo.NewRepo()
+
+	toolConsumerAutoRefresh, err := rootRepo.LtiInstall.NewAutoRefresh(ctx)
+
+	if err != nil {
+		log.Fatal("Could not initialize JWK auto-refresh.")
+	}
+
+	return Resources{
+		Repo:             rootRepo,
+		ToolConsumerJwks: NewToolConsumerJwks(toolConsumerAutoRefresh),
+	}, cancel
 }

@@ -1,6 +1,11 @@
 package repo
 
-import "github.com/atomicjolt/atomic_insight/model"
+import (
+	"context"
+	"github.com/atomicjolt/atomic_insight/model"
+	"github.com/lestrrat-go/jwx/jwk"
+	"time"
+)
 
 type LtiInstallRepo struct {
 	*BaseRepo
@@ -33,4 +38,19 @@ func (r *LtiInstallRepo) From(iss, clientId string) (*model.LtiInstall, error) {
 	}
 
 	return ltiInstall, nil
+}
+
+func (r *LtiInstallRepo) NewAutoRefresh(ctx context.Context) (*jwk.AutoRefresh, error) {
+	ltiInstalls, err := r.All()
+	ar := jwk.NewAutoRefresh(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, ltiInstall := range ltiInstalls {
+		ar.Configure(ltiInstall.JwksUrl, jwk.WithRefreshInterval(60*time.Minute))
+	}
+
+	return ar, nil
 }

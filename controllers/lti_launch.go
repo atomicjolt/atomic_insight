@@ -10,11 +10,16 @@ import (
 	"text/template"
 )
 
-type ViewState struct {
-	Manifest *webpack.Manifest
+type LtiState struct {
+	IdTokenRaw string
 }
 
-func index(w http.ResponseWriter) error {
+type ViewState struct {
+	Manifest *webpack.Manifest
+	LtiState LtiState
+}
+
+func index(w http.ResponseWriter, r *http.Request) error {
 	view, err := template.ParseFiles(path.Join("views", "index.html"))
 
 	if err != nil {
@@ -33,8 +38,17 @@ func index(w http.ResponseWriter) error {
 		return err
 	}
 
+	idTokenRaw, idTokenRawPresent := middleware.GetIdTokenRaw(r.Context())
+
+	if !idTokenRawPresent {
+		panic("LTI launch id_token not present, cannot render view.")
+	}
+
 	state := &ViewState{
 		Manifest: manifest,
+		LtiState: LtiState{
+			IdTokenRaw: idTokenRaw,
+		},
 	}
 
 	return view.Execute(w, state)
@@ -58,7 +72,7 @@ func NewLtiLaunchHandler() http.Handler {
 			panic(fmt.Errorf("OIDC token could not be validated"))
 		}
 
-		if err := index(w); err != nil {
+		if err := index(w, r); err != nil {
 			panic(err)
 		}
 	})

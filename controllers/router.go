@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-func NewRouter() http.Handler {
+func NewRouter(controllerResources resources.Resources) http.Handler {
 	router := mux.NewRouter()
 
 	eventsHandler := middleware.EventsJwtValidator(NewEventsHandler())
@@ -20,12 +20,10 @@ func NewRouter() http.Handler {
 	router.Handle("/graphql", NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
 
-	openIdHandler := NewOpenIDInitHandler()
-	openIdHandler = middleware.WithLtiInstall(openIdHandler)
-	router.Handle("/oidc_init", openIdHandler).Methods("GET", "POST")
+	router.Handle("/oidc_init", NewOpenIDInitHandler()).Methods("GET", "POST")
 
 	ltiHandler := middleware.LtiJwtValidator(NewLtiLaunchHandler())
-	ltiHandler = middleware.LtiStateDecoder(ltiHandler)
+	ltiHandler = middleware.IdTokenDecoder(ltiHandler)
 	router.Handle("/lti_launches", ltiHandler).Methods("GET", "POST")
 
 	router.Handle("/jwks", NewJwksController())
@@ -36,7 +34,7 @@ func NewRouter() http.Handler {
 		router.Handle("/{path:.*}", NewClientFilesHandler())
 	}
 
-	pipeline := middleware.WithResources(resources.NewResources(), router)
+	pipeline := middleware.WithResources(controllerResources, router)
 	pipeline = handlers.LoggingHandler(os.Stdout, pipeline)
 	pipeline = handlers.RecoveryHandler()(pipeline)
 

@@ -10,13 +10,13 @@ import (
 func NewOpenIDInitHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllerResources := middleware.GetResources(r.Context())
-		ltiInstall := middleware.GetLtiInstall(r.Context())
-		var clientId, targetLinkUri, loginHint, ltiMessageHint string
+		var iss, clientId, targetLinkUri, loginHint, ltiMessageHint string
 
 		switch r.Method {
 		case "GET":
 			query := r.URL.Query()
 
+			iss = query.Get("iss")
 			clientId = query.Get("client_id")
 			targetLinkUri = query.Get("target_link_uri")
 			loginHint = query.Get("login_hint")
@@ -26,12 +26,19 @@ func NewOpenIDInitHandler() http.Handler {
 				panic(err)
 			}
 
+			iss = r.FormValue("iss")
 			clientId = r.FormValue("client_id")
 			targetLinkUri = r.FormValue("target_link_uri")
 			loginHint = r.FormValue("login_hint")
 			ltiMessageHint = r.FormValue("lti_message_hint")
 		default:
 			panic("Open ID Connect Controller cannot handle this type of request.")
+		}
+
+		ltiInstall, err := controllerResources.Repo.LtiInstall.From(iss, clientId)
+
+		if err != nil {
+			panic(err)
 		}
 
 		authNonce, err := lib.RandomHex(64)
