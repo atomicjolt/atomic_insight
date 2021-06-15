@@ -73,20 +73,11 @@ func IdTokenDecoder(next http.Handler) http.Handler {
 		controllerResources := GetResources(r.Context())
 		var idTokenRaw, iss, clientId string
 
-		switch r.Method {
-		case "GET":
-			query := r.URL.Query()
-
-			idTokenRaw = query.Get("id_token")
-		case "POST":
-			if err := r.ParseForm(); err != nil {
-				panic(err)
-			}
-
-			idTokenRaw = r.FormValue("id_token")
-		default:
-			panic("Cannot find enough information to infer LTI install from this request.")
+		if err := r.ParseForm(); err != nil {
+			panic(err)
 		}
+
+		idTokenRaw = r.FormValue("id_token")
 
 		/**
 		 * Inside this scope, we peek into the id_token before it is validated in order
