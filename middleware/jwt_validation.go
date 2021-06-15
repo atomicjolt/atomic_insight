@@ -51,8 +51,8 @@ func EventsJwtValidator(next http.Handler) http.Handler {
 	)
 }
 
-func GetEventsPayload(r *http.Request) map[string]interface{} {
-	return r.Context().Value(eventsContextKey).(map[string]interface{})
+func GetEventsPayload(ctx context.Context) map[string]interface{} {
+	return ctx.Value(eventsContextKey).(map[string]interface{})
 }
 
 func LtiJwtValidator(next http.Handler) http.Handler {
@@ -64,8 +64,8 @@ func LtiJwtValidator(next http.Handler) http.Handler {
 	)
 }
 
-func GetLtiLaunchParams(r *http.Request) map[string]interface{} {
-	return r.Context().Value(ltiLaunchParamsKey).(map[string]interface{})
+func GetLtiLaunchParams(ctx context.Context) map[string]interface{} {
+	return ctx.Value(ltiLaunchParamsKey).(map[string]interface{})
 }
 
 func IdTokenDecoder(next http.Handler) http.Handler {

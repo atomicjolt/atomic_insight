@@ -20,7 +20,7 @@ func NewEventsHandler() http.HandlerFunc {
 		controllerResources := middleware.GetResources(r.Context())
 		var payload eventsPayload
 
-		err := mapstructure.Decode(middleware.GetEventsPayload(r), &payload)
+		err := mapstructure.Decode(middleware.GetEventsPayload(r.Context()), &payload)
 		if err != nil {
 			panic(err)
 		}
