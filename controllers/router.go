@@ -15,7 +15,7 @@ func NewRouter(controllerResources resources.Resources) http.Handler {
 	router := mux.NewRouter()
 
 	eventsHandler := middleware.EventsJwtValidator(NewEventsHandler())
-	router.Handle("/events", eventsHandler)
+	router.Handle("/events", eventsHandler).Methods("POST")
 
 	router.Handle("/graphql", NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
