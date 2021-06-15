@@ -21,7 +21,7 @@ export default {
 
 export const Default: Story<CardProps> = ({ pinned, impact, title }: CardProps) => {
   return (
-    <div style={{ width: '500px', height: '400px' }}>
+    <div style={{ width: '300px', height: '240px' }}>
       <Card title={title} impact={impact} pinned={pinned}>Contents</Card>
     </div>
   );
