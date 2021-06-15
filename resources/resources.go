@@ -8,10 +8,6 @@ import (
 	"log"
 )
 
-/**
- * TODO: Move this to the LTI package after merge
- * ===
- */
 type ToolConsumerJwks struct {
 	ToolConsumerAutoRefresh *jwk.AutoRefresh
 }
@@ -30,8 +26,6 @@ func (toolConsumerJwks *ToolConsumerJwks) ForInstall(ctx context.Context, inst *
 
 	return keySet, nil
 }
-
-/* === */
 
 type Resources struct {
 	Repo             *repo.Repo
