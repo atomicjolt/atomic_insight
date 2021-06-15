@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/lestrrat-go/jwx/jwa"
-	"log"
 	"net/http"
 
 	"github.com/lestrrat-go/jwx/jwt"
@@ -32,7 +31,7 @@ func newJwtValidator(next http.Handler, key jwtContextKey, options ...jwt.ParseO
 		claims, err := token.AsMap(context.Background())
 
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
 		newCtx := context.WithValue(r.Context(), key, claims)
