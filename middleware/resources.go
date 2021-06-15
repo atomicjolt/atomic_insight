@@ -8,7 +8,7 @@ import (
 
 type resourcesContextKeyType int
 
-const resourcesContextKey resourcesContextKeyType = 0
+const resourcesContextKey resourcesContextKeyType = iota
 
 func GetResources(ctx context.Context) resources.Resources {
 	return ctx.Value(resourcesContextKey).(resources.Resources)
