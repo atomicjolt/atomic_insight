@@ -22,7 +22,7 @@ func NewRouter(controllerResources resources.Resources) http.Handler {
 
 	router.Handle("/oidc_init", NewOpenIDInitHandler()).Methods("GET", "POST")
 
-	ltiHandler := middleware.LtiJwtValidator(NewLtiLaunchHandler())
+	ltiHandler := middleware.OidcStateValidator(NewLtiLaunchHandler())
 	ltiHandler = middleware.IdTokenDecoder(ltiHandler)
 	router.Handle("/lti_launches", ltiHandler).Methods("GET", "POST")
 

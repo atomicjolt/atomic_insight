@@ -57,7 +57,7 @@ func index(w http.ResponseWriter, r *http.Request) error {
 func NewLtiLaunchHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllerResources := middleware.GetResources(r.Context())
-		payload := middleware.GetLtiLaunchParams(r.Context())
+		payload := middleware.GetOidcState(r.Context())
 		nonce, ok := payload["nonce"]
 
 		if !ok {
