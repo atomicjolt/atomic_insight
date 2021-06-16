@@ -1,0 +1,27 @@
+@use 'src/styles/utils' as *;
+
+.edit-card-modal {
+  overflow-y: unset !important;
+  &__grid {
+    padding: 16px 0;
+    display: grid;
+    align-items: flex-end;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'name name impact'
+      'metric metric metric'
+      'visual display size';
+    grid-gap: 16px;
+
+    @include stack-top-bottom;
+  }
+
+  .select {
+    width: unset;
+    min-width: unset;
+    &__options-container {
+      max-height: 144px;  
+    }
+  }
+}
