@@ -5,9 +5,11 @@
   position: relative;
   min-width: 200px;
 
+  $padding: 10px 12px;
+
   &__placeholder {
     box-sizing: border-box;
-    padding: 10px 12px;
+    padding: $padding;
     visibility: hidden;
     border: $gray-4 1px solid;
     h4 {
@@ -23,6 +25,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    min-width: 100%;
     overflow: hidden;
     background: $white;
     border: $gray-4 1px solid;
@@ -34,6 +37,7 @@
     }
 
     #{$block}.active & {
+      width: unset;
       bottom: auto;
       box-shadow: 0 1px 10px rgba(0,0,0,0.2);
     }
@@ -73,14 +77,14 @@
     $option-block: &;
     box-sizing: border-box;
     flex: 1;
-    padding: 10px 12px;
+    padding: $padding;
     margin: 0;
     font-size: 1em;
     color: $gray-8;
     text-align: start;
     background: none;
     border: none;
-    transition: all 0.1s;
+    transition: color 0.1s;
 
     &__title {
       margin: 0;
@@ -99,6 +103,10 @@
       }
     }
 
+    #{$block}:not(.active) & {
+      padding-right: 24px;
+    }    
+
     #{$block}.active &:hover, #{$block}.active &:focus {
       background: $gray-2;
       outline: none;
@@ -111,7 +119,8 @@
 
   &__input {
     box-sizing: border-box;
-    padding: 10px 12px;
+    padding: $padding;
+    padding-right: 32px;
     margin: 0;
     font-size: 1em;
     background: $white;
@@ -126,6 +135,17 @@
 
   &.active {
     height: unset;
+    &:not(.searchable) i {
+      display: none;
+    }
+  }
+
+  &:not(.active) {
+    h4 {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   &.searchable {

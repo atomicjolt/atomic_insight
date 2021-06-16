@@ -24,17 +24,17 @@ enum ComparisonOption {
 
 const comparisonOptions = [
   {
-    key: ComparisonOption.Weekly,
+    value: ComparisonOption.Weekly,
     title: 'Weekly',
     subtitle: 'Other weeks of this course',
   },
   {
-    key: ComparisonOption.Classes,
+    value: ComparisonOption.Classes,
     title: 'Classes',
     subtitle: 'Other classes I’ve taught',
   },
   {
-    key: ComparisonOption.Department,
+    value: ComparisonOption.Department,
     title: 'Department',
     subtitle: 'Other courses in this department',
   },
@@ -119,7 +119,7 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
         <div>
           <Label title="Comparison:" display={LabelDisplay.Inline} >
             <Select
-              selectedKey={selectedComparison}
+              selectedValue={selectedComparison}
               onChange={setSelectedComparison}
               options={comparisonOptions}
             />

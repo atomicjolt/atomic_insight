@@ -7,15 +7,14 @@ export interface InputProps {
   label?: string;
   value?: string;
   onChange?: (string) => void;
-  labelDisplay?;
-  gridArea?: string;
+  gridAreaStyle?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
   value,
-  onChange = () => null,
+  onChange = () => {},
   label,
-  gridArea,
+  gridAreaStyle,
 }: InputProps) => {
   let elem = (
     <input
@@ -28,11 +27,12 @@ export const Input: React.FC<InputProps> = ({
     />
   );
 
-  if (label) {
+  if (label !== '') {
     elem = <Label title={label}>{elem}</Label>;
   }
-  if (gridArea) {
-    elem = <div style={{ gridArea }}>{elem}</div>;
+
+  if (gridAreaStyle !== '') {
+    elem = <div style={{ gridArea: gridAreaStyle }}>{elem}</div>;
   }
 
   return elem;

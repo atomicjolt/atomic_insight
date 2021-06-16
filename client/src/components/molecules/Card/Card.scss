@@ -93,29 +93,3 @@
     padding-top: 5px;
   }
 }
-
-.edit-card-modal {
-  overflow-y: unset !important;
-  &__grid {
-    padding: 16px 0;
-    display: grid;
-    align-items: flex-end;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto;
-    grid-template-areas:
-      'name name name impact'
-      'metric metric metric metric'
-      'visual visual display size';
-    grid-gap: 16px;
-
-    @include stack-top-bottom;
-  }
-
-  .select {
-    width: unset;
-    min-width: unset;
-    &__options-container {
-      max-height: 140px;  
-    }
-  }
-}

@@ -1,48 +1,49 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 
 import './Select.scss';
 import useMenuState from '../../../hooks/use_menu_state';
 import { Label } from '../Label/Label';
 
-export type OptionKey = number | string | React.FC;
-
-export interface OptionType {
-  key: OptionKey;
+export interface OptionType<ValueType> {
+  value: ValueType;
   title: string;
   subtitle?: string;
 }
 
-export interface SelectProps {
-  options: OptionType[];
-  selectedKey?: OptionKey;
-  onChange?: (OptionKey) => void;
+export interface SelectProps<ValueType> {
+  options: OptionType<ValueType>[];
+  selectedValue?: ValueType;
+  onChange?: (OptionValue) => void;
   label?: string;
   searchable?: boolean;
-  gridArea?: string;
+  gridAreaStyle?: string;
 }
 
-export const Select: React.FC<SelectProps> = ({
+export const Select = <ValueType, >({
   options,
-  selectedKey,
-  onChange = () => null,
+  selectedValue,
+  onChange = () => {},
   label,
   searchable = false,
-  gridArea,
-}: SelectProps) => {
+  gridAreaStyle,
+}: SelectProps<ValueType>): React.ReactElement<SelectProps<ValueType>> => {
   const selectRef = useRef<HTMLDivElement>(null);
-  const selectedOption = options.find((option) => option.key === selectedKey);
+  const selectedOption = options.find((option) => option.value === selectedValue);
 
   const [inputValue, setInputValue] = useState('');
   const [active, setActive] = useMenuState(false, selectRef);
 
-  const sortedOptions = searchable
-    ? options
-      .filter((option) =>
-        option.title.toLowerCase().includes(inputValue.toLowerCase()))
-      .sort(
-        (a, b) => a.title.indexOf(inputValue) - b.title.indexOf(inputValue)
-      )
-    : options.sort((option) => (option.key === selectedKey ? -1 : 1));
+  const sortedOptions = useMemo(() => {
+    if (searchable) {
+      return options
+        .filter((option) =>
+          option.title.toLowerCase().includes(inputValue.toLowerCase()))
+        .sort(
+          (a, b) => a.title.indexOf(inputValue) - b.title.indexOf(inputValue)
+        );
+    }
+    return options.sort((option) => (option.value === selectedValue ? -1 : 1));
+  }, [inputValue, options, searchable]);
 
   useEffect(() => {
     setInputValue(selectedOption?.title ?? '');
@@ -80,9 +81,9 @@ export const Select: React.FC<SelectProps> = ({
     setInputValue('');
   }
 
-  function onOptionClick(option: OptionType): void {
+  function onOptionClick(option: OptionType<ValueType>): void {
     if (active) {
-      onChange(option.key);
+      onChange(option.value);
       setActive(false);
     } else {
       setActive(true);
@@ -98,7 +99,7 @@ export const Select: React.FC<SelectProps> = ({
       onBlur={() => active ? setTimeout(onTabOption, 1) : null}
     >
       <div className="select__placeholder">
-        <h4>{selectedOption?.title ?? ''}&nbsp;</h4>
+        <h4>&nbsp;</h4>
       </div>
       <div className="select__container">
         <div>
@@ -115,8 +116,8 @@ export const Select: React.FC<SelectProps> = ({
           ) : null}
           <div className="select__options-container">
             {sortedOptions.map((option) => {
-              const { key, title, subtitle } = option;
-              const isSelected = selectedKey === key;
+              const { value, title, subtitle } = option;
+              const isSelected = selectedValue === value;
 
               return (
                 <button
@@ -142,12 +143,12 @@ export const Select: React.FC<SelectProps> = ({
     </div>
   );
 
-  if (label) {
+  if (label !== undefined) {
     elem = <Label title={label}>{elem}</Label>;
   }
 
-  if (gridArea) {
-    elem = <div style={{ gridArea }}>{elem}</div>;
+  if (gridAreaStyle !== undefined) {
+    elem = <div style={{ gridArea: gridAreaStyle }}>{elem}</div>;
   }
 
   return elem;

@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
+type IsOpenType = boolean;
+type SetIsOpenType = (boolean) => void;
+
 export default (
   defaultValue: boolean,
-  ref?: React.RefObject<HTMLDivElement>
-): [boolean, (boolean
-) => void] => {
+  menuRef?: React.RefObject<HTMLDivElement>
+): [IsOpenType, SetIsOpenType] => {
   const [isOpen, setIsOpen] = useState(defaultValue);
 
   useEffect(() => {
     const onGlobalClick = (event) => {
-      if (ref?.current) {
-        if (!ref?.current.contains(event.target)) {
+      if (menuRef?.current) {
+        if (!menuRef?.current.contains(event.target)) {
           setIsOpen(false);
         }
       } else {

@@ -2,47 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './Card.scss';
 
 import { CardImpact, CardDisplay, CardSize } from '../../../common/constants';
-
-import { Modal } from '../Modal/Modal';
-import { Input } from '../../atoms/Input/Input';
-import { Select, OptionKey } from '../../atoms/Select/Select';
 import { IconVisual } from '../IconVisual/IconVisual';
-
-const impactOptions = [
-  { key: CardImpact.Low, title: 'Low' },
-  { key: CardImpact.High, title: 'High' },
-];
-
-const displayOptions = [
-  { key: CardDisplay.Value, title: 'Value' },
-  { key: CardDisplay.Comparison, title: 'Comparison' },
-  { key: CardDisplay.Trend, title: 'Trend' },
-];
-
-// TODO: Get supported metrics from somewhere...
-const metricOptions = [
-  { key: 0, title: 'Discussion Posts' },
-  { key: 1, title: 'Assignment Submissions' },
-  { key: 2, title: 'Metric 3' },
-  { key: 3, title: 'Metric 4' },
-  { key: 4, title: 'Metric 5' },
-];
-
-// TODO: Get real visual & size options based on metric type & display
-//       and move these inside metric models
-const visualOptions = [{ key: IconVisual, title: 'Icon' }];
-const sizeOptions = [
-  { key: CardSize.Half, title: 'Half' },
-  { key: CardSize.Normal, title: 'Normal' },
-  { key: CardSize.Double, title: 'Double' },
-  { key: CardSize.Full, title: 'Full' },
-];
+import { CardModal } from '../CardModal/CardModal';
 
 export interface CardData {
   key: number;
   title?: string;
   pinned?: boolean;
-  metric?: OptionKey;         // TODO: create metric type
+  metric?: number;            // TODO: create metric type
   visual?: React.FC;          // TODO: create visual type
   impact?: CardImpact;
   display?: CardDisplay;
@@ -71,17 +38,18 @@ const defaultData: CardData = {
 export type CardProps = React.PropsWithChildren<{
   data?: CardData;
   onChange?: (CardData) => void;
+  setGridIsDraggable?: (boolean) => void;
 }>;
 
 export const Card: React.FC<CardProps> = ({
-  onChange = () => null,
   data: initialData = { key: 0 },
+  onChange = () => {},
+  setGridIsDraggable = () => {},
 }: CardProps) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const [data, setData] = useState({ ...defaultData, ...initialData });
-  const [temp, setTemp] = useState(defaultData);
 
+  const Visual = data.visual;
   const visualProps = {
     display: data.display,
     size: data.size,
@@ -99,15 +67,9 @@ export const Card: React.FC<CardProps> = ({
     onChange(data);
   }, [data]);
 
-  function _editCard() {
-    setTemp(data);
-    setModalIsOpen(true);
-  }
-
-  function _saveCard() {
-    setData(temp);
-    setModalIsOpen(false);
-  }
+  useEffect(() => {
+    setGridIsDraggable(!modalIsOpen);
+  }, [modalIsOpen]);
 
   return (
     <div className="card" key={data.key}>
@@ -128,66 +90,15 @@ export const Card: React.FC<CardProps> = ({
               push_pin
             </i>
           </button>
-          <button onClick={_editCard}>
+          <button onClick={() => setModalIsOpen(true)}>
             <i className="material-icons-outlined">edit</i>
           </button>
         </div>
       </div>
       <div className="card-contents">
-        {data.visual ? React.createElement(data.visual, visualProps) : null}
+        {Visual ? <Visual {...visualProps} /> : null}
       </div>
-      <Modal
-        className="edit-card-modal"
-        title="Edit Card"
-        isOpen={modalIsOpen}
-        onSave={_saveCard}
-        onCancel={() => setModalIsOpen(false)}
-      >
-        <form className="edit-card-modal__grid" onSubmit={() => null}>
-          <Input
-            gridArea="name"
-            label="Name"
-            value={temp.title}
-            onChange={(title) => setTemp({ ...temp, title })}
-          />
-          <Select
-            gridArea="impact"
-            label="Impact"
-            options={impactOptions}
-            selectedKey={temp.impact}
-            onChange={(impact) => setTemp({ ...temp, impact })}
-          />
-          <Select
-            gridArea="metric"
-            label="Metric"
-            options={metricOptions}
-            selectedKey={temp.metric}
-            onChange={(metric) => setTemp({ ...temp, metric })}
-            searchable={true}
-          />
-          <Select
-            gridArea="visual"
-            label="Visualization"
-            options={visualOptions}
-            selectedKey={temp.visual}
-            onChange={(visual) => setTemp({ ...temp, visual })}
-          />
-          <Select
-            gridArea="display"
-            label="Display"
-            options={displayOptions}
-            selectedKey={temp.display}
-            onChange={(display) => setTemp({ ...temp, display })}
-          />
-          <Select
-            gridArea="size"
-            label="Size"
-            options={sizeOptions}
-            selectedKey={temp.size}
-            onChange={(size) => setTemp({ ...temp, size })}
-          />
-        </form>
-      </Modal>
+      <CardModal data={data} onChange={setData} isOpen={modalIsOpen} setIsOpen={setModalIsOpen} />
     </div>
   );
 };

@@ -28,6 +28,7 @@ export const Panel: React.FC<PanelProps> = ({
   const [opened, setOpened] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [gridIsDraggable, setGridIsDraggable] = useState(true);
 
   function renderListItem(card: CardData): React.ReactElement {
     return (
@@ -122,10 +123,10 @@ export const Panel: React.FC<PanelProps> = ({
         </MenuButton>
       </div>
       <div className="panel__content">
-        <Grid layout={layout}>
+        <Grid layout={layout} isDraggable={gridIsDraggable}>
           {cards.map((data) => (
             <div key={data.key}>
-              <Card data={data} />
+              <Card data={data} setGridIsDraggable={setGridIsDraggable} />
             </div>
           ))}
         </Grid>
