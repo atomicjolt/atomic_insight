@@ -126,14 +126,14 @@ func IdTokenDecoder(next http.Handler) http.Handler {
 	})
 }
 
-func GetIdToken(ctx context.Context) (map[string]interface{}, bool) {
-	idToken, ok := ctx.Value(idTokenKey).(map[string]interface{})
+func GetIdToken(ctx context.Context) map[string]interface{} {
+	idToken := ctx.Value(idTokenKey).(map[string]interface{})
 
-	return idToken, ok
+	return idToken
 }
 
-func GetIdTokenRaw(ctx context.Context) (string, bool) {
-	idTokenRaw, ok := ctx.Value(idTokenRawKey).(string)
+func GetIdTokenRaw(ctx context.Context) string {
+	idTokenRaw := ctx.Value(idTokenRawKey).(string)
 
-	return idTokenRaw, ok
+	return idTokenRaw
 }

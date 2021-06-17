@@ -38,11 +38,7 @@ func index(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	idTokenRaw, idTokenRawPresent := middleware.GetIdTokenRaw(r.Context())
-
-	if !idTokenRawPresent {
-		panic("LTI launch id_token not present, cannot render view.")
-	}
+	idTokenRaw := middleware.GetIdTokenRaw(r.Context())
 
 	state := &ViewState{
 		Manifest: manifest,
