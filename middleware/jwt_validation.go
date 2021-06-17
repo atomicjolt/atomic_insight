@@ -110,7 +110,7 @@ func IdTokenDecoder(next http.Handler) http.Handler {
 		keySet, err := controllerResources.ToolConsumerJwks.ForInstall(r.Context(), ltiInstall)
 
 		if err != nil {
-			panic("Unable to get publik JWK set for tool consumer.")
+			panic("Unable to get public JWK set for tool consumer.")
 		}
 
 		validator := newJwtValidator(next,
