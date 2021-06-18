@@ -2,6 +2,7 @@ import React from 'react';
 import { Story } from '@storybook/react';
 
 import { Panel } from './Panel';
+import { CardSize } from '../../../common/constants';
 
 export default {
   title: 'Organisms/Panel',
@@ -18,19 +19,17 @@ const layout = [
 const cards = [{
   key: 1,
   title: 'Card 1',
-  element: <div />
 }, {
   key: 2,
   title: 'Card 2',
-  element: <div />
 }, {
   key: 3,
   title: 'Card 3',
-  element: <div />
+  size: CardSize.Half,
 }, {
   key: 4,
   title: 'Card 4',
-  element: <div />
+  size: CardSize.Half,
 }];
 
 export const Default: Story = () => (

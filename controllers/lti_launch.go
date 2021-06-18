@@ -5,17 +5,21 @@ import (
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/middleware"
 	"github.com/atomicjolt/atomic_insight/webpack"
-
 	"net/http"
 	"path"
 	"text/template"
 )
 
-type ViewState struct {
-	Manifest *webpack.Manifest
+type LtiState struct {
+	IdTokenRaw string
 }
 
-func index(w http.ResponseWriter) error {
+type ViewState struct {
+	Manifest *webpack.Manifest
+	LtiState LtiState
+}
+
+func index(w http.ResponseWriter, r *http.Request) error {
 	view, err := template.ParseFiles(path.Join("views", "index.html"))
 
 	if err != nil {
@@ -34,23 +38,29 @@ func index(w http.ResponseWriter) error {
 		return err
 	}
 
+	idTokenRaw := middleware.GetIdTokenRaw(r.Context())
+
 	state := &ViewState{
 		Manifest: manifest,
+		LtiState: LtiState{
+			IdTokenRaw: idTokenRaw,
+		},
 	}
 
 	return view.Execute(w, state)
 }
 
-func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		payload := middleware.GetLtiLaunchParams(r)
+func NewLtiLaunchHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllerResources := middleware.GetResources(r.Context())
+		payload := middleware.GetOidcState(r.Context())
 		nonce, ok := payload["nonce"]
 
 		if !ok {
 			panic(fmt.Errorf("expected nonce in OIDC claims"))
 		}
 
-		valid, err := c.Repo.OpenIdState.ValidateStateOf(nonce.(string))
+		valid, err := controllerResources.Repo.OpenIdState.ValidateStateOf(nonce.(string))
 
 		if err != nil {
 			panic(err)
@@ -58,8 +68,8 @@ func (c *ControllerContext) NewLtiLaunchHandler() http.HandlerFunc {
 			panic(fmt.Errorf("OIDC token could not be validated"))
 		}
 
-		if err := index(w); err != nil {
+		if err := index(w, r); err != nil {
 			panic(err)
 		}
-	}
+	})
 }

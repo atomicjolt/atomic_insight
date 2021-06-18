@@ -6,7 +6,7 @@ import 'react-grid-layout/css/styles.css';
 import './Panel.scss';
 
 import useMenuState from '../../../hooks/use_menu_state';
-import { Card } from '../../molecules/Card/Card';
+import { Card, CardData } from '../../molecules/Card/Card';
 import { Menu } from '../../molecules/Menu/Menu';
 import { MenuButton } from '../../molecules/MenuButton/MenuButton';
 import { Modal } from '../../molecules/Modal/Modal';
@@ -14,14 +14,8 @@ import { ItemList } from '../../molecules/ItemList/ItemList';
 import { Button } from '../../atoms/Button/Button';
 import { Grid } from '../../molecules/Grid/Grid';
 
-interface CardType {
-  key: number | string;
-  title: string;
-  element: React.ReactElement;
-}
-
 export interface PanelProps {
-  cards: CardType[];
+  cards: CardData[];
   title: string;
   layout: Layout[];
 }
@@ -34,8 +28,9 @@ export const Panel: React.FC<PanelProps> = ({
   const [opened, setOpened] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [gridIsDraggable, setGridIsDraggable] = useState(true);
 
-  function renderListItem(card: CardType): React.ReactElement {
+  function renderListItem(card: CardData): React.ReactElement {
     return (
       <div className="manage-cards__list-item">
         <input defaultValue={`Item ${card.key}`} />
@@ -128,12 +123,10 @@ export const Panel: React.FC<PanelProps> = ({
         </MenuButton>
       </div>
       <div className="panel__content">
-        <Grid layout={layout}>
-          {cards.map(({ element, key, title: cardTitle }) => (
-            <div key={key}>
-              <Card title={cardTitle}>
-                {element}
-              </Card>
+        <Grid layout={layout} isDraggable={gridIsDraggable}>
+          {cards.map((data) => (
+            <div key={data.key}>
+              <Card data={data} setGridIsDraggable={setGridIsDraggable} />
             </div>
           ))}
         </Grid>

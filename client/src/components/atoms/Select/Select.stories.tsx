@@ -9,30 +9,43 @@ export default {
 
 const options = [
   {
-    key: 1,
+    value: 1,
     title: 'Item 1',
     subtitle: 'Description',
   },
   {
-    key: 2,
+    value: 2,
     title: 'Item 2',
     subtitle: 'Description',
   },
   {
-    key: 3,
+    value: 3,
     title: 'Item 3',
     subtitle: 'Description',
   },
 ];
 
-export const Default: Story<SelectProps> = () => {
-  const [selectedKey, setSelectedKey] = useState(1);
+export const Default: Story<SelectProps<number>> = () => {
+  const [value, setValue] = useState(1);
 
   return (
     <Select
-      selectedKey={selectedKey}
-      onChange={setSelectedKey}
+      selectedValue={value}
+      onChange={setValue}
       options={options}
+    />
+  );
+};
+
+export const Searchable: Story<SelectProps<number>> = () => {
+  const [value, setValue] = useState(1);
+
+  return (
+    <Select
+      selectedValue={value}
+      onChange={setValue}
+      options={options}
+      searchable={true}
     />
   );
 };

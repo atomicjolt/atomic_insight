@@ -1,0 +1,18 @@
+@use 'src/styles/utils' as *;
+
+.input {
+  box-sizing: border-box;
+  padding: 10px 12px;
+  margin: 0;
+  font-size: 1em;
+  background: $white;
+  border: $gray-4 1px solid;
+  border-radius: 5px;
+  color: $gray-8;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: $gray-5;
+  }
+}

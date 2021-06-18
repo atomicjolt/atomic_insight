@@ -1,15 +1,12 @@
 import React from 'react';
+import './IconVisual.scss';
 
 import {
   ComparisonSummary,
-  ComparisonDisplayType,
+  ComparisonDisplay,
 } from '../../atoms/ComparisonSummary/ComparisonSummary';
 
-import './IconVisual.scss';
-
-export interface IconVisualCSS extends React.CSSProperties {
-  '--scale': number;
-}
+import { CardDisplay, CardSize } from '../../../common/constants';
 
 const defaultData = {
   value: 0,
@@ -20,19 +17,9 @@ const defaultFeedback = {
   message: 'Feedback',
 };
 
-export enum IconSize {
-  Normal = 'normal',
-  Half = 'half',
-}
-
-export enum IconDisplayType {
-  Value = 'value',
-  Comparison = 'comparison',
-}
-
 export interface IconVisualProps {
-  size?: IconSize;
-  display?: IconDisplayType;
+  size?: CardSize;
+  display?: CardDisplay;
   data?: {
     value: number;
     comparisonValue: number;
@@ -52,8 +39,8 @@ export interface IconVisualProps {
 }
 
 export const IconVisual: React.FC<IconVisualProps> = ({
-  display = IconDisplayType.Value,
-  size = IconSize.Normal,
+  display = CardDisplay.Value,
+  size = CardSize.Normal,
   data = defaultData,
   feedback = defaultFeedback,
 }: IconVisualProps) => {
@@ -69,9 +56,9 @@ export const IconVisual: React.FC<IconVisualProps> = ({
   }
 
   const { icon, message } = getFeedback() || {};
-  const comparisonDisplay: ComparisonDisplayType = {
-    normal: ComparisonDisplayType.Inline,
-    half: ComparisonDisplayType.Stacked,
+  const comparisonDisplay: ComparisonDisplay = {
+    [CardSize.Normal]: ComparisonDisplay.Inline,
+    [CardSize.Half]: ComparisonDisplay.Stacked,
   }[size];
 
   return (

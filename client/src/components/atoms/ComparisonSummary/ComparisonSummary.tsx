@@ -2,7 +2,7 @@ import React from 'react';
 
 import './ComparisonSummary.scss';
 
-export enum ComparisonDisplayType {
+export enum ComparisonDisplay {
   Inline = 'inline',
   Stacked = 'stacked',
   Short = 'short',
@@ -11,12 +11,12 @@ export enum ComparisonDisplayType {
 
 export interface ComparisonSummaryProps {
   value: number;
-  display?: ComparisonDisplayType;
+  display?: ComparisonDisplay;
 }
 
 export const ComparisonSummary: React.FC<ComparisonSummaryProps> = ({
   value,
-  display = ComparisonDisplayType.Inline,
+  display = ComparisonDisplay.Inline,
 }: ComparisonSummaryProps) => {
   const percent = Math.floor((value - 1) * 100);
   const percentSign = Math.sign(percent);

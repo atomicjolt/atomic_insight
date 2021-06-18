@@ -9,14 +9,16 @@ import (
 	"github.com/atomicjolt/atomic_insight/graph/generated"
 	"github.com/atomicjolt/atomic_insight/graph/model"
 	"github.com/atomicjolt/atomic_insight/lib"
+	"github.com/atomicjolt/atomic_insight/middleware"
 )
 
 func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*model.DiscussionEntryCreated, error) {
 	result := model.DiscussionEntryCreated{}
 	fields := graphql.CollectAllFields(ctx)
+	controllerResources := middleware.GetResources(ctx)
 
 	if lib.StringContains(fields, "count") {
-		count, err := r.Repo.DiscussionEntryCreatedEvent.CountAllSince(lib.LastSunday())
+		count, err := controllerResources.Repo.DiscussionEntryCreatedEvent.CountAllSince(lib.LastSunday())
 		if err != nil {
 			return nil, err
 		}
@@ -24,7 +26,7 @@ func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*mode
 	}
 
 	if lib.StringContains(fields, "events") {
-		events, err := r.Repo.DiscussionEntryCreatedEvent.AllSince(lib.LastSunday())
+		events, err := controllerResources.Repo.DiscussionEntryCreatedEvent.AllSince(lib.LastSunday())
 		if err != nil {
 			return nil, err
 		}
