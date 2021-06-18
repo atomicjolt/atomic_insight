@@ -8,23 +8,23 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"net/http"
-	"os"
 )
 
 func NewRouter(controllerResources resources.Resources) http.Handler {
 	router := mux.NewRouter()
 
-	eventsHandler := middleware.EventsJwtValidator(NewEventsHandler())
-	router.Handle("/events", eventsHandler).Methods("POST")
+	eventsRouter := router.Methods("POST").Subrouter()
+	eventsRouter.Handle("/events", NewEventsHandler())
+	eventsRouter.Use(middleware.EventsJwtValidator)
 
 	router.Handle("/graphql", NewGraphqlHandler())
 	router.HandleFunc("/graphql/playground", playground.Handler("Playground", "/graphql"))
 
 	router.Handle("/oidc_init", NewOpenIDInitHandler()).Methods("GET", "POST")
 
-	ltiHandler := middleware.OidcStateValidator(NewLtiLaunchHandler())
-	ltiHandler = middleware.IdTokenDecoder(ltiHandler)
-	router.Handle("/lti_launches", ltiHandler).Methods("GET", "POST")
+	ltiRouter := router.Methods("GET", "POST").Subrouter()
+	ltiRouter.Handle("/lti_launches", NewLtiLaunchHandler())
+	ltiRouter.Use(middleware.IdTokenDecoder, middleware.OidcStateValidator)
 
 	router.Handle("/jwks", NewJwksController())
 
@@ -34,9 +34,10 @@ func NewRouter(controllerResources resources.Resources) http.Handler {
 		router.Handle("/{path:.*}", NewClientFilesHandler())
 	}
 
-	pipeline := middleware.WithResources(controllerResources, router)
-	pipeline = handlers.LoggingHandler(os.Stdout, pipeline)
-	pipeline = handlers.RecoveryHandler()(pipeline)
-
-	return pipeline
+	router.Use(
+		handlers.RecoveryHandler(),
+		middleware.Logger,
+		middleware.WithResources(controllerResources),
+	)
+	return router
 }
