@@ -2,12 +2,14 @@ package controllers
 
 import (
 	"github.com/atomicjolt/atomic_insight/lib"
+	"github.com/atomicjolt/atomic_insight/middleware"
 	"net/http"
 	"net/url"
 )
 
-func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func NewOpenIDInitHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllerResources := middleware.GetResources(r.Context())
 		var iss, clientId, targetLinkUri, loginHint, ltiMessageHint string
 
 		switch r.Method {
@@ -33,13 +35,13 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 			panic("Open ID Connect Controller cannot handle this type of request.")
 		}
 
-		authNonce, err := lib.RandomHex(64)
+		ltiInstall, err := controllerResources.Repo.LtiInstall.From(iss, clientId)
 
 		if err != nil {
 			panic(err)
 		}
 
-		ltiInstall, err := c.Repo.LtiInstall.From(iss, clientId)
+		authNonce, err := lib.RandomHex(64)
 
 		if err != nil {
 			panic(err)
@@ -48,7 +50,7 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 		oidcUrl := ltiInstall.OidcUrl
 		oidcQuery := url.Values{}
 
-		state, err := c.Repo.OpenIdState.IssueToken()
+		state, err := controllerResources.Repo.OpenIdState.IssueToken()
 
 		if err != nil {
 			panic(err)
@@ -66,5 +68,5 @@ func (c *ControllerContext) NewOpenIDInitHandler() http.HandlerFunc {
 		oidcQuery.Set("nonce", authNonce)
 
 		http.Redirect(w, r, oidcUrl+"?"+oidcQuery.Encode(), http.StatusSeeOther)
-	}
+	})
 }

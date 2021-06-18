@@ -15,10 +15,12 @@ type eventsPayload struct {
 	}
 }
 
-func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
+func NewEventsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		controllerResources := middleware.GetResources(r.Context())
 		var payload eventsPayload
-		err := mapstructure.Decode(middleware.GetEventsPayload(r), &payload)
+
+		err := mapstructure.Decode(middleware.GetEventsPayload(r.Context()), &payload)
 		if err != nil {
 			panic(err)
 		}
@@ -33,7 +35,7 @@ func (c *ControllerContext) NewEventsHandler() http.HandlerFunc {
 				panic(err)
 			}
 
-			if err = c.Repo.Event.InsertEvent(eventModel); err != nil {
+			if err = controllerResources.Repo.Event.InsertEvent(eventModel); err != nil {
 				panic(err)
 			}
 		}
