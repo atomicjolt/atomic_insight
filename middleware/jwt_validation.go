@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"github.com/lestrrat-go/jwx/jwt"
-	"log"
 	"net/http"
 )
 
@@ -21,7 +20,7 @@ func newJwtValidator(next http.Handler, key contextKey, options ...jwt.ParseOpti
 		claims, err := token.AsMap(context.Background())
 
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
 		newCtx := context.WithValue(r.Context(), key, claims)
