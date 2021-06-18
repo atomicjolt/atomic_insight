@@ -3,7 +3,6 @@ import { Layout } from 'react-grid-layout';
 import { Story } from '@storybook/react';
 
 import { Grid } from './Grid';
-import { Card } from '../Card/Card';
 
 export default {
   title: 'Molecules/Grid',
@@ -19,17 +18,9 @@ const layout: Layout[] = [
 
 export const Default: Story = () => (
   <Grid layout={layout}>
-    <div key={1}>
-      <Card title="Card 1" />
-    </div>
-    <div key={2}>
-      <Card title="Card 2" />
-    </div>
-    <div key={3}>
-      <Card title="Card 3" />
-    </div>
-    <div key={4}>
-      <Card title="Card 4" />
-    </div>
+    <div key={1} className="mock-grid-item" />
+    <div key={2} className="mock-grid-item" />
+    <div key={3} className="mock-grid-item" />
+    <div key={4} className="mock-grid-item" />
   </Grid>
 );

@@ -11,6 +11,7 @@ interface CSSWithScale extends CSSProperties {
 
 export type GridProps = React.PropsWithChildren<{
   layout: Layout[];
+  isDraggable?: boolean;
 }>
 
 const baseCell = {
@@ -21,6 +22,7 @@ const baseCell = {
 export const Grid: React.FC<GridProps> = ({
   children,
   layout = [],
+  isDraggable = true,
 }: GridProps) => {
   const [rowHeight, setRowHeight] = useState(baseCell.height);
 
@@ -41,6 +43,7 @@ export const Grid: React.FC<GridProps> = ({
       cols={{ lg: 3, md: 3, sm: 3, xs: 3, xxs: 3 }}
       rowHeight={rowHeight}
       isResizable={false}
+      isDraggable={isDraggable}
       margin={[16, 16]}
       layouts={{ lg: fLayout, md: fLayout, sm: fLayout, xs: fLayout, xxs: fLayout }}
       containerPadding={[0, 0]}

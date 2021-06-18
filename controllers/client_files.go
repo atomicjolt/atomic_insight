@@ -2,6 +2,6 @@ package controllers
 
 import "net/http"
 
-func (c *ControllerContext) NewClientFilesHandler() http.Handler {
+func NewClientFilesHandler() http.Handler {
 	return http.FileServer(http.Dir("client/build"))
 }

@@ -6,15 +6,14 @@ import 'react-grid-layout/css/styles.css';
 import './MainPage.scss';
 
 import useMenuState from '../../../hooks/use_menu_state';
+import { CardDisplay, CardSize } from '../../../common/constants';
+
 import { Panel } from '../../organisms/Panel/Panel';
 import { Menu } from '../../molecules/Menu/Menu';
 import { Button } from '../../atoms/Button/Button';
+import { Label, LabelDisplay } from '../../atoms/Label/Label';
 import { MenuButton } from '../../molecules/MenuButton/MenuButton';
-import {
-  IconVisual,
-  IconSize,
-  IconDisplayType,
-} from '../../molecules/IconVisual/IconVisual';
+import { IconVisual } from '../../molecules/IconVisual/IconVisual';
 import { Select } from '../../atoms/Select/Select';
 
 enum ComparisonOption {
@@ -25,17 +24,17 @@ enum ComparisonOption {
 
 const comparisonOptions = [
   {
-    key: ComparisonOption.Weekly,
+    value: ComparisonOption.Weekly,
     title: 'Weekly',
     subtitle: 'Other weeks of this course',
   },
   {
-    key: ComparisonOption.Classes,
+    value: ComparisonOption.Classes,
     title: 'Classes',
     subtitle: 'Other classes I’ve taught',
   },
   {
-    key: ComparisonOption.Department,
+    value: ComparisonOption.Department,
     title: 'Department',
     subtitle: 'Other courses in this department',
   },
@@ -47,6 +46,7 @@ const layout: Layout[] = [
   { i: '3', x: 1, y: 0, w: 1, h: 1 },
   { i: '4', x: 2, y: 0, w: 1, h: 2 },
 ];
+
 
 const dataQuery = gql`
   query DataQuery {
@@ -76,7 +76,7 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
     return null;
   }
 
-  const cardData = loading ? {
+  const metricData = loading ? {
     value: 0,
     comparisonValue: 1
   } : {
@@ -87,19 +87,26 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
   const cards = [{
     key: 1,
     title: 'Discussion Posts',
-    element: <IconVisual data={cardData} />,
+    visual: IconVisual,
+    metricData,
   }, {
     key: 2,
     title: 'Discussion Posts',
-    element: <IconVisual data={cardData} size={IconSize.Half} />,
+    visual: IconVisual,
+    size: CardSize.Half,
+    metricData,
   }, {
     key: 3,
     title: 'Discussion Posts',
-    element: <IconVisual data={cardData} size={IconSize.Half} display={IconDisplayType.Comparison} />,
+    visual: IconVisual,
+    size: CardSize.Half,
+    display: CardDisplay.Comparison,
+    metricData,
   }, {
     key: 4,
     title: 'Discussion Posts',
-    element: <IconVisual data={cardData} display={IconDisplayType.Comparison} />,
+    display: CardDisplay.Comparison,
+    metricData,
   }];
 
   return (
@@ -110,12 +117,13 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
           <p>Week 3 of 11</p>
         </div>
         <div>
-          <p>Comparison:</p>
-          <Select
-            selectedKey={selectedComparison}
-            onChange={setSelectedComparison}
-            options={comparisonOptions}
-          />
+          <Label title="Comparison:" display={LabelDisplay.Inline} >
+            <Select
+              selectedValue={selectedComparison}
+              onChange={setSelectedComparison}
+              options={comparisonOptions}
+            />
+          </Label>
           <Button buttonType="btn--icon btn--border btn--white">
             <i className="material-icons-outlined">email</i>
           </Button>
@@ -149,7 +157,7 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
           </MenuButton>
         </div>
       </div>
-      <Panel title="Pinned" layout={layout} cards={cards} />
+      {loading ? null : <Panel title="Pinned" layout={layout} cards={cards} />}
     </div>
   );
 };
