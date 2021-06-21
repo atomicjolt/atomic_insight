@@ -1,15 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloLink,
+  HttpLink,
+  Operation,
+  NextLink,
+  Observable,
+  FetchResult,
+  concat,
+} from '@apollo/client';
 
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const client = new ApolloClient({
+const httpLink = new HttpLink({
   uri: 'https://atomicinsight.atomicjolt.xyz/graphql',
-  cache: new InMemoryCache()
+});
+
+const idTokenMiddleware = new ApolloLink(
+  (operation: Operation, forward: NextLink): Observable<FetchResult> => {
+    operation.setContext(({ headers = {} }) => ({
+      ...headers,
+      headers: {
+        authorization: window.LAUNCH_STATE.idToken,
+      },
+    }));
+
+    return forward(operation);
+  },
+);
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: concat(idTokenMiddleware, httpLink),
 });
 
 ReactDOM.render(
