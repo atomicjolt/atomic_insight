@@ -5,12 +5,10 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/atomicjolt/atomic_insight/graph/generated"
 	"github.com/atomicjolt/atomic_insight/graph/model"
 	"github.com/atomicjolt/atomic_insight/lib"
-	"github.com/atomicjolt/atomic_insight/lti"
 	"github.com/atomicjolt/atomic_insight/middleware"
 )
 
@@ -18,9 +16,6 @@ func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*mode
 	result := model.DiscussionEntryCreated{}
 	fields := graphql.CollectAllFields(ctx)
 	controllerResources := middleware.GetResources(ctx)
-	idToken := middleware.GetIdToken(ctx)
-
-	fmt.Println(idToken[lti.Definitions.Claims.Context].(map[string]interface{})["id"])
 
 	if lib.StringContains(fields, "count") {
 		count, err := controllerResources.Repo.DiscussionEntryCreatedEvent.CountAllSince(lib.LastSunday())

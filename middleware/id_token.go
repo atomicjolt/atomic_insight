@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"github.com/atomicjolt/atomic_insight/lti"
 	"github.com/lestrrat-go/jwx/jwt"
 	"net/http"
 )
@@ -108,10 +109,10 @@ func IdTokenFromAuth(next http.Handler) http.Handler {
 	})
 }
 
-func GetIdToken(ctx context.Context) map[string]interface{} {
+func GetIdToken(ctx context.Context) lti.IdToken {
 	idToken := ctx.Value(idTokenKey).(map[string]interface{})
 
-	return idToken
+	return lti.NewIdToken(idToken)
 }
 
 func GetIdTokenRaw(ctx context.Context) string {

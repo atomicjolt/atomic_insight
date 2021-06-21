@@ -1,93 +1,95 @@
 package lti
 
+type Definition string
+
 type Claims struct {
-	Context                  string
-	ResourceLink             string
-	ToolPlatform             string
-	Ags                      string
-	Mentor                   string
-	Roles                    string
-	Custom                   string
-	Extension                string
-	Lis                      string
-	TargetLinkUri            string
-	Lti11LegacyUserId        string
-	DeepLinking              string
-	DeepLinkingData          string
-	DeepLinkingToolMsg       string
-	DeepLinkingToolLog       string
-	ContentItem              string
-	NamesAndRoles            string
-	ToolLaunchCaliperContext string
-	ToolUseCaliperContext    string
-	Caliper                  string
+	Context                  Definition
+	ResourceLink             Definition
+	ToolPlatform             Definition
+	Ags                      Definition
+	Mentor                   Definition
+	Roles                    Definition
+	Custom                   Definition
+	Extension                Definition
+	Lis                      Definition
+	TargetLinkUri            Definition
+	Lti11LegacyUserId        Definition
+	DeepLinking              Definition
+	DeepLinkingData          Definition
+	DeepLinkingToolMsg       Definition
+	DeepLinkingToolLog       Definition
+	ContentItem              Definition
+	NamesAndRoles            Definition
+	ToolLaunchCaliperContext Definition
+	ToolUseCaliperContext    Definition
+	Caliper                  Definition
 }
 
 type Scopes struct {
-	AgsLineItem   string
-	AgsResult     string
-	AgsScore      string
-	NamesAndRoles string
-	Caliper       string
-	Student       string
-	Instructor    string
-	Learner       string
-	Mentor        string
-	MentorRole    string
+	AgsLineItem   Definition
+	AgsResult     Definition
+	AgsScore      Definition
+	NamesAndRoles Definition
+	Caliper       Definition
+	Student       Definition
+	Instructor    Definition
+	Learner       Definition
+	Mentor        Definition
+	MentorRole    Definition
 }
 
 type Contexts struct {
-	Course  string
-	Account string
+	Course  Definition
+	Account Definition
 }
 
 type Roles struct {
-	CanvasPublicLtiKeysUrl string
-	CanvasOidcUrl          string
-	CanvasAuthTokenUrl     string
+	CanvasPublicLtiKeysUrl Definition
+	CanvasOidcUrl          Definition
+	CanvasAuthTokenUrl     Definition
 
-	CanvasBetaPublicLtiKeysUrl string
-	CanvasBetaAuthTokenUrl     string
-	CanvasBetaOidcUrl          string
+	CanvasBetaPublicLtiKeysUrl Definition
+	CanvasBetaAuthTokenUrl     Definition
+	CanvasBetaOidcUrl          Definition
 
-	CanvasSubmissionType string
+	CanvasSubmissionType Definition
 
-	AdministratorSystemRole           string
-	NoneSystemRole                    string
-	AccountAdminSystemRole            string
-	CreatorSystemRole                 string
-	SysAdminSystemRole                string
-	SysSupportSystemRole              string
-	UserSystemRole                    string
-	AdministratorInstitutionRole      string
-	FacultyInstitutionRole            string
-	GuestInstitutionRole              string
-	NoneInstitutionRole               string
-	OtherInstitutionRole              string
-	StaffInstitutionRole              string
-	StudentInstitutionRole            string
-	AlumniInstitutionRole             string
-	InstructorInstitutionRole         string
-	LearnerInstitutionRole            string
-	MemberInstitutionRole             string
-	MentorInstitutionRole             string
-	ObserverInstitutionRole           string
-	ProspectiveStudentInstitutionRole string
-	AdministratorContextRole          string
-	ContentDeveloperContextRole       string
-	InstructorContextRole             string
-	LearnerContextRole                string
-	MentorContextRole                 string
-	ManagerContextRole                string
-	MemberContextRole                 string
-	OfficerContextRole                string
+	AdministratorSystemRole           Definition
+	NoneSystemRole                    Definition
+	AccountAdminSystemRole            Definition
+	CreatorSystemRole                 Definition
+	SysAdminSystemRole                Definition
+	SysSupportSystemRole              Definition
+	UserSystemRole                    Definition
+	AdministratorInstitutionRole      Definition
+	FacultyInstitutionRole            Definition
+	GuestInstitutionRole              Definition
+	NoneInstitutionRole               Definition
+	OtherInstitutionRole              Definition
+	StaffInstitutionRole              Definition
+	StudentInstitutionRole            Definition
+	AlumniInstitutionRole             Definition
+	InstructorInstitutionRole         Definition
+	LearnerInstitutionRole            Definition
+	MemberInstitutionRole             Definition
+	MentorInstitutionRole             Definition
+	ObserverInstitutionRole           Definition
+	ProspectiveStudentInstitutionRole Definition
+	AdministratorContextRole          Definition
+	ContentDeveloperContextRole       Definition
+	InstructorContextRole             Definition
+	LearnerContextRole                Definition
+	MentorContextRole                 Definition
+	ManagerContextRole                Definition
+	MemberContextRole                 Definition
+	OfficerContextRole                Definition
 }
 
 type LtiDefinitions struct {
-	LtiVersion         string
-	LaunchPresentation string
-	DeploymentId       string
-	MessageType        string
+	LtiVersion         Definition
+	LaunchPresentation Definition
+	DeploymentId       Definition
+	MessageType        Definition
 
 	Claims   Claims
 	Scopes   Scopes
