@@ -30,9 +30,12 @@ func (r *DiscussionEntryCreatedEventRepo) allSinceQuery(model interface{}, time 
 	}).Relation("Body")
 }
 
-func (r *DiscussionEntryCreatedEventRepo) AllSince(time time.Time) ([]model.DiscussionEntryCreatedEvent, error) {
+func (r *DiscussionEntryCreatedEventRepo) AllSince(time time.Time, contextId string) ([]model.DiscussionEntryCreatedEvent, error) {
 	var events []model.DiscussionEntryCreatedEvent
-	err := r.allSinceQuery(&events, time).Select()
+	err := r.
+		allSinceQuery(&events, time).
+		Where("context_id = ?", contextId).
+		Select()
 
 	//An empty query returns null instead of an empty array
 	if err == nil && events == nil {
@@ -42,6 +45,9 @@ func (r *DiscussionEntryCreatedEventRepo) AllSince(time time.Time) ([]model.Disc
 	return events, err
 }
 
-func (r *DiscussionEntryCreatedEventRepo) CountAllSince(time time.Time) (int, error) {
-	return r.allSinceQuery((*model.DiscussionEntryCreatedEvent)(nil), time).Count()
+func (r *DiscussionEntryCreatedEventRepo) CountAllSince(time time.Time, contextId string) (int, error) {
+	return r.
+		allSinceQuery((*model.DiscussionEntryCreatedEvent)(nil), time).
+		Where("context_id = ?", contextId).
+		Count()
 }
