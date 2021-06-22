@@ -10,7 +10,7 @@ func NewIdToken(claims map[string]interface{}) IdToken {
 	}
 }
 
-func (t IdToken) mapAtKey(key Definition) map[string]interface{} {
+func (t IdToken) mapAtKey(key definition) map[string]interface{} {
 	return t.claims[string(key)].(map[string]interface{})
 }
 

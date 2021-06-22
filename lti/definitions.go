@@ -1,95 +1,95 @@
 package lti
 
-type Definition string
+type definition string
 
 type Claims struct {
-	Context                  Definition
-	ResourceLink             Definition
-	ToolPlatform             Definition
-	Ags                      Definition
-	Mentor                   Definition
-	Roles                    Definition
-	Custom                   Definition
-	Extension                Definition
-	Lis                      Definition
-	TargetLinkUri            Definition
-	Lti11LegacyUserId        Definition
-	DeepLinking              Definition
-	DeepLinkingData          Definition
-	DeepLinkingToolMsg       Definition
-	DeepLinkingToolLog       Definition
-	ContentItem              Definition
-	NamesAndRoles            Definition
-	ToolLaunchCaliperContext Definition
-	ToolUseCaliperContext    Definition
-	Caliper                  Definition
+	Context                  definition
+	ResourceLink             definition
+	ToolPlatform             definition
+	Ags                      definition
+	Mentor                   definition
+	Roles                    definition
+	Custom                   definition
+	Extension                definition
+	Lis                      definition
+	TargetLinkUri            definition
+	Lti11LegacyUserId        definition
+	DeepLinking              definition
+	DeepLinkingData          definition
+	DeepLinkingToolMsg       definition
+	DeepLinkingToolLog       definition
+	ContentItem              definition
+	NamesAndRoles            definition
+	ToolLaunchCaliperContext definition
+	ToolUseCaliperContext    definition
+	Caliper                  definition
 }
 
 type Scopes struct {
-	AgsLineItem   Definition
-	AgsResult     Definition
-	AgsScore      Definition
-	NamesAndRoles Definition
-	Caliper       Definition
-	Student       Definition
-	Instructor    Definition
-	Learner       Definition
-	Mentor        Definition
-	MentorRole    Definition
+	AgsLineItem   definition
+	AgsResult     definition
+	AgsScore      definition
+	NamesAndRoles definition
+	Caliper       definition
+	Student       definition
+	Instructor    definition
+	Learner       definition
+	Mentor        definition
+	MentorRole    definition
 }
 
 type Contexts struct {
-	Course  Definition
-	Account Definition
+	Course  definition
+	Account definition
 }
 
 type Roles struct {
-	CanvasPublicLtiKeysUrl Definition
-	CanvasOidcUrl          Definition
-	CanvasAuthTokenUrl     Definition
+	CanvasPublicLtiKeysUrl definition
+	CanvasOidcUrl          definition
+	CanvasAuthTokenUrl     definition
 
-	CanvasBetaPublicLtiKeysUrl Definition
-	CanvasBetaAuthTokenUrl     Definition
-	CanvasBetaOidcUrl          Definition
+	CanvasBetaPublicLtiKeysUrl definition
+	CanvasBetaAuthTokenUrl     definition
+	CanvasBetaOidcUrl          definition
 
-	CanvasSubmissionType Definition
+	CanvasSubmissionType definition
 
-	AdministratorSystemRole           Definition
-	NoneSystemRole                    Definition
-	AccountAdminSystemRole            Definition
-	CreatorSystemRole                 Definition
-	SysAdminSystemRole                Definition
-	SysSupportSystemRole              Definition
-	UserSystemRole                    Definition
-	AdministratorInstitutionRole      Definition
-	FacultyInstitutionRole            Definition
-	GuestInstitutionRole              Definition
-	NoneInstitutionRole               Definition
-	OtherInstitutionRole              Definition
-	StaffInstitutionRole              Definition
-	StudentInstitutionRole            Definition
-	AlumniInstitutionRole             Definition
-	InstructorInstitutionRole         Definition
-	LearnerInstitutionRole            Definition
-	MemberInstitutionRole             Definition
-	MentorInstitutionRole             Definition
-	ObserverInstitutionRole           Definition
-	ProspectiveStudentInstitutionRole Definition
-	AdministratorContextRole          Definition
-	ContentDeveloperContextRole       Definition
-	InstructorContextRole             Definition
-	LearnerContextRole                Definition
-	MentorContextRole                 Definition
-	ManagerContextRole                Definition
-	MemberContextRole                 Definition
-	OfficerContextRole                Definition
+	AdministratorSystemRole           definition
+	NoneSystemRole                    definition
+	AccountAdminSystemRole            definition
+	CreatorSystemRole                 definition
+	SysAdminSystemRole                definition
+	SysSupportSystemRole              definition
+	UserSystemRole                    definition
+	AdministratorInstitutionRole      definition
+	FacultyInstitutionRole            definition
+	GuestInstitutionRole              definition
+	NoneInstitutionRole               definition
+	OtherInstitutionRole              definition
+	StaffInstitutionRole              definition
+	StudentInstitutionRole            definition
+	AlumniInstitutionRole             definition
+	InstructorInstitutionRole         definition
+	LearnerInstitutionRole            definition
+	MemberInstitutionRole             definition
+	MentorInstitutionRole             definition
+	ObserverInstitutionRole           definition
+	ProspectiveStudentInstitutionRole definition
+	AdministratorContextRole          definition
+	ContentDeveloperContextRole       definition
+	InstructorContextRole             definition
+	LearnerContextRole                definition
+	MentorContextRole                 definition
+	ManagerContextRole                definition
+	MemberContextRole                 definition
+	OfficerContextRole                definition
 }
 
 type LtiDefinitions struct {
-	LtiVersion         Definition
-	LaunchPresentation Definition
-	DeploymentId       Definition
-	MessageType        Definition
+	LtiVersion         definition
+	LaunchPresentation definition
+	DeploymentId       definition
+	MessageType        definition
 
 	Claims   Claims
 	Scopes   Scopes
