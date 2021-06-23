@@ -96,7 +96,6 @@ export const Select = <ValueType, >({
       className={`select ${active ? 'active' : ''} ${
         searchable ? 'searchable' : ''
       }`}
-      onBlur={() => active ? setTimeout(onTabOption, 1) : null}
     >
       <div className="select__placeholder">
         <h4>&nbsp;</h4>
@@ -114,7 +113,7 @@ export const Select = <ValueType, >({
               onClick={onInputClick}
             />
           ) : null}
-          <div className="select__options-container">
+          <div className="select__options-container" onBlur={() => active ? setTimeout(onTabOption, 1) : null}>
             {sortedOptions.map((option) => {
               const { value, title, subtitle } = option;
               const isSelected = selectedValue === value;

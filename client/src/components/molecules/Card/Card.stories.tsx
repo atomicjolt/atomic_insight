@@ -8,10 +8,15 @@ export default {
   component: Card,
 };
 
+const mockData = {
+  key: 1,
+  title: 'Card',
+};
+
 export const Default: Story<CardProps> = () => {
   return (
     <div style={{ width: '300px', height: '240px' }}>
-      <Card />
+      <Card data={mockData} />
     </div>
   );
 };
