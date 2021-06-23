@@ -1,4 +1,5 @@
 export enum CardImpact {
+  None = 'none',
   Low = 'low',
   High = 'high',
 }
