@@ -3,13 +3,17 @@ import './CardModal.scss';
 
 import type { CardData } from '../Card/Card';
 
-import { CardImpact, CardDisplay, CardSize } from '../../../common/constants';
+import { CardImpact, CardDisplay, CardSize } from '../../../common/constants/card';
+import { VisualKey } from '../../../common/constants/visual';
+import { findByKey } from '../../../common/utils/find';
+
+import metrics from '../../../metrics';
 import { Modal } from '../Modal/Modal';
-import { IconVisual } from '../IconVisual/IconVisual';
 import { Input } from '../../atoms/Input/Input';
 import { Select } from '../../atoms/Select/Select';
 
 const impactOptions = [
+  { value: CardImpact.None, title: 'None' },
   { value: CardImpact.Low, title: 'Low' },
   { value: CardImpact.High, title: 'High' },
 ];
@@ -20,18 +24,9 @@ const displayOptions = [
   { value: CardDisplay.Trend, title: 'Trend' },
 ];
 
-// TODO: Get supported metrics from somewhere...
-const metricOptions = [
-  { value: 0, title: 'Discussion Posts' },
-  { value: 1, title: 'Assignment Submissions' },
-  { value: 2, title: 'Metric 3' },
-  { value: 3, title: 'Metric 4' },
-  { value: 4, title: 'Metric 5' },
-];
+const metricOptions = metrics.map((m) => ({ value: m.key, title: m.title }));
 
-// TODO: Get real visual & size options based on metric type & display
-//       and move these inside metric models
-const visualOptions = [{ value: IconVisual, title: 'Icon' }];
+const visualOptions = [{ value: VisualKey.Icon, title: 'Icon' }];
 const sizeOptions = [
   { value: CardSize.Half, title: 'Half' },
   { value: CardSize.Normal, title: 'Normal' },
@@ -41,21 +36,26 @@ const sizeOptions = [
 
 export interface CardModalProps {
   data: CardData;
-  onChange: (CardData) => void;
+  onChange?: (CardData) => void;
   isOpen: boolean;
   setIsOpen: (boolean) => void;
 }
 
 export const CardModal: React.FC<CardModalProps> = ({
   data: initialData,
-  onChange,
+  onChange = () => {},
   isOpen,
   setIsOpen,
 }: CardModalProps) => {
   const [data, setData] = useState(initialData);
 
+  const metric = findByKey(metrics, data.metricKey);
+  const cardTitle = data.title !== undefined ? data.title : metric?.title;
+
   function _saveCard() {
     setIsOpen(false);
+
+    if (data.title === '') data.title = undefined;
     onChange(data);
   }
 
@@ -71,7 +71,7 @@ export const CardModal: React.FC<CardModalProps> = ({
         <Input
           gridAreaStyle="name"
           label="Name"
-          value={data.title}
+          value={cardTitle}
           onChange={(title) => setData({ ...data, title })}
         />
         <Select
@@ -85,16 +85,16 @@ export const CardModal: React.FC<CardModalProps> = ({
           gridAreaStyle="metric"
           label="Metric"
           options={metricOptions}
-          selectedValue={data.metric}
-          onChange={(metric) => setData({ ...data, metric })}
+          selectedValue={data.metricKey}
+          onChange={(metricKey) => setData({ ...data, metricKey })}
           searchable={true}
         />
         <Select
           gridAreaStyle="visual"
           label="Visualization"
           options={visualOptions}
-          selectedValue={data.visual}
-          onChange={(visual) => setData({ ...data, visual })}
+          selectedValue={data.visualKey}
+          onChange={(visualKey) => setData({ ...data, visualKey })}
         />
         <Select
           gridAreaStyle="display"
