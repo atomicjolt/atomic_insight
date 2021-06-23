@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import { IconVisual } from './IconVisual';
 
 export default {
-  title: 'Molecules/IconVisual',
+  title: 'Visuals/IconVisual',
   component: IconVisual,
 };
 

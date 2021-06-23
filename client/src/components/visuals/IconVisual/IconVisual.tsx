@@ -1,12 +1,10 @@
 import React from 'react';
 import './IconVisual.scss';
 
-import {
-  ComparisonSummary,
-  ComparisonDisplay,
-} from '../../atoms/ComparisonSummary/ComparisonSummary';
+import type { CountData } from '../../../types/metric_data';
+import { ComparisonSummary, ComparisonDisplay } from '../../atoms/ComparisonSummary/ComparisonSummary';
+import { CardDisplay, CardSize } from '../../../common/constants/card';
 
-import { CardDisplay, CardSize } from '../../../common/constants';
 
 const defaultData = {
   value: 0,
@@ -14,17 +12,13 @@ const defaultData = {
 };
 const defaultFeedback = {
   icon: 'assignment_turned_in',
-  message: 'Feedback',
+  message: '',
 };
 
 export interface IconVisualProps {
   size?: CardSize;
   display?: CardDisplay;
-  data?: {
-    value: number;
-    comparisonValue: number;
-    unit?: string;
-  };
+  data?: CountData;
   feedback?:
     | {
         icon: string;
