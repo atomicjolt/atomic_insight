@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import _ from 'lodash';
 import { Layout } from 'react-grid-layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
@@ -17,18 +18,33 @@ import { Grid } from '../../molecules/Grid/Grid';
 export interface PanelProps {
   cards: CardData[];
   title: string;
-  layout: Layout[];
 }
 
 export const Panel: React.FC<PanelProps> = ({
   cards,
   title,
-  layout = [],
 }: PanelProps) => {
   const [opened, setOpened] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useMenuState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [gridIsDraggable, setGridIsDraggable] = useState(true);
+  const [gridLayout, setGridLayout] = useState<Layout[]>([]);
+
+  function setCardLayout(key, layout) {
+    const keyString = String(key);
+    const cardIndex = gridLayout.findIndex((l) => l.i === keyString);
+    const cardLayout = { i: keyString, ...layout };
+
+    if (!_.isEqual(gridLayout[cardIndex], cardLayout)) {
+      const newLayout = _.cloneDeep(gridLayout);
+      if (cardIndex !== -1) {
+        newLayout[cardIndex] = cardLayout;
+      } else {
+        newLayout.push(cardLayout);
+      }
+      setGridLayout(newLayout);
+    }
+  }
 
   function renderListItem(card: CardData): React.ReactElement {
     return (
@@ -123,10 +139,10 @@ export const Panel: React.FC<PanelProps> = ({
         </MenuButton>
       </div>
       <div className="panel__content">
-        <Grid layout={layout} isDraggable={gridIsDraggable}>
+        <Grid layout={gridLayout} isDraggable={gridIsDraggable}>
           {cards.map((data) => (
             <div key={data.key}>
-              <Card data={data} setGridIsDraggable={setGridIsDraggable} />
+              <Card data={data} setGridIsDraggable={setGridIsDraggable} setCardLayout={setCardLayout} />
             </div>
           ))}
         </Grid>

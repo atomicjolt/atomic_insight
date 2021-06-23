@@ -12,6 +12,7 @@ import { findByKey } from '../../../common/utils/find';
 
 export interface CardData {
   key: number;
+  position?: { x: number, y: number };
   metricKey?: MetricKey;
   visualKey?: VisualKey;
   title?: string;
@@ -32,12 +33,14 @@ export type CardProps = React.PropsWithChildren<{
   data: CardData;
   onChange?: (CardData) => void;
   setGridIsDraggable?: (boolean) => void;
+  setCardLayout?: (number, Layout) => void;
 }>;
 
 export const Card: React.FC<CardProps> = ({
   data: initialData,
   onChange = () => {},
   setGridIsDraggable = () => {},
+  setCardLayout = () => {},
 }: CardProps) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [data, setData] = useState({ ...defaultData, ...initialData });
@@ -52,14 +55,17 @@ export const Card: React.FC<CardProps> = ({
       [CardImpact.High]: 'High Impact',
     }[data.impact]
     : '';
+  const cardDimensions = data.size ? {
+    [CardSize.Half]: { w:1, h: 1 },
+    [CardSize.Normal]: { w:1, h: 2 },
+    [CardSize.Double]: { w:2, h: 2 },
+    [CardSize.Full]: { w:3, h: 3 },
+  }[data.size] : {};
+  const gridData = { ...data.position, ...cardDimensions };
 
-  useEffect(() => {
-    onChange(data);
-  }, [data]);
-
-  useEffect(() => {
-    setGridIsDraggable(!modalIsOpen);
-  }, [modalIsOpen]);
+  useEffect(() => setCardLayout(data.key, gridData), [data.key, gridData]);
+  useEffect(() => onChange(data), [data]);
+  useEffect(() => setGridIsDraggable(!modalIsOpen), [modalIsOpen]);
 
   return (
     <div className="card" key={data.key}>

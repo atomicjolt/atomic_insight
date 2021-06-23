@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import './MainPage.scss';
 
@@ -41,17 +40,8 @@ const comparisonOptions = [
   },
 ];
 
-const layout: Layout[] = [
-  { i: '1', x: 0, y: 0, w: 1, h: 2 },
-  { i: '2', x: 1, y: 0, w: 1, h: 1 },
-  { i: '3', x: 1, y: 0, w: 1, h: 1 },
-  { i: '4', x: 2, y: 0, w: 1, h: 2 },
-];
-
-
 export interface MainPageProps {
   title: string;
-  layout?: [];
 }
 
 export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
@@ -62,21 +52,25 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
 
   const cards: CardData[] = [{
     key: 1,
+    position: { x:0, y: 0 },
     metricKey: MetricKey.DiscussionPosts,
     visualKey: VisualKey.Icon,
   }, {
     key: 2,
+    position: { x:1, y: 0 },
     metricKey: MetricKey.DiscussionPosts,
     visualKey: VisualKey.Icon,
     size: CardSize.Half,
   }, {
     key: 3,
+    position: { x:1, y: 1 },
     metricKey: MetricKey.DiscussionPosts,
     visualKey: VisualKey.Icon,
     size: CardSize.Half,
     display: CardDisplay.Comparison,
   }, {
     key: 4,
+    position: { x:2, y: 0 },
     metricKey: MetricKey.DiscussionPosts,
     visualKey: VisualKey.Icon,
     display: CardDisplay.Comparison,
