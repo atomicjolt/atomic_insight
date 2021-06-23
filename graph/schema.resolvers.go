@@ -16,9 +16,14 @@ func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*mode
 	result := model.DiscussionEntryCreated{}
 	fields := graphql.CollectAllFields(ctx)
 	controllerResources := middleware.GetResources(ctx)
+	idToken := middleware.GetIdToken(ctx)
+	contextId := idToken.ContextId()
 
 	if lib.StringContains(fields, "count") {
-		count, err := controllerResources.Repo.DiscussionEntryCreatedEvent.CountAllSince(lib.LastSunday())
+		count, err := controllerResources.
+			Repo.
+			DiscussionEntryCreatedEvent.
+			CountAllSince(lib.LastSunday(), contextId)
 		if err != nil {
 			return nil, err
 		}
@@ -26,7 +31,10 @@ func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*mode
 	}
 
 	if lib.StringContains(fields, "events") {
-		events, err := controllerResources.Repo.DiscussionEntryCreatedEvent.AllSince(lib.LastSunday())
+		events, err := controllerResources.
+			Repo.
+			DiscussionEntryCreatedEvent.
+			AllSince(lib.LastSunday(), contextId)
 		if err != nil {
 			return nil, err
 		}
