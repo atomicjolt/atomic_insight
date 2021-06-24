@@ -5,12 +5,7 @@ export interface LaunchState {
   contextId: string;
 }
 
-interface Wrapped {
-  Token: LaunchState;
-}
-
-const RAW_PAYLOAD: Wrapped = jwtDecode(window.LAUNCH_TOKEN);
-const LAUNCH_STATE: LaunchState = RAW_PAYLOAD.Token;
+const LAUNCH_STATE: LaunchState = jwtDecode(window.LAUNCH_TOKEN);
 
 export default (): LaunchState => {
   const [launchState] = useState<LaunchState>(LAUNCH_STATE);

@@ -44,7 +44,7 @@ func index(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	launchToken := middleware.GetLaunchToken(r.Context())
-	launchTokenSigned, err := jwt.Sign(launchToken, jwa.RS256, pKey)
+	launchTokenSigned, err := jwt.Sign(launchToken.Token, jwa.RS256, pKey)
 
 	if err != nil {
 		return err

@@ -55,23 +55,17 @@ func ParseLaunchToken(r *http.Request, options ...jwt.ParseOption) (*LaunchToken
 		return nil, err
 	}
 
-	rawClaims, err := rawToken.AsMap(context.Background())
-
-	if err != nil {
-		return nil, err
-	}
-
-	innerClaims := rawClaims["Token"].(map[string]interface{})
+	claims, err := rawToken.AsMap(context.Background())
 
 	token := jwt.New()
 
-	token.Set(jwt.SubjectKey, innerClaims[jwt.SubjectKey])
-	token.Set(jwt.AudienceKey, innerClaims[jwt.AudienceKey])
-	token.Set(jwt.IssuerKey, innerClaims[jwt.IssuerKey])
-	token.Set(jwt.IssuedAtKey, innerClaims[jwt.IssuedAtKey])
+	token.Set(jwt.SubjectKey, claims[jwt.SubjectKey])
+	token.Set(jwt.AudienceKey, claims[jwt.AudienceKey])
+	token.Set(jwt.IssuerKey, claims[jwt.IssuerKey])
+	token.Set(jwt.IssuedAtKey, claims[jwt.IssuedAtKey])
 
 	for _, inherited := range inheritedClaims() {
-		token.Set(inherited.key, innerClaims[inherited.key])
+		token.Set(inherited.key, claims[inherited.key])
 	}
 
 	return &LaunchToken{
