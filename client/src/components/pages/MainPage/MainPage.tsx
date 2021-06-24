@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
-
-import { Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import './MainPage.scss';
 
 import useMenuState from '../../../hooks/use_menu_state';
-import { CardDisplay, CardSize } from '../../../common/constants';
+
+import { CardDisplay, CardSize } from '../../../common/constants/card';
+import { MetricKey } from '../../../common/constants/metric';
+import { VisualKey } from '../../../common/constants/visual';
 
 import { Panel } from '../../organisms/Panel/Panel';
 import { Menu } from '../../molecules/Menu/Menu';
+import { CardData } from '../../molecules/Card/Card';
 import { Button } from '../../atoms/Button/Button';
 import { Label, LabelDisplay } from '../../atoms/Label/Label';
 import { MenuButton } from '../../molecules/MenuButton/MenuButton';
-import { IconVisual } from '../../molecules/IconVisual/IconVisual';
 import { Select } from '../../atoms/Select/Select';
 
 enum ComparisonOption {
@@ -40,25 +40,8 @@ const comparisonOptions = [
   },
 ];
 
-const layout: Layout[] = [
-  { i: '1', x: 0, y: 0, w: 1, h: 2 },
-  { i: '2', x: 1, y: 0, w: 1, h: 1 },
-  { i: '3', x: 1, y: 0, w: 1, h: 1 },
-  { i: '4', x: 2, y: 0, w: 1, h: 2 },
-];
-
-
-const dataQuery = gql`
-  query DataQuery {
-    discussionEntryCreatedEvents {
-      count
-    }
-  }
-`;
-
 export interface MainPageProps {
   title: string;
-  layout?: [];
 }
 
 export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
@@ -67,46 +50,30 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
     ComparisonOption.Weekly
   );
 
-  const { loading, error, data } = useQuery(dataQuery);
-
-  if (error) {
-    // Should have an error banner component or something
-    // eslint-disable-next-line no-console
-    console.error(error.message);
-    return null;
-  }
-
-  const metricData = loading ? {
-    value: 0,
-    comparisonValue: 1
-  } : {
-    value: data.discussionEntryCreatedEvents.count,
-    comparisonValue: 1.08,
-  };
-
-  const cards = [{
+  const cards: CardData[] = [{
     key: 1,
-    title: 'Discussion Posts',
-    visual: IconVisual,
-    metricData,
+    position: { x:0, y: 0 },
+    metricKey: MetricKey.DiscussionPosts,
+    visualKey: VisualKey.Icon,
   }, {
     key: 2,
-    title: 'Discussion Posts',
-    visual: IconVisual,
+    position: { x:1, y: 0 },
+    metricKey: MetricKey.DiscussionPosts,
+    visualKey: VisualKey.Icon,
     size: CardSize.Half,
-    metricData,
   }, {
     key: 3,
-    title: 'Discussion Posts',
-    visual: IconVisual,
+    position: { x:1, y: 1 },
+    metricKey: MetricKey.DiscussionPosts,
+    visualKey: VisualKey.Icon,
     size: CardSize.Half,
     display: CardDisplay.Comparison,
-    metricData,
   }, {
     key: 4,
-    title: 'Discussion Posts',
+    position: { x:2, y: 0 },
+    metricKey: MetricKey.DiscussionPosts,
+    visualKey: VisualKey.Icon,
     display: CardDisplay.Comparison,
-    metricData,
   }];
 
   return (
@@ -157,7 +124,7 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
           </MenuButton>
         </div>
       </div>
-      {loading ? null : <Panel title="Pinned" layout={layout} cards={cards} />}
+      <Panel title="Pinned" cards={cards} />
     </div>
   );
 };
