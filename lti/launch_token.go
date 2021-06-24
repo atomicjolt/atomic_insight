@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/lestrrat-go/jwx/jwt"
 	"net/http"
+	"time"
 )
 
 type LaunchToken struct {
@@ -13,11 +14,10 @@ type LaunchToken struct {
 func NewLaunchToken(idToken IdToken) *LaunchToken {
 	token := jwt.New()
 
-	// TODO: Figure out what values belong in the header
 	token.Set(jwt.SubjectKey, idToken.Subject())
 	token.Set(jwt.AudienceKey, idToken.Audience())
 	token.Set(jwt.IssuerKey, "https://atomicinsight.atomicjolt.xyz")
-	token.Set(jwt.IssuedAtKey, idToken.IssuedAt())
+	token.Set(jwt.IssuedAtKey, time.Now().UTC().Unix())
 
 	/**
 	 * This is where state should be forwarded from the ID token
