@@ -9,6 +9,13 @@ type JwkRepo struct {
 	*BaseRepo
 }
 
+func (r *JwkRepo) First() (model.Jwk, error) {
+	var jwk model.Jwk
+	_, err := r.DB.QueryOne(&jwk, "SELECT * FROM jwks LIMIT 1")
+
+	return jwk, err
+}
+
 func (r *JwkRepo) All() ([]model.Jwk, error) {
 	var jwks []model.Jwk
 	err := r.DB.Model(&jwks).Select()
@@ -23,6 +30,22 @@ func (r *JwkRepo) Find(id int64) (*model.Jwk, error) {
 	return jwk, err
 }
 
+func (r *JwkRepo) PrivateKey() (jwk.Key, error) {
+	jwk, err := r.First()
+
+	if err != nil {
+		return nil, err
+	}
+
+	key, err := jwk.ToKey()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return key, nil
+}
+
 func (r *JwkRepo) PublicJwkSet() (jwk.Set, error) {
 	jwks, err := r.All()
 
@@ -33,15 +56,11 @@ func (r *JwkRepo) PublicJwkSet() (jwk.Set, error) {
 	set := jwk.NewSet()
 
 	for _, j := range jwks {
-		key, err := jwk.ParseKey([]byte(j.Pem), jwk.WithPEM(true))
+		key, err := j.ToKey()
 
 		if err != nil {
-			return nil, err
+			panic(err)
 		}
-
-		key.Set("kid", j.Kid)
-		key.Set("use", "sig")
-		key.Set("alg", "RS256")
 
 		set.Add(key)
 	}
