@@ -43,9 +43,9 @@ func (j *Jwk) ToKey() (jwk.Key, error) {
 		return nil, err
 	}
 
-	key.Set("kid", j.Kid)
-	key.Set("use", "sig")
-	key.Set("alg", "RS256")
+	err = key.Set(jwk.KeyIDKey, j.Kid)
+	err = key.Set(jwk.KeyUsageKey, "sig")
+	err = key.Set(jwk.AlgorithmKey, "RS256")
 
 	return key, nil
 }
