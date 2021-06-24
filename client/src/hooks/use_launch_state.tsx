@@ -5,7 +5,7 @@ export interface LaunchState {
 }
 
 export default (): LaunchState => {
-  const [launchState] = useState<LaunchState>(window.LAUNCH_STATE);
+  const [launchState] = useState<LaunchState>({});
 
   return launchState;
 };

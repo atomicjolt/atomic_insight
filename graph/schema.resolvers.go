@@ -16,8 +16,8 @@ func (r *queryResolver) DiscussionEntryCreatedEvents(ctx context.Context) (*mode
 	result := model.DiscussionEntryCreated{}
 	fields := graphql.CollectAllFields(ctx)
 	controllerResources := middleware.GetResources(ctx)
-	idToken := middleware.GetIdToken(ctx)
-	contextId := idToken.ContextId()
+	ltiToken := middleware.GetLaunchToken(ctx)
+	contextId := ltiToken.ContextId()
 
 	if lib.StringContains(fields, "count") {
 		count, err := controllerResources.

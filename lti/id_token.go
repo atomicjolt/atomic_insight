@@ -1,19 +1,29 @@
 package lti
 
+import (
+	"github.com/lestrrat-go/jwx/jwt"
+)
+
 type IdToken struct {
-	claims map[string]interface{}
+	jwt.Token
 }
 
-func NewIdToken(claims map[string]interface{}) IdToken {
+func NewIdToken(idToken jwt.Token) IdToken {
 	return IdToken{
-		claims: claims,
+		Token: idToken,
 	}
 }
 
-func (t IdToken) mapAtKey(key definition) map[string]interface{} {
-	return t.claims[string(key)].(map[string]interface{})
+func (t IdToken) ValueOf(key definition) map[string]interface{} {
+	value, ok := t.Get(string(key))
+
+	if !ok {
+		panic("Value could not be found in ID token")
+	}
+
+	return value.(map[string]interface{})
 }
 
 func (t IdToken) ContextId() string {
-	return t.mapAtKey(Definitions.Claims.Context)["id"].(string)
+	return t.ValueOf(Definitions.Claims.Context)["id"].(string)
 }
