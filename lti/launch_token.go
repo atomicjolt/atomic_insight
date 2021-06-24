@@ -39,11 +39,6 @@ func NewLaunchToken(idToken IdToken) *LaunchToken {
 	token.Set(jwt.IssuerKey, "https://atomicinsight.atomicjolt.xyz")
 	token.Set(jwt.IssuedAtKey, time.Now().UTC().Unix())
 
-	/**
-	 * This is where state should be forwarded from the ID token
-	 * to the client. This token will be returned on API calls
-	 * to give context to requests.
-	 */
 	for _, inherited := range inheritedClaims() {
 		token.Set(inherited.key, inherited.derive(idToken))
 	}
