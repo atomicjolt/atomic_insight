@@ -11,6 +11,26 @@ type LaunchToken struct {
 	jwt.Token
 }
 
+type InheritedClaim struct {
+	key    string
+	derive func(IdToken) interface{}
+}
+
+/**
+ * Claims declared here will be inherited from
+ * the id_token and deserialized on API calls
+ */
+func inheritedClaims() []InheritedClaim {
+	return []InheritedClaim{
+		{
+			key: "contextId",
+			derive: func(t IdToken) interface{} {
+				return t.ContextId()
+			},
+		},
+	}
+}
+
 func NewLaunchToken(idToken IdToken) *LaunchToken {
 	token := jwt.New()
 
@@ -24,7 +44,9 @@ func NewLaunchToken(idToken IdToken) *LaunchToken {
 	 * to the client. This token will be returned on API calls
 	 * to give context to requests.
 	 */
-	token.Set("contextId", idToken.ContextId())
+	for _, inherited := range inheritedClaims() {
+		token.Set(inherited.key, inherited.derive(idToken))
+	}
 
 	return &LaunchToken{
 		Token: token,
@@ -53,7 +75,9 @@ func ParseLaunchToken(r *http.Request, options ...jwt.ParseOption) (*LaunchToken
 	token.Set(jwt.IssuerKey, innerClaims[jwt.IssuerKey])
 	token.Set(jwt.IssuedAtKey, innerClaims[jwt.IssuedAtKey])
 
-	token.Set("contextId", innerClaims["contextId"])
+	for _, inherited := range inheritedClaims() {
+		token.Set(inherited.key, innerClaims[inherited.key])
+	}
 
 	return &LaunchToken{
 		Token: token,
