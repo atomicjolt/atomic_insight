@@ -11,7 +11,7 @@ type JwkRepo struct {
 
 func (r *JwkRepo) First() (model.Jwk, error) {
 	var jwk model.Jwk
-	_, err := r.DB.QueryOne(&jwk, "SELECT * FROM jwks LIMIT 1")
+	_, err := r.DB.QueryOne(&jwk, "SELECT * FROM jwks ORDER BY created_at DESC LIMIT 1")
 
 	return jwk, err
 }
