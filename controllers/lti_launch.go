@@ -5,21 +5,20 @@ import (
 	"github.com/atomicjolt/atomic_insight/config"
 	"github.com/atomicjolt/atomic_insight/middleware"
 	"github.com/atomicjolt/atomic_insight/webpack"
+	"github.com/lestrrat-go/jwx/jwa"
+	"github.com/lestrrat-go/jwx/jwt"
 	"net/http"
 	"path"
 	"text/template"
 )
 
-type LtiState struct {
-	IdTokenRaw string
-}
-
 type ViewState struct {
-	Manifest *webpack.Manifest
-	LtiState LtiState
+	Manifest          *webpack.Manifest
+	LaunchTokenSigned string
 }
 
 func index(w http.ResponseWriter, r *http.Request) error {
+	controllerResources := middleware.GetResources(r.Context())
 	view, err := template.ParseFiles(path.Join("views", "index.html"))
 
 	if err != nil {
@@ -38,13 +37,22 @@ func index(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	idTokenRaw := middleware.GetIdTokenRaw(r.Context())
+	pKey, err := controllerResources.Repo.Jwk.PrivateKey()
+
+	if err != nil {
+		return err
+	}
+
+	launchToken := middleware.GetLaunchToken(r.Context())
+	launchTokenSigned, err := jwt.Sign(launchToken.Token, jwa.RS256, pKey)
+
+	if err != nil {
+		return err
+	}
 
 	state := &ViewState{
-		Manifest: manifest,
-		LtiState: LtiState{
-			IdTokenRaw: idTokenRaw,
-		},
+		Manifest:          manifest,
+		LaunchTokenSigned: string(launchTokenSigned),
 	}
 
 	return view.Execute(w, state)

@@ -6,7 +6,6 @@ type contextKey int
 const (
 	eventsContextKey contextKey = iota
 	oidcStateKey
-	idTokenKey
-	idTokenRawKey
+	launchTokenKey
 	resourcesKey
 )

@@ -20,13 +20,13 @@ func NewRouter(controllerResources resources.Resources) http.Handler {
 	graphqlRouter := router.Methods("GET", "POST").Subrouter()
 	graphqlRouter.Handle("/graphql", NewGraphqlHandler())
 	graphqlRouter.Handle("/graphql/playground", playground.Handler("Playground", "/graphql"))
-	graphqlRouter.Use(middleware.IdTokenFromAuth)
+	graphqlRouter.Use(middleware.LaunchTokenFromAuth)
 
 	router.Handle("/oidc_init", NewOpenIDInitHandler()).Methods("GET", "POST")
 
 	ltiRouter := router.Methods("GET", "POST").Subrouter()
 	ltiRouter.Handle("/lti_launches", NewLtiLaunchHandler())
-	ltiRouter.Use(middleware.IdTokenFromLaunch, middleware.OidcStateValidator)
+	ltiRouter.Use(middleware.LaunchTokenFromIdToken, middleware.OidcStateValidator)
 
 	router.Handle("/jwks", NewJwksController())
 

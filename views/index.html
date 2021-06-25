@@ -13,10 +13,7 @@
       </link>
     {{ end }}
     <script type="text/javascript">
-      window.LAUNCH_STATE = {
-        idToken: "{{ .LtiState.IdTokenRaw }}",
-      };
-      Object.freeze(window.LAUNCH_STATE);
+      window.LAUNCH_TOKEN = "{{ .LaunchTokenSigned }}";
     </script>
     <title>React App</title>
   </head>

@@ -26,7 +26,7 @@ const idTokenMiddleware = new ApolloLink(
     operation.setContext(({ headers = {} }) => ({
       ...headers,
       headers: {
-        authorization: window.LAUNCH_STATE.idToken,
+        authorization: window.LAUNCH_TOKEN,
       },
     }));
 
