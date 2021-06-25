@@ -37,17 +37,23 @@ func index(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	pKey, err := controllerResources.Repo.Jwk.PrivateKey()
+	/**
+	 * Use of the private key is restricted to this scope
+	 */
+	var launchTokenSigned []byte
+	{
+		pKey, err := controllerResources.Repo.Jwk.PrivateKey()
 
-	if err != nil {
-		return err
-	}
+		if err != nil {
+			return err
+		}
 
-	launchToken := middleware.GetLaunchToken(r.Context())
-	launchTokenSigned, err := jwt.Sign(launchToken.Token, jwa.RS256, pKey)
+		launchToken := middleware.GetLaunchToken(r.Context())
+		launchTokenSigned, err = jwt.Sign(launchToken.Token, jwa.RS256, pKey)
 
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
 	}
 
 	state := &ViewState{
