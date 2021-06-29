@@ -82,6 +82,16 @@ func LaunchTokenFromAuth(next http.Handler) http.Handler {
 	})
 }
 
+// LaunchTokenInjector adds a mock launch token to the context.
+// This is used to make things like the graphql playground work without an lti launch.
+func LaunchTokenInjector(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token := lti.NewMockLaunchToken()
+		newCtx := context.WithValue(r.Context(), launchTokenKey, token)
+		next.ServeHTTP(w, r.WithContext(newCtx))
+	})
+}
+
 func GetLaunchToken(ctx context.Context) *lti.LaunchToken {
 	return ctx.Value(launchTokenKey).(*lti.LaunchToken)
 }
