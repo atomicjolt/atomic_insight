@@ -17,10 +17,7 @@ func NewRouter(controllerResources resources.Resources) http.Handler {
 	eventsRouter.Handle("/events", NewEventsHandler())
 	eventsRouter.Use(middleware.EventsJwtValidator)
 
-	graphqlRouter := router.Methods("GET", "POST").Subrouter()
-	graphqlRouter.Handle("/graphql", NewGraphqlHandler())
-	graphqlRouter.Handle("/graphql/playground", playground.Handler("Playground", "/graphql"))
-	graphqlRouter.Use(middleware.LaunchTokenFromAuth)
+	RegisterGraphql(router)
 
 	router.Handle("/oidc_init", NewOpenIDInitHandler()).Methods("GET", "POST")
 
@@ -42,4 +39,20 @@ func NewRouter(controllerResources resources.Resources) http.Handler {
 		middleware.WithResources(controllerResources),
 	)
 	return router
+}
+
+func RegisterGraphql(router *mux.Router) {
+	graphqlRouter := router.Methods("GET", "POST").Subrouter()
+	graphqlRouter.Handle("/graphql", NewGraphqlHandler())
+	graphqlRouter.Use(middleware.LaunchTokenFromAuth)
+
+	if config.DetermineEnv() == "development" {
+		graphqlDevRouter := router.Methods("GET", "POST").Subrouter()
+		playgroundHandler := playground.Handler("Playground", "/graphql/mock")
+
+		graphqlDevRouter.Handle("/graphql/playground", playgroundHandler)
+		graphqlDevRouter.Handle("/graphql/mock", NewGraphqlHandler())
+
+		graphqlDevRouter.Use(middleware.LaunchTokenInjector)
+	}
 }
