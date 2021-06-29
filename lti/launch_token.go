@@ -82,3 +82,11 @@ func (t *LaunchToken) ContextId() string {
 
 	return contextId.(string)
 }
+
+func NewMockLaunchToken() *LaunchToken {
+	token := jwt.New()
+
+	_ = token.Set("contextId", "0")
+
+	return &LaunchToken{token}
+}
