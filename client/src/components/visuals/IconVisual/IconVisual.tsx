@@ -2,48 +2,29 @@ import React from 'react';
 import './IconVisual.scss';
 
 import type { CountData } from '../../../types/metric_data';
+import type { Feedback } from '../../../types/feedback';
 import { ComparisonSummary, ComparisonDisplay } from '../../atoms/ComparisonSummary/ComparisonSummary';
 import { CardDisplay, CardSize } from '../../../common/constants/card';
-
-
-const defaultData = {
-  value: 0,
-  comparisonValue: 1,
-};
-const defaultFeedback = {
-  icon: 'assignment_turned_in',
-  message: '',
-};
 
 export interface IconVisualProps {
   size?: CardSize;
   display?: CardDisplay;
   data?: CountData;
-  feedback?:
-    | {
-        icon: string;
-        message: string;
-        dataKey?: string;
-        range?: [number | null, number | null];
-      }[]
-    | {
-        icon: string;
-        message: string;
-      };
+  feedback?: Feedback;
 }
 
 export const IconVisual: React.FC<IconVisualProps> = ({
   display = CardDisplay.Value,
   size = CardSize.Normal,
-  data = defaultData,
-  feedback = defaultFeedback,
+  data,
+  feedback,
 }: IconVisualProps) => {
   function getFeedback() {
     if (Array.isArray(feedback)) {
-      return feedback.find(({ dataKey = 'comparisonValue', range = [] }) => {
+      return feedback.find(({ dataKey = 'comparisonValue', range = [null, null] }) => {
         const [min, max] = range;
-        const value = data[dataKey];
-        return (min ? min <= value : true) && (max ? max >= value : true);
+        const value = data?.[dataKey];
+        return (min !== null ? min <= value : true) && (max !== null ? max >= value : true);
       });
     }
     return feedback;
@@ -54,6 +35,10 @@ export const IconVisual: React.FC<IconVisualProps> = ({
     [CardSize.Normal]: ComparisonDisplay.Inline,
     [CardSize.Half]: ComparisonDisplay.Stacked,
   }[size];
+
+  if (data === undefined) {
+    return <div />;
+  }
 
   return (
     <div className={`icon-visual display--${display} size--${size}`}>
@@ -66,7 +51,7 @@ export const IconVisual: React.FC<IconVisualProps> = ({
             <i className="material-icons-outlined">{icon}</i>
           </div>
           <div className="icon-visual__value">
-            <h4>In last week</h4>
+            <p>In last week</p>
             <h1>
               {data.value}
               {data.unit}

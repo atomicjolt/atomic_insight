@@ -1,36 +1,44 @@
 import React from 'react';
 
-import type { UnknownMetricType } from '../../../types/metric';
+import type { UnknownMetricType, MetricGroupData, } from '../../../types/metric';
+import type { CountData } from '../../../types/metric_data';
 import useMetric from '../../../hooks/use_metric';
-import { IconVisual } from '../../visuals/IconVisual/IconVisual';
+import { MetricType } from '../../../common/constants/metric';
 import { CardDisplay, CardSize } from '../../../common/constants/card';
 import { VisualKey } from '../../../common/constants/visual';
 
+import { IconVisual } from '../../visuals/IconVisual/IconVisual';
+import { TableVisual } from '../../visuals/TableVisual/TableVisual';
+
 export interface VisualProps {
-  visualKey?: VisualKey;
+  visualKey: VisualKey;
+  metric?: UnknownMetricType;
   display?: CardDisplay;
   size?: CardSize,
-  metric?: UnknownMetricType;
 }
 
 export const Visual: React.FC<VisualProps> = ({ visualKey, metric, ...rest }: VisualProps) => {
-  const { data } = useMetric(metric);
+  let { data } = useMetric(metric);
 
-  const invalidVisual = <IconVisual {...rest} />;
-
-  if (data) {
-    // Type guard for MetricGroupData
-    if ('total' in data) {
-      switch(visualKey) {
-        case VisualKey.Icon: return <IconVisual data={data.total} {...rest} />;
-        default: return invalidVisual;
+  switch (metric?.type) {
+    case MetricType.Metric:
+      data = data as CountData;
+      switch (visualKey) {
+        case VisualKey.Icon:
+          return <IconVisual {...rest} data={data} feedback={metric.feedback} />;
+        default: throw Error('Invalid metric/visual');
       }
-    } else {
-      switch(visualKey) {
-        case VisualKey.Icon: return <IconVisual data={data} {...rest} />;
-        default: return invalidVisual;
+    case MetricType.MetricGroup:
+      data = data as MetricGroupData<CountData>;
+      switch (visualKey) {
+        case VisualKey.Icon: {
+          return <IconVisual {...rest} data={data.total} feedback={metric.feedback}  />;
+        }
+        case VisualKey.Table: {
+          return <TableVisual {...rest} data={data} metadata={metric.children} />;
+        }
+        default: throw Error('Invalid metric/visual');
       }
-    }
+    default: throw Error('Invalid metric type');
   }
-  return invalidVisual;
 };

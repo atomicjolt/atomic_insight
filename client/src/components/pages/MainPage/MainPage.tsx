@@ -53,8 +53,8 @@ export const MainPage: React.FC<MainPageProps> = ({ title }: MainPageProps) => {
   const cards: CardData[] = [{
     key: 1,
     position: { x:0, y: 0 },
-    metricKey: MetricKey.DiscussionPosts,
-    visualKey: VisualKey.Icon,
+    metricKey: MetricKey.ActiveParticipations,
+    visualKey: VisualKey.Table,
   }, {
     key: 2,
     position: { x:1, y: 0 },

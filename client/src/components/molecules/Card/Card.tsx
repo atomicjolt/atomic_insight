@@ -27,6 +27,7 @@ const defaultData: CardData = {
   pinned: false,
   display: CardDisplay.Value,
   size: CardSize.Normal,
+  impact: CardImpact.None,
 };
 
 export type CardProps = React.PropsWithChildren<{
@@ -46,6 +47,10 @@ export const Card: React.FC<CardProps> = ({
   const [data, setData] = useState({ ...defaultData, ...initialData });
 
   const metric = findByKey(metrics, data.metricKey);
+  if (data.metricKey !== undefined && metric === undefined) {
+    throw Error('Invalid metric key');
+  }
+
   const cardTitle = data.title !== undefined ? data.title : metric?.title;
 
   const isImpact = data.impact !== undefined && data.impact !== CardImpact.None;
@@ -92,7 +97,7 @@ export const Card: React.FC<CardProps> = ({
         </div>
       </div>
       <div className="card-contents">
-        {data.visualKey !== undefined ? (
+        {data.visualKey !== undefined && data.metricKey !== undefined ? (
           <Visual
             visualKey={data.visualKey}
             display={data.display}

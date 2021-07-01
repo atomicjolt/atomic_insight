@@ -1,4 +1,5 @@
 import type { CountData } from './metric_data';
+import type { Feedback } from './feedback';
 import { MetricKey, MetricType } from '../common/constants/metric';
 
 export type QueryResponse = Record<string, unknown>
@@ -8,7 +9,7 @@ export interface BaseMetric {
   type: MetricType;
   name: string;
   title: string;
-  group?: boolean;
+  feedback?: Feedback;
 }
 
 export interface Metric<MetricData> extends BaseMetric{
@@ -24,7 +25,7 @@ export interface MetricGroup<MetricData> extends BaseMetric {
 }
 
 export interface MetricGroupData<MetricData> {
-  children: Record<string, MetricData>
+  children: { key: MetricKey, data: MetricData }[];
   total: MetricData;
 }
 

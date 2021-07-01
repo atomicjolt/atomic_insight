@@ -11,7 +11,7 @@
     grid-template-areas:
       'name name impact'
       'metric metric metric'
-      'visual display size';
+      'display visual size';
     grid-gap: 16px;
 
     @include stack-top-bottom;
@@ -23,5 +23,9 @@
     &__options-container {
       max-height: 144px;  
     }
+  }
+
+  &.invalid .save-btn {
+    opacity: 70%;
   }
 }

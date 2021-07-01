@@ -17,9 +17,17 @@ export const DiscussionPosts: Metric<CountData> = {
     const { discussionEntryCreatedEvents: { count } } = data;
     return {
       value: count,
-      comparisonValue: 1.12, // TODO: This value should be count / avg
+      comparisonValue: 0.12, // TODO: This value should be count / avg
     };
   },
+  feedback: [
+    {
+      icon: 'assignment_turned_in',
+      message: 'Students are participating in discussion posts.',
+      range: [0, null],
+    },
+    { icon: 'assignment_late' },
+  ]
 };
 
 export const ActiveParticipations: MetricGroup<CountData> = {
@@ -29,4 +37,12 @@ export const ActiveParticipations: MetricGroup<CountData> = {
   title: 'Active Participations',
   children: [DiscussionPosts],
   resolver: metricGroupResolver,
+  feedback: [
+    {
+      icon: 'assignment_turned_in',
+      message: 'Students are actively participating in your class',
+      range: [0, null],
+    },
+    { icon: 'assignment_late' },
+  ]
 };

@@ -20,10 +20,10 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onCancel,
   onSave,
-  cancelButtonClassName,
-  saveButtonClassName,
+  cancelButtonClassName = '',
+  saveButtonClassName = '',
   actionButtons,
-  className,
+  className = '',
   children,
 }: ModalProps) => {
   return (
@@ -42,7 +42,7 @@ export const Modal: React.FC<ModalProps> = ({
             <Button buttonType={cancelButtonClassName} onClick={onCancel}>Cancel</Button>
           ) : null}
           {onSave ? (
-            <Button buttonType={`btn--primary ${saveButtonClassName}`} onClick={onSave}>
+            <Button buttonType={`btn--primary save-btn ${saveButtonClassName}`} onClick={onSave}>
               Save
             </Button>
           ) : null}

@@ -11,14 +11,14 @@ export default {
 const mockData = {
   data: {
     value: 40,
-    comparisonValue: 1.08,
+    comparisonValue: 0.08,
     unit: 'min',
   },
   feedback: [
     {
       icon: 'assignment_turned_in',
       message: 'Positive feedback',
-      range: [1, null],
+      range: [0, null],
     },
     {
       icon: 'assignment_late',

@@ -1,3 +1,5 @@
+@use 'colors' as *;
+
 @mixin shadow($blur, $opacity) {
   box-shadow: 0 3px $blur rgba(0, 0, 0, $opacity);
 }
@@ -8,4 +10,10 @@
        z-index: #{10 - $i};
      }
   }
+}
+
+@mixin flex-column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
