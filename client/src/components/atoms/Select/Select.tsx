@@ -20,7 +20,7 @@ export interface SelectProps<ValueType> {
 }
 
 export const Select = <ValueType, >({
-  options,
+  options = [],
   selectedValue,
   onChange = () => {},
   label,
@@ -29,6 +29,8 @@ export const Select = <ValueType, >({
 }: SelectProps<ValueType>): React.ReactElement<SelectProps<ValueType>> => {
   const selectRef = useRef<HTMLDivElement>(null);
   const selectedOption = options.find((option) => option.value === selectedValue);
+
+  const isValid = options.length > 0;
 
   const [inputValue, setInputValue] = useState('');
   const [active, setActive] = useMenuState(false, selectRef);
@@ -95,7 +97,7 @@ export const Select = <ValueType, >({
       ref={selectRef}
       className={`select ${active ? 'active' : ''} ${
         searchable ? 'searchable' : ''
-      }`}
+      } ${isValid ? '' : 'disabled'}`}
     >
       <div className="select__placeholder">
         <h4>&nbsp;</h4>

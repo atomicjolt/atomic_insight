@@ -1,6 +1,11 @@
 import { DocumentNode, gql } from '@apollo/client';
 
-import type { QueryResponse, Metric, MetricGroup, MetricGroupData  } from '../../types/metric';
+import type {
+  QueryResponse,
+  Metric,
+  MetricGroup,
+  MetricGroupData,
+} from '../../types/metric';
 
 export function buildQueryFromMetrics<MetricData>(
   metrics: Metric<MetricData>[]
@@ -22,15 +27,16 @@ export function buildQueryFromMetrics<MetricData>(
 
 export function resolveMetricGroupData<MetricData>(
   data: QueryResponse,
-  metric: MetricGroup<MetricData>,
+  metric: MetricGroup<MetricData>
 ): MetricGroupData<MetricData>['children'] {
-  return Object.fromEntries(
-    metric.children.map((m) => [m.name, m.resolver(data, m)])
-  ) as MetricGroupData<MetricData>['children'];
+  return metric.children.map((m) => ({
+    key: m.key,
+    data: m.resolver(data, m),
+  })) as MetricGroupData<MetricData>['children'];
 }
 
 export function totalMetricGroupData<MetricData>(
-  groupData: MetricGroupData<MetricData>['children'],
+  groupData: MetricGroupData<MetricData>['children']
 ): MetricGroupData<MetricData>['total'] {
   const totalReducer = (total, currentData) => {
     return Object.fromEntries(
@@ -42,12 +48,12 @@ export function totalMetricGroupData<MetricData>(
       })
     ) as MetricGroupData<MetricData>['total'];
   };
-  return Object.values(groupData).reduce(totalReducer);
+  return groupData.map(({ data }) => data).reduce(totalReducer);
 }
 
 export function metricGroupResolver<MetricData>(
   data: QueryResponse,
-  metric: MetricGroup<MetricData>,
+  metric: MetricGroup<MetricData>
 ): MetricGroupData<MetricData> {
   const children = resolveMetricGroupData(data, metric);
   const total = totalMetricGroupData(children);

@@ -18,7 +18,7 @@ export const ComparisonSummary: React.FC<ComparisonSummaryProps> = ({
   value,
   display = ComparisonDisplay.Inline,
 }: ComparisonSummaryProps) => {
-  const percent = Math.floor((value - 1) * 100);
+  const percent = Math.floor(value * 100);
   const percentSign = Math.sign(percent);
   const absPercentage = Math.abs(percent);
 
@@ -32,7 +32,7 @@ export const ComparisonSummary: React.FC<ComparisonSummaryProps> = ({
     <div className={`comparison-summary display--${display}`}>
       {percentSign ? (
         <div>
-          <p>
+          <p className="comparison-summary__short-value">
             <i
               className={`material-icons-round comparison-summary__icon ${iconClass}`}
             >

@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CardModal.scss';
 
 import type { CardData } from '../Card/Card';
 
-import { CardImpact, CardDisplay, CardSize } from '../../../common/constants/card';
+import {
+  CardImpact,
+  CardDisplay,
+  CardSize,
+} from '../../../common/constants/card';
+import { MetricType } from '../../../common/constants/metric';
 import { VisualKey } from '../../../common/constants/visual';
 import { findByKey } from '../../../common/utils/find';
 
@@ -26,13 +31,62 @@ const displayOptions = [
 
 const metricOptions = metrics.map((m) => ({ value: m.key, title: m.title }));
 
-const visualOptions = [{ value: VisualKey.Icon, title: 'Icon' }];
-const sizeOptions = [
-  { value: CardSize.Half, title: 'Half' },
-  { value: CardSize.Normal, title: 'Normal' },
-  { value: CardSize.Double, title: 'Double' },
-  { value: CardSize.Full, title: 'Full' },
-];
+const visualOptions = {
+  icon: { value: VisualKey.Icon, title: 'Icon' },
+  table: { value: VisualKey.Table, title: 'Table' },
+};
+
+const sizeOptions = {
+  half: { value: CardSize.Half, title: 'Half' },
+  normal: { value: CardSize.Normal, title: 'Normal' },
+  double: { value: CardSize.Double, title: 'Double' },
+  full: { value: CardSize.Full, title: 'Full' },
+};
+
+// Mapping for: metricType – display – visual
+const metricTypeDisplayVisualOptions = {
+  [MetricType.Metric]: {
+    [CardDisplay.Value]: [
+      visualOptions.icon,
+      // visualOptions.percentage,
+      // visualOptions.list,
+    ],
+    [CardDisplay.Comparison]: [
+      visualOptions.icon,
+      // visualOptions.percentage,
+    ],
+    [CardDisplay.Trend]: [
+      // visualOptions.lineGraph,
+      // visualOptions.percentage,
+    ],
+  },
+  [MetricType.MetricGroup]: {
+    [CardDisplay.Value]: [
+      visualOptions.icon,
+      visualOptions.table,
+      // visualOptions.barGraph,
+    ],
+    [CardDisplay.Comparison]: [
+      visualOptions.icon,
+      visualOptions.table,
+      // visualOptions.barGraph,
+    ],
+    [CardDisplay.Trend]: [
+      // visualOptions.multiLineGraph,
+      // visualOptions.stackedBarGraph,
+    ],
+  }
+};
+
+const visualKeySizeOptions = {
+  [VisualKey.Icon]: [
+    sizeOptions.half,
+    sizeOptions.normal
+  ],
+  [VisualKey.Table]: [
+    sizeOptions.normal
+  ],
+};
 
 export interface CardModalProps {
   data: CardData;
@@ -47,21 +101,45 @@ export const CardModal: React.FC<CardModalProps> = ({
   isOpen,
   setIsOpen,
 }: CardModalProps) => {
+  if (isOpen === false) return null;
+
   const [data, setData] = useState(initialData);
 
   const metric = findByKey(metrics, data.metricKey);
   const cardTitle = data.title !== undefined ? data.title : metric?.title;
+  const isCardValid = data.visualKey !== undefined && data.size !== undefined;
+
+  let dynamicVisualOptions, dynamicSizeOptions;
+  if (metric?.type !== undefined && data.display !== undefined) {
+    dynamicVisualOptions = metricTypeDisplayVisualOptions[metric.type][data.display];
+    if (dynamicVisualOptions.length > 0) {
+      const visualKey = data.visualKey !== undefined ? data.visualKey : dynamicVisualOptions[0].value;
+      dynamicSizeOptions = visualKeySizeOptions[visualKey];
+    } else {
+      dynamicSizeOptions = [];
+    }
+  }
+
+  useEffect(() => {
+    if (data.visualKey === undefined && dynamicVisualOptions.length > 0) {
+      setData({ ...data, visualKey: dynamicVisualOptions[0].value });
+    }
+    if (data.size === undefined && dynamicSizeOptions.length > 0) {
+      setData({ ...data, size: dynamicSizeOptions[0].value });
+    }
+  }, [data, dynamicVisualOptions, dynamicSizeOptions]);
 
   function _saveCard() {
-    setIsOpen(false);
-
-    if (data.title === '') data.title = undefined;
-    onChange(data);
+    if (isCardValid) {
+      setIsOpen(false);
+      if (data.title === '') data.title = undefined;
+      onChange(data);
+    }
   }
 
   return (
     <Modal
-      className="edit-card-modal"
+      className={`edit-card-modal ${isCardValid ?  '' : 'invalid'}`}
       title="Edit Card"
       isOpen={isOpen}
       onSave={_saveCard}
@@ -86,27 +164,41 @@ export const CardModal: React.FC<CardModalProps> = ({
           label="Metric"
           options={metricOptions}
           selectedValue={data.metricKey}
-          onChange={(metricKey) => setData({ ...data, metricKey })}
+          onChange={(metricKey) =>
+            setData({
+              ...data,
+              metricKey,
+              visualKey: undefined,
+              size: undefined,
+            })
+          }
           searchable={true}
-        />
-        <Select
-          gridAreaStyle="visual"
-          label="Visualization"
-          options={visualOptions}
-          selectedValue={data.visualKey}
-          onChange={(visualKey) => setData({ ...data, visualKey })}
         />
         <Select
           gridAreaStyle="display"
           label="Display"
           options={displayOptions}
           selectedValue={data.display}
-          onChange={(display) => setData({ ...data, display })}
+          onChange={(display) =>
+            setData({
+              ...data,
+              display,
+              visualKey: undefined,
+              size: undefined,
+            })
+          }
+        />
+        <Select
+          gridAreaStyle="visual"
+          label="Visualization"
+          options={dynamicVisualOptions}
+          selectedValue={data.visualKey}
+          onChange={(visualKey) => setData({ ...data, visualKey, size: undefined })}
         />
         <Select
           gridAreaStyle="size"
           label="Size"
-          options={sizeOptions}
+          options={dynamicSizeOptions}
           selectedValue={data.size}
           onChange={(size) => setData({ ...data, size })}
         />

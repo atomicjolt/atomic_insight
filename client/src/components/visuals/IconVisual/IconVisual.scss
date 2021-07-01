@@ -1,11 +1,5 @@
 @use 'src/styles/utils' as *;
 
-@mixin flex-column {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-
 .mock-card-container {
   display: flex;
   width: 16.75em;
@@ -29,26 +23,8 @@
   height: 100%;
   font-size: 1em;
 
-  p,
-  h1,
-  h4 {
-    margin: 0;
-  }
-
-  p {
-    font-size: 1em;
-    color: $gray-7;
-  }
-
   h1 {
     font-size: 3em;
-    color: $gray-8;
-  }
-
-  h4 {
-    font-size: 1.1em;
-    font-weight: normal;
-    color: $gray-6;
   }
 
   #{$block}.size--half &__feedback {
@@ -57,6 +33,11 @@
 
   &__data {
     @include flex-column;
+    
+    p {
+      font-size: 1.1em;
+    }
+
     #{$block}.size--half & {
       flex-direction: row;
       align-items: flex-end;
@@ -102,7 +83,7 @@
       margin-bottom: -1em;
       font-size: 1.2em;
 
-      h4 {
+      p {
         margin-bottom: 0.4em;
         margin-left: 1em;
       }

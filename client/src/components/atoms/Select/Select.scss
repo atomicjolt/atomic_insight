@@ -42,6 +42,10 @@
       box-shadow: 0 1px 10px rgba(0,0,0,0.2);
     }
 
+    #{$block}.disabled & {
+      background: $gray-2;
+    }
+
     #{$block}:not(.active) &:focus-within {
       border-color: $gray-5;
     }
