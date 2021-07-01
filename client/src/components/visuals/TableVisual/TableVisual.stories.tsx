@@ -1,19 +1,13 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import type { MetricGroup } from '../../../types/metric';
-import type { CountData } from '../../../types/metric_data';
 import { TableVisual } from './TableVisual';
-import { findByKey } from '../../../common/utils/find';
-import { MetricKey } from '../../../common/constants/metric';
-import metrics from '../../../metrics';
 
 export default {
   title: 'Visuals/TableVisual',
   component: TableVisual,
 };
 
-const mockMetric = findByKey(metrics, MetricKey.ActiveParticipations) as MetricGroup<CountData>;
 const mockData = {
   data: {
     children: [
