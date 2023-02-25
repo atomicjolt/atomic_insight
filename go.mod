@@ -12,5 +12,5 @@ require (
 	github.com/robinjoseph08/go-pg-migrations/v3 v3.0.0
 	github.com/spacemonkeygo/openssl v0.0.0-20181017203307-c2dcc5cca94a
 	github.com/vektah/gqlparser/v2 v2.1.0
-	golang.org/x/sys v0.0.0-20210511113859-b0526f3d8744 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 )
